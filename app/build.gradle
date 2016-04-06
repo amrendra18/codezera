@@ -1,5 +1,16 @@
 apply plugin: 'com.android.application'
 
+def isCiServer = (System.getenv().containsKey("TRAVIS"))
+def API_KEY;
+def API_USERNAME;
+if (isCiServer) {
+    API_KEY = System.getenv("API_KEY") as String;
+    API_USERNAME = System.getenv("API_USERNAME") as String;
+} else {
+    API_KEY = '"'+codefiesta_api_key+'"';//"COPY_YOUR_API_KEY_HERE"
+    API_USERNAME = '"'+codefiesta_api_username+'"';//"COPY_YOUR_API_USERNAME_HERE"
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -15,6 +26,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        buildTypes.each {
+            it.buildConfigField 'String', 'API_KEY', "$API_KEY"
+            it.buildConfigField 'String', 'API_USERNAME', "$API_USERNAME"
         }
     }
 }

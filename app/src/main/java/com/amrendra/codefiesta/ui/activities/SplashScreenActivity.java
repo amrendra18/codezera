@@ -8,9 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.utils.Debug;
+
+import butterknife.Bind;
 
 /**
  * Created by Amrendra Kumar on 05/04/16.
@@ -26,6 +29,12 @@ public class SplashScreenActivity extends BaseActivity {
     public static final int TEXT_Y_TRANSLATION = 50;
 
     private boolean animationStarted = false;
+
+    @Bind(R.id.img_logo)
+    ImageView logoImageView;
+
+    @Bind(R.id.container)
+    LinearLayout linearLayoutContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +65,7 @@ public class SplashScreenActivity extends BaseActivity {
 
     private void animate() {
         animationStarted = true;
-        ImageView logoImageView = (ImageView) findViewById(R.id.img_logo);
-        ViewGroup container = (ViewGroup) findViewById(R.id.container);
-
+        ViewGroup container = linearLayoutContainer;
         ViewCompat.animate(logoImageView)
                 .translationY(LOGO_Y_TRANSLATION)
                 .setStartDelay(STARTUP_DELAY)

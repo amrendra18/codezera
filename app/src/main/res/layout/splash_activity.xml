@@ -14,8 +14,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingTop="144dp"
-        tools:ignore="HardcodedText">
+        android:paddingTop="144dp">
 
         <TextView
             android:layout_width="wrap_content"

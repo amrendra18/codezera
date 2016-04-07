@@ -1,18 +1,20 @@
 package com.amrendra.codefiesta.ui.activities;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.amrendra.codefiesta.R;
-import com.amrendra.codefiesta.adapters.NavAdapter;
 import com.amrendra.codefiesta.loaders.WebsiteLoader;
 import com.amrendra.codefiesta.model.ApiResponse;
 import com.amrendra.codefiesta.model.Website;
@@ -20,21 +22,25 @@ import com.amrendra.codefiesta.utils.Debug;
 
 import butterknife.Bind;
 
-public class ListActivity extends BaseActivity {
+public class ListActivity extends BaseActivity implements
+        NavigationView.OnNavigationItemSelectedListener {
     private static final int RESOURCE_LOADER = 0;
+    private static final long DRAWER_CLOSE_DELAY_MS = 250;
+    private static final String NAV_ITEM_ID = "navItemId";
+
+    private final Handler mDrawerActionHandler = new Handler();
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.nav_recycler_view)
-    RecyclerView mRecyclerView;
+    @Bind(R.id.nav_view)
+    NavigationView mNavigationView;
     @Bind(R.id.drawer_layout)
-    DrawerLayout mDrawer;
+    DrawerLayout mDrawerLayout;
 
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
     ActionBarDrawerToggle mDrawerToggle;
 
     private String[] navMenuTitles;
+    private int mNavItemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,13 @@ public class ListActivity extends BaseActivity {
         navMenuTitles = getResources().getStringArray(R.array.nav_menus);
         setContentView(R.layout.activity_list);
 
+        // load saved navigation state if present
+        if (null == savedInstanceState) {
+            mNavItemId = R.id.action_componse;
+        } else {
+            mNavItemId = savedInstanceState.getInt(NAV_ITEM_ID);
+        }
+
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -50,13 +63,7 @@ public class ListActivity extends BaseActivity {
             actionBar.setDisplayUseLogoEnabled(true);
         }
 
-        mRecyclerView.setHasFixedSize(true);
-        mAdapter = new NavAdapter(navMenuTitles);
-        mRecyclerView.setAdapter(mAdapter);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R
                 .string.drawer_close) {
 
             @Override
@@ -79,8 +86,24 @@ public class ListActivity extends BaseActivity {
                 super.onDrawerStateChanged(newState);
             }
         };
-        mDrawer.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
+
+        mNavigationView.setNavigationItemSelectedListener(this);
+        // select the correct nav menu item
+        mNavigationView.getMenu().findItem(mNavItemId).setChecked(true);
+        navigate(mNavItemId);
+    }
+
+    private void navigate(final int itemId) {
+        // perform the actual navigation logic, updating the main content fragment etc
+        switch (itemId) {
+            case R.id.action_componse:
+                Debug.showToastShort("compose", this);
+                break;
+            default:
+                Debug.showToastShort("default", this);
+        }
     }
 
     @Override
@@ -128,5 +151,52 @@ public class ListActivity extends BaseActivity {
             Debug.c();
         }
     };
+
+    @Override
+    public boolean onNavigationItemSelected(final MenuItem menuItem) {
+        // update highlighted item in the navigation menu
+        menuItem.setChecked(true);
+        mNavItemId = menuItem.getItemId();
+
+        // allow some time after closing the drawer before performing real navigation
+        // so the user can see what is happening
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        mDrawerActionHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                navigate(menuItem.getItemId());
+            }
+        }, DRAWER_CLOSE_DELAY_MS);
+        return true;
+    }
+
+    @Override
+    public void onConfigurationChanged(final Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item.getItemId() == android.support.v7.appcompat.R.id.home) {
+            return mDrawerToggle.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(NAV_ITEM_ID, mNavItemId);
+    }
 }
 

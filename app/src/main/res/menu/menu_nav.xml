@@ -1,0 +1,43 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".MainActivity">
+
+    <item android:id="@+id/action_componse"
+          android:icon="@mipmap/ic_launcher"
+          android:title="Compose"/>
+
+    <item android:id="@+id/action_draft"
+          android:icon="@mipmap/ic_launcher"
+          android:title="Draft"/>
+
+    <item android:id="@+id/action_messages"
+          android:icon="@mipmap/ic_launcher"
+          android:title="Messages"/>
+
+    <item android:id="@+id/action_settings"
+          android:icon="@mipmap/ic_launcher"
+          android:title="Settings"/>
+
+    <group android:id="@+id/animalsGroup"
+           android:checkableBehavior="single">
+        <item android:id="@+id/id_lion"
+              android:title="Lion"/>
+        <item android:id="@+id/id_cat"
+              android:title="Cat"/>
+        <item android:id="@+id/id_dog"
+              android:title="Dog"/>
+        <item android:id="@+id/id_rat"
+              android:title="Rat"/>
+    </group>
+
+    <group android:id="@+id/id_fruits"
+           android:checkableBehavior="single">
+        <item android:id="@+id/id_apple"
+              android:title="Apple"/>
+        <item android:id="@+id/id_orange"
+              android:title="Orange"/>
+        <item android:id="@+id/id_grapes"
+              android:title="Grapes"/>
+    </group>
+</menu>

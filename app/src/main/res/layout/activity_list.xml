@@ -2,8 +2,8 @@
 <android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,14 +36,18 @@
 
 
     <!-- The navigation drawer -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/nav_recycler_view"
-        android:layout_width="320dp"
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#bebc2c"
-        android:scrollbars="vertical">
-    </android.support.v7.widget.RecyclerView>
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_row"
+        app:itemIconTint="@color/colorAccent"
+        app:itemTextColor="@color/colorPrimaryDark"
+        app:menu="@menu/menu_nav">
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>
 

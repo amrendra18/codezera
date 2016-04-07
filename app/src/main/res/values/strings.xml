@@ -7,4 +7,22 @@
     <string name="title_activity_list">ListActivity</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="drawer_open">open drawer</string>
+    <string name="drawer_close">close drawer</string>
+
+    <string name="nav_current">Current</string>
+    <string name="nav_upcoming">Upcoming</string>
+    <string name="nav_past">Past</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_rate">Rate app</string>
+    <string name="nav_feedback">Feedback</string>
+
+    <string-array name="nav_menus">
+        <item>@string/nav_current</item>
+        <item>@string/nav_upcoming</item>
+        <item>@string/nav_past</item>
+        <item>@string/nav_settings</item>
+        <item>@string/nav_rate</item>
+        <item>@string/nav_feedback</item>
+    </string-array>
 </resources>

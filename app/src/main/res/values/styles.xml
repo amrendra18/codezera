@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -16,6 +16,29 @@
     <style name="Button" parent="Theme.AppCompat">
         <item name="colorControlHighlight">@color/indigo_500</item>
         <item name="colorButtonNormal">@color/pink_200</item>
+    </style>
+
+    <style name="ToolbarAppTheme" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:popupMenuStyle">@style/MyPopupMenu</item>
+        <item name="android:actionBarWidgetTheme">@style/ActionBarWidget</item>
+    </style>
+
+    <style name="MyPopupMenu">
+        <item name="android:popupBackground">@color/colorPrimary</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ActionBarWidget" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:popupMenuStyle">
+            @android:style/Widget.Holo.Light.PopupMenu
+        </item>
+        <item name="android:dropDownListViewStyle">
+            @android:style/Widget.Holo.Light.ListView.DropDown
+        </item>
     </style>
 
 </resources>

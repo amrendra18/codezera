@@ -53,4 +53,11 @@ dependencies {
 
     compile 'com.facebook.stetho:stetho:1.2.0'
     compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
+
+
+    // analytics
+    // canary leak
+    // fb tw sdk
+    // rxjava
+
 }

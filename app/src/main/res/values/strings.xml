@@ -26,4 +26,7 @@
         <item>@string/nav_rate</item>
         <item>@string/nav_feedback</item>
     </string-array>
+
+    <string name="contentauthority" translatable="false">com.amrendra.codefiesta</string>
+    <string name="sync_account_type" translatable="false">com.amrendra.codefiesta</string>
 </resources>

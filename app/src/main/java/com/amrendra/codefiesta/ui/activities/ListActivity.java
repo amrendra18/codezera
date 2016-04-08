@@ -18,6 +18,7 @@ import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.loaders.WebsiteLoader;
 import com.amrendra.codefiesta.model.ApiResponse;
 import com.amrendra.codefiesta.model.Website;
+import com.amrendra.codefiesta.sync.CodeFiestaSyncAdapter;
 import com.amrendra.codefiesta.utils.Debug;
 
 import butterknife.Bind;
@@ -93,6 +94,8 @@ public class ListActivity extends BaseActivity implements
         // select the correct nav menu item
         mNavigationView.getMenu().findItem(mNavItemId).setChecked(true);
         navigate(mNavItemId);
+
+        CodeFiestaSyncAdapter.initializeSyncAdapter(this);
     }
 
     private void navigate(final int itemId) {

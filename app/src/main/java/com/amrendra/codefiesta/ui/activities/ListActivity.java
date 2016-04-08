@@ -51,7 +51,7 @@ public class ListActivity extends BaseActivity implements
 
         // load saved navigation state if present
         if (null == savedInstanceState) {
-            mNavItemId = R.id.action_componse;
+            mNavItemId = R.id.nav_current_menu;
         } else {
             mNavItemId = savedInstanceState.getInt(NAV_ITEM_ID);
         }
@@ -98,8 +98,26 @@ public class ListActivity extends BaseActivity implements
     private void navigate(final int itemId) {
         // perform the actual navigation logic, updating the main content fragment etc
         switch (itemId) {
-            case R.id.action_componse:
-                Debug.showToastShort("compose", this);
+            case R.id.nav_current_menu:
+                Debug.showToastShort("nav_current_menu", this);
+                break;
+            case R.id.nav_upcoming_menu:
+                Debug.showToastShort("nav_upcoming_menu", this);
+                break;
+            case R.id.nav_past_menu:
+                Debug.showToastShort("nav_past_menu", this);
+                break;
+            case R.id.nav_settings_menu:
+                Debug.showToastShort("nav_settings_menu", this);
+                break;
+            case R.id.nav_rate_menu:
+                Debug.showToastShort("nav_rate_menu", this);
+                break;
+            case R.id.nav_feedback_menu:
+                Debug.showToastShort("nav_feedback_menu", this);
+                break;
+            case R.id.nav_open_source_menu:
+                Debug.showToastShort("nav_open_source_menu", this);
                 break;
             default:
                 Debug.showToastShort("default", this);

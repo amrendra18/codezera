@@ -1,43 +1,49 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".MainActivity">
 
-    <item android:id="@+id/action_componse"
-          android:icon="@mipmap/ic_launcher"
-          android:title="Compose"/>
+    <group
+        android:id="@+id/contests_group"
+        android:checkableBehavior="single">
 
-    <item android:id="@+id/action_draft"
-          android:icon="@mipmap/ic_launcher"
-          android:title="Draft"/>
-
-    <item android:id="@+id/action_messages"
-          android:icon="@mipmap/ic_launcher"
-          android:title="Messages"/>
-
-    <item android:id="@+id/action_settings"
-          android:icon="@mipmap/ic_launcher"
-          android:title="Settings"/>
-
-    <group android:id="@+id/animalsGroup"
-           android:checkableBehavior="single">
-        <item android:id="@+id/id_lion"
-              android:title="Lion"/>
-        <item android:id="@+id/id_cat"
-              android:title="Cat"/>
-        <item android:id="@+id/id_dog"
-              android:title="Dog"/>
-        <item android:id="@+id/id_rat"
-              android:title="Rat"/>
+        <item
+            android:id="@+id/nav_current_menu"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/nav_current"/>
+        <item
+            android:id="@+id/nav_upcoming_menu"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/nav_upcoming"/>
+        <item
+            android:id="@+id/nav_past_menu"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/nav_past"/>
     </group>
 
-    <group android:id="@+id/id_fruits"
-           android:checkableBehavior="single">
-        <item android:id="@+id/id_apple"
-              android:title="Apple"/>
-        <item android:id="@+id/id_orange"
-              android:title="Orange"/>
-        <item android:id="@+id/id_grapes"
-              android:title="Grapes"/>
+    <group
+        android:id="@+id/settings_group"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_settings_menu"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/nav_settings"/>
+
+        <item
+            android:id="@+id/nav_rate_menu"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/nav_rate"/>
+
+        <item
+            android:id="@+id/nav_feedback_menu"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/nav_feedback"/>
+
+        <item
+            android:id="@+id/nav_open_source_menu"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/nav_open_source"/>
+
     </group>
+
 </menu>

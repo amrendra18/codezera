@@ -293,6 +293,4 @@ https://gist.github.com/kalehv/bae765c756e94455ed88
     <color name="colorSecondaryText">@color/grey_600</color>
     <color name="colorDivider">@color/grey_400</color>
 
-    <color name="drawer_item_text_default">#bebebe</color>
-    <color name="drawer_item_text_checked">@color/colorPrimary</color>
 </resources>

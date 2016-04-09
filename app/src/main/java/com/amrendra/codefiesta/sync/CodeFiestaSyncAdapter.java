@@ -5,14 +5,26 @@ import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.amrendra.codefiesta.BuildConfig;
 import com.amrendra.codefiesta.R;
+import com.amrendra.codefiesta.db.DBContract;
+import com.amrendra.codefiesta.model.Contest;
+import com.amrendra.codefiesta.model.Website;
+import com.amrendra.codefiesta.rest.RestApiClient;
 import com.amrendra.codefiesta.utils.Debug;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Amrendra Kumar on 09/04/16.
@@ -68,6 +80,75 @@ public class CodeFiestaSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Debug.c();
+        fetchResourceInfo();
+        fetchContests();
+    }
+
+    private void fetchResourceInfo() {
+        Debug.c();
+        RestApiClient.getInstance()
+                .getResourceList(BuildConfig.API_USERNAME, BuildConfig.API_KEY)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Website.Response>() {
+                    @Override
+                    public void onCompleted() {
+                        Debug.c();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Debug.e("Error: " + e.getMessage(), false);
+                    }
+
+                    @Override
+                    public void onNext(Website.Response response) {
+                        Debug.c();
+                        List<Website> websites = response.websites;
+                        List<ContentValues> list = new ArrayList<>();
+                        for (Website website : websites) {
+                            list.add(website.getContentValues());
+                        }
+                        Debug.e("resources adding : " + websites.size(), false);
+                        ContentValues[] insert_data = new ContentValues[list.size()];
+                        list.toArray(insert_data);
+                        getContext().getContentResolver().bulkInsert(
+                                DBContract.ResourceEntry.CONTENT_URI, insert_data);
+                    }
+                });
+    }
+
+    private void fetchContests() {
+        Debug.c();
+        RestApiClient.getInstance()
+                .getContestsList(200, "2016-04-08T00:00:00", "end", BuildConfig.API_USERNAME,
+                        BuildConfig.API_KEY)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Contest.Response>() {
+                    @Override
+                    public void onCompleted() {
+                        Debug.c();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Debug.e("Error: " + e.getMessage(), false);
+                    }
+
+                    @Override
+                    public void onNext(Contest.Response response) {
+                        Debug.c();
+                        List<Contest> contests = response.contests;
+                        List<ContentValues> list = new ArrayList<>();
+                        for (Contest contest : contests) {
+                            list.add(contest.getContentValues());
+                        }
+                        Debug.e("contests adding : " + contests.size(), false);
+                        ContentValues[] insert_data = new ContentValues[list.size()];
+                        list.toArray(insert_data);
+                        getContext().getContentResolver().bulkInsert(
+                                DBContract.ContestEntry.CONTENT_URI, insert_data);
+                    }
+                });
     }
 
     /**

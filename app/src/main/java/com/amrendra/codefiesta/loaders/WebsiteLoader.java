@@ -3,15 +3,7 @@ package com.amrendra.codefiesta.loaders;
 import android.content.Context;
 
 import com.amrendra.codefiesta.model.ApiResponse;
-import com.amrendra.codefiesta.model.Error;
 import com.amrendra.codefiesta.model.Website;
-import com.amrendra.codefiesta.rest.RestApiClient;
-import com.amrendra.codefiesta.utils.Debug;
-
-import java.io.IOException;
-
-import retrofit.Call;
-import retrofit.Response;
 
 /**
  * Created by Amrendra Kumar on 06/04/16.
@@ -24,7 +16,7 @@ public class WebsiteLoader extends BaseLoader<ApiResponse<Website.Response>> {
 
     @Override
     public ApiResponse<Website.Response> loadInBackground() {
-        Call<Website.Response> call = RestApiClient.getInstance().getResourceList();
+/*        Call<Website.Response> call = RestApiClient.getInstance().getResourceList();
         ApiResponse<Website.Response> data = new ApiResponse<>();
         Error error = null;
         try {
@@ -45,6 +37,7 @@ public class WebsiteLoader extends BaseLoader<ApiResponse<Website.Response>> {
         if (error != null) {
             data.setError(error);
         }
-        return data;
+        return data;*/
+        return null;
     }
 }

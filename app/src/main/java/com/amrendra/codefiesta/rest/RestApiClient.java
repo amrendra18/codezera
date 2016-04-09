@@ -2,6 +2,7 @@ package com.amrendra.codefiesta.rest;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 
 /**
  * Created by Amrendra Kumar on 06/04/16.
@@ -17,6 +18,7 @@ public class RestApiClient {
     public static RestApiService getInstance() {
         if (restApiService == null) {
             Retrofit retrofit = new Retrofit.Builder()
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .baseUrl(API_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

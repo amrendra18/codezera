@@ -1,5 +1,6 @@
 package com.amrendra.codefiesta.db;
 
+import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -14,10 +15,20 @@ public class DBContract {
     public static final String PATH_RESOURCE = "resource";
     public static final String PATH_CONTEST = "contests";
     public static final String PATH_NOTIFICATION = "notifications";
+    public static final String PATH_TIME = "time";
 
 
     public static final class ResourceEntry implements BaseColumns {
         public static final String TABLE_NAME = "resources_table";
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_RESOURCE).build();
+
+        public static final String CONTENT_DIR_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RESOURCE;
+
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RESOURCE;
 
         public static final String RESOURCE_ID_COL = "id";
         public static final String RESOURCE_NAME_COL = "name";
@@ -33,6 +44,15 @@ public class DBContract {
 
     public static final class ContestEntry implements BaseColumns {
         public static final String TABLE_NAME = "contests_table";
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_CONTEST).build();
+
+        public static final String CONTENT_DIR_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CONTEST;
+
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CONTEST;
 
         public static final String CONTEST_ID_COL = "id";
         public static final String CONTEST_NAME_COL = "name";
@@ -58,6 +78,15 @@ public class DBContract {
 
     public static final class NotificationEntry implements BaseColumns {
         public static final String TABLE_NAME = "notifications_table";
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_NOTIFICATION).build();
+
+        public static final String CONTENT_DIR_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_NOTIFICATION;
+
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_NOTIFICATION;
 
         public static final String NOTIFICATION_CONTEST_ID_COL = "contest_id";
         public static final String NOTIFICATION_TIME_COL = "time";

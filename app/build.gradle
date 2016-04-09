@@ -7,8 +7,8 @@ if (isCiServer) {
     API_KEY = System.getenv("API_KEY") as String;
     API_USERNAME = System.getenv("API_USERNAME") as String;
 } else {
-    API_KEY = '"'+codefiesta_api_key+'"';//"COPY_YOUR_API_KEY_HERE"
-    API_USERNAME = '"'+codefiesta_api_username+'"';//"COPY_YOUR_API_USERNAME_HERE"
+    API_KEY = '"' + codefiesta_api_key + '"';//"COPY_YOUR_API_KEY_HERE"
+    API_USERNAME = '"' + codefiesta_api_username + '"';//"COPY_YOUR_API_USERNAME_HERE"
 }
 
 android {
@@ -33,6 +33,11 @@ android {
             it.buildConfigField 'String', 'API_USERNAME', "$API_USERNAME"
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 dependencies {
@@ -51,13 +56,14 @@ dependencies {
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
     compile 'com.github.bumptech.glide:glide:3.6.1'
 
+    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+    compile 'io.reactivex:rxjava:1.0.13'
+
     compile 'com.facebook.stetho:stetho:1.2.0'
     compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
-
 
     // analytics
     // canary leak
     // fb tw sdk
-    // rxjava
 
 }

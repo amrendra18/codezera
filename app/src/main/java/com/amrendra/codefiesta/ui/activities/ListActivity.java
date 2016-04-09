@@ -94,8 +94,6 @@ public class ListActivity extends BaseActivity implements
         // select the correct nav menu item
         mNavigationView.getMenu().findItem(mNavItemId).setChecked(true);
         navigate(mNavItemId);
-
-        CodeFiestaSyncAdapter.initializeSyncAdapter(this);
     }
 
     private void navigate(final int itemId) {
@@ -115,6 +113,7 @@ public class ListActivity extends BaseActivity implements
                 break;
             case R.id.nav_rate_menu:
                 Debug.showToastShort("nav_rate_menu", this);
+                CodeFiestaSyncAdapter.syncImmediately(this);
                 break;
             case R.id.nav_feedback_menu:
                 Debug.showToastShort("nav_feedback_menu", this);

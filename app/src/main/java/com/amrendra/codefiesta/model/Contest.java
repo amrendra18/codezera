@@ -1,8 +1,11 @@
 package com.amrendra.codefiesta.model;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.amrendra.codefiesta.db.DBContract;
+import com.amrendra.codefiesta.utils.DateUtils;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -131,6 +134,18 @@ public class Contest implements Parcelable {
 
     public void setStart(String start) {
         this.start = start;
+    }
+
+    public ContentValues getContentValues() {
+        ContentValues value = new ContentValues();
+        value.put(DBContract.ContestEntry.CONTEST_ID_COL, getId());
+        value.put(DBContract.ContestEntry.CONTEST_NAME_COL, getEvent());
+        value.put(DBContract.ContestEntry.CONTEST_URL_COL, getUrl());
+        value.put(DBContract.ContestEntry.CONTEST_RESOURCE_ID_COL, getWebsite().getId());
+        value.put(DBContract.ContestEntry.CONTEST_START_COL, DateUtils.getEpochTime(getStart()));
+        value.put(DBContract.ContestEntry.CONTEST_END_COL, DateUtils.getEpochTime(getEnd()));
+        value.put(DBContract.ContestEntry.CONTEST_DURATION_COL, getDuration());
+        return value;
     }
 
     public static final class Response {

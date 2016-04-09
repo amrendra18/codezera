@@ -11,8 +11,12 @@ import android.support.annotation.Nullable;
  * Created by Amrendra Kumar on 09/04/16.
  */
 public class Provider extends ContentProvider {
+
+    private static DBHelper mDbHelper;
+
     @Override
     public boolean onCreate() {
+        mDbHelper = new DBHelper(getContext());
         return false;
     }
 

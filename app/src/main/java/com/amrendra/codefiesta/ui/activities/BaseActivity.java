@@ -3,6 +3,8 @@ package com.amrendra.codefiesta.ui.activities;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 
+import com.amrendra.codefiesta.CodeFiestaApplication;
+
 import butterknife.ButterKnife;
 
 /**
@@ -21,5 +23,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        CodeFiestaApplication.getRefWatcher(this).watch(this);
     }
 }

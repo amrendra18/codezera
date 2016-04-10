@@ -2,6 +2,7 @@ package com.amrendra.codefiesta.db;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -75,8 +76,49 @@ public class Provider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        Debug.i("uri : " + uri);
-        return null;
+        final int match = sUriMatcher.match(uri);
+        Debug.e("Query : " + uri + " match : " + match, false);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        Cursor retCursor;
+        switch (match) {
+            case CONTEST: {
+                retCursor = db.query(
+                        DBContract.ContestEntry.TABLE_NAME, //table name
+                        projection, //projection
+                        null, //selection
+                        null, //selectionArgs
+                        null,
+                        null,
+                        sortOrder
+                );
+            }
+            break;
+            /*case CONTEST_WITH_ID:
+                return DBContract.ContestEntry.CONTENT_ITEM_TYPE;
+            case CONTEST_WITH_RESOURCE_ID:
+                return DBContract.ContestEntry.CONTENT_DIR_TYPE;
+            case CONTEST_WITH_START_DATE:
+                return DBContract.ContestEntry.CONTENT_DIR_TYPE;
+            case RESOURCE:
+                return DBContract.ResourceEntry.CONTENT_DIR_TYPE;
+            case RESOURCE_WITH_ID:
+                return DBContract.ResourceEntry.CONTENT_ITEM_TYPE;
+            case NOTIFICATION:
+                return DBContract.NotificationEntry.CONTENT_DIR_TYPE;
+            case NOTIFICATION_WITH_ID:
+                return DBContract.NotificationEntry.CONTENT_ITEM_TYPE;*/
+            default:
+                Debug.e("ERROR : " + uri, false);
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        notifyChange(retCursor, getContext(), uri);
+        return retCursor;
+    }
+
+    private void notifyChange(Cursor retCursor, Context context, Uri uri) {
+        if (retCursor != null) {
+            retCursor.setNotificationUri(context.getContentResolver(), uri);
+        }
     }
 
     @Nullable

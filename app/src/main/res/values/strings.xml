@@ -29,4 +29,7 @@
 
     <string name="contentauthority" translatable="false">com.amrendra.codefiesta</string>
     <string name="sync_account_type" translatable="false">com.amrendra.codefiesta</string>
+
+
+    <string name="nomatch">No Contests found!!</string>
 </resources>

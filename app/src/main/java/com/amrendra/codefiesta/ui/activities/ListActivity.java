@@ -94,9 +94,12 @@ public class ListActivity extends BaseActivity implements
         mDrawerToggle.syncState();
 
         mNavigationView.setNavigationItemSelectedListener(this);
-        // select the correct nav menu item
-        mNavigationView.getMenu().findItem(mNavItemId).setChecked(true);
-        navigate(mNavigationView.getMenu().findItem(mNavItemId));
+
+        if (null == savedInstanceState) {
+            // select the correct nav menu item
+            mNavigationView.getMenu().findItem(mNavItemId).setChecked(true);
+            navigate(mNavigationView.getMenu().findItem(mNavItemId));
+        }
     }
 
     private void navigate(final MenuItem menuItem) {
@@ -179,18 +182,20 @@ public class ListActivity extends BaseActivity implements
 
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
-        // update highlighted item in the navigation menu
-        menuItem.setChecked(true);
-        // allow some time after closing the drawer before performing real navigation
-        // so the user can see what is happening
-        mNavItemId = menuItem.getItemId();
+        if (menuItem.getItemId() != mNavItemId) {
+            // update highlighted item in the navigation menu
+            menuItem.setChecked(true);
+            // allow some time after closing the drawer before performing real navigation
+            // so the user can see what is happening
+            mNavItemId = menuItem.getItemId();
+            mDrawerActionHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    navigate(menuItem);
+                }
+            }, DRAWER_CLOSE_DELAY_MS);
+        }
         mDrawerLayout.closeDrawer(GravityCompat.START);
-        mDrawerActionHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                navigate(menuItem);
-            }
-        }, DRAWER_CLOSE_DELAY_MS);
         return true;
     }
 

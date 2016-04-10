@@ -12,6 +12,14 @@ import java.util.HashMap;
  */
 public class AppUtils {
 
+    public enum CONTEST_STATUS {
+        ENDED,
+        RUNNING,
+        FUTURE
+    }
+
+    public static final String UNKNOWN_RESOURCE = "Unknown Website";
+
     static HashMap<Integer, String> resourceHashMap;
 
     public static void cacheResources(Context context) {
@@ -50,6 +58,6 @@ public class AppUtils {
         if (resourceHashMap.containsKey(key)) {
             return resourceHashMap.get(key);
         }
-        return "Unknown Website";
+        return UNKNOWN_RESOURCE;
     }
 }

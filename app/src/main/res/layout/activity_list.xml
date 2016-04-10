@@ -18,19 +18,19 @@
 
 
         <!-- The main content view -->
-        <!--    <FrameLayout
-                android:id="@+id/content_frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>-->
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-        <fragment
+        <!-- <fragment
             android:id="@+id/fragment"
             android:name="com.amrendra.codefiesta.ui.fragments.CurrentFragment"
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout="@layout/fragment_list"/>
+            tools:layout="@layout/fragment_list"/> -->
 
     </LinearLayout>
 

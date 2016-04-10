@@ -27,7 +27,10 @@ public class DateUtils {
                 Date date = df.parse(time);
                 epochTime = date.getTime() / 1000;
             } catch (ParseException e) {
-                CodeFiestaApplication.shouldNotHappen("Exception in converting time to epoch : " + "time=" + time + " exception=" + e.getLocalizedMessage());
+                CodeFiestaApplication.shouldNotHappen(
+                        "Exception in converting time to epoch : "
+                                + "time=" + time + " exception=" +
+                                e.getLocalizedMessage());
             }
         } else {
             CodeFiestaApplication.shouldNotHappen("Time to convert to epoch is null");
@@ -60,12 +63,20 @@ public class DateUtils {
         return System.currentTimeMillis() / 1000;
     }
 
-    public static String getTimeLeft(long endTime) {
-        long left = endTime - System.currentTimeMillis() / 1000;
-        return getDurationString(left) + " left";
+    public static String getTimeLeftForEnd(long startTime, long endTime) {
+        long currTime = System.currentTimeMillis() / 1000;
+        if (currTime < startTime) {
+            return "Starts in " + getDurationString(startTime - currTime, false);
+        }
+        long left = endTime - currTime;
+        if (left > 0) {
+            return getDurationString(left, true) + " left";
+        } else {
+            return "Ended";
+        }
     }
 
-    public static String getDurationString(long time) {
+    public static String getDurationString(long time, boolean secRequired) {
         StringBuilder sb = new StringBuilder();
         long years = time / SEC_IN_ONE_YEAR;
         time %= SEC_IN_ONE_YEAR;
@@ -87,7 +98,7 @@ public class DateUtils {
         if (mins > 0) {
             sb.append(Long.toString(mins)).append((mins > 1 ? "mins " : "min "));
         }
-        if (time > 0) {
+        if (secRequired && time > 0) {
             sb.append(Long.toString(time)).append((time > 1 ? "secs " : "sec "));
         }
         return sb.toString().trim();

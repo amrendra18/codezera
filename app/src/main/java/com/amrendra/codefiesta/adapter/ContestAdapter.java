@@ -48,14 +48,14 @@ public class ContestAdapter extends CursorAdapter {
         mHolder.contestWebsiteTv.setText(AppUtils.getResourceName(context, contestId));
         long duration = cursor.getLong(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_DURATION_COL));
-        mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration));
+        mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration, false));
         long starTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_START_COL)));
         long endTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_END_COL)));
         mHolder.contestStartTv.setText(DateUtils.epochToDateTimeLocalShow(starTime));
         mHolder.contestEndTv.setText(DateUtils.epochToDateTimeLocalShow(endTime));
-        mHolder.contestTimeLeftTv.setText(DateUtils.getTimeLeft(endTime));
+        mHolder.contestTimeLeftTv.setText(DateUtils.getTimeLeftForEnd(starTime, endTime));
     }
 
     class ViewHolder {

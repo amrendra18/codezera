@@ -12,6 +12,11 @@ import java.util.TimeZone;
  */
 public class DateUtils {
 
+    public static long SEC_IN_ONE_MINUTE = 60;
+    public static long SEC_IN_ONE_HOUR = SEC_IN_ONE_MINUTE * 60;
+    public static long SEC_IN_ONE_DAY = SEC_IN_ONE_HOUR * 24;
+    public static long SEC_IN_ONE_YEAR = SEC_IN_ONE_DAY * 365;
+
     public static long getEpochTime(String time) {
         long epochTime = -1;
         //"2013-12-08T09:00:00"
@@ -53,5 +58,38 @@ public class DateUtils {
 
     public static long getCurrentEpochTime() {
         return System.currentTimeMillis() / 1000;
+    }
+
+    public static String getTimeLeft(long endTime) {
+        long left = endTime - System.currentTimeMillis() / 1000;
+        return getDurationString(left) + " left";
+    }
+
+    public static String getDurationString(long time) {
+        StringBuilder sb = new StringBuilder();
+        long years = time / SEC_IN_ONE_YEAR;
+        time %= SEC_IN_ONE_YEAR;
+        long days = time / SEC_IN_ONE_DAY;
+        time %= SEC_IN_ONE_DAY;
+        long hours = time / SEC_IN_ONE_HOUR;
+        time %= SEC_IN_ONE_HOUR;
+        long mins = time / SEC_IN_ONE_MINUTE;
+        time %= SEC_IN_ONE_MINUTE;
+        if (years > 0) {
+            sb.append(Long.toString(years)).append((years > 1 ? "years " : "year "));
+        }
+        if (days > 0) {
+            sb.append(Long.toString(days)).append((days > 1 ? "days " : "day "));
+        }
+        if (hours > 0) {
+            sb.append(Long.toString(hours)).append((hours > 1 ? "hours " : "hour "));
+        }
+        if (mins > 0) {
+            sb.append(Long.toString(mins)).append((mins > 1 ? "mins " : "min "));
+        }
+        if (time > 0) {
+            sb.append(Long.toString(time)).append((time > 1 ? "secs " : "sec "));
+        }
+        return sb.toString().trim();
     }
 }

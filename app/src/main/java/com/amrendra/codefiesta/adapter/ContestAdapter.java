@@ -46,14 +46,16 @@ public class ContestAdapter extends CursorAdapter {
         int contestId = cursor.getInt(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_RESOURCE_ID_COL));
         mHolder.contestWebsiteTv.setText(AppUtils.getResourceName(context, contestId));
-        mHolder.contestDurationTv.setText(cursor.getString(cursor.getColumnIndex(DBContract
-                .ContestEntry.CONTEST_DURATION_COL)));
+        long duration = cursor.getLong(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_DURATION_COL));
+        mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration));
         long starTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_START_COL)));
         long endTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_END_COL)));
         mHolder.contestStartTv.setText(DateUtils.epochToDateTimeLocalShow(starTime));
         mHolder.contestEndTv.setText(DateUtils.epochToDateTimeLocalShow(endTime));
+        mHolder.contestTimeLeftTv.setText(DateUtils.getTimeLeft(endTime));
     }
 
     class ViewHolder {
@@ -67,6 +69,8 @@ public class ContestAdapter extends CursorAdapter {
         TextView contestStartTv;
         @Bind(R.id.contest_end_tv)
         TextView contestEndTv;
+        @Bind(R.id.contest_timeleft_tv)
+        TextView contestTimeLeftTv;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

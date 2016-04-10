@@ -112,7 +112,7 @@ public class CodeFiestaSyncAdapter extends AbstractThreadedSyncAdapter {
                         ContentValues[] insert_data = new ContentValues[list.size()];
                         list.toArray(insert_data);
                         getContext().getContentResolver().bulkInsert(
-                                DBContract.ResourceEntry.CONTENT_URI, insert_data);
+                                DBContract.ResourceEntry.CONTENT_URI_ALL_RESOURCES, insert_data);
                     }
                 });
     }
@@ -146,7 +146,7 @@ public class CodeFiestaSyncAdapter extends AbstractThreadedSyncAdapter {
                         ContentValues[] insert_data = new ContentValues[list.size()];
                         list.toArray(insert_data);
                         getContext().getContentResolver().bulkInsert(
-                                DBContract.ContestEntry.CONTENT_URI, insert_data);
+                                DBContract.ContestEntry.CONTENT_URI_ALL, insert_data);
                     }
                 });
     }

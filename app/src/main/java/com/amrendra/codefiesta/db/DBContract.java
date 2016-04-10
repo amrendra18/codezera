@@ -1,6 +1,7 @@
 package com.amrendra.codefiesta.db;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -15,13 +16,15 @@ public class DBContract {
     public static final String PATH_RESOURCE = "resource";
     public static final String PATH_CONTEST = "contests";
     public static final String PATH_NOTIFICATION = "notifications";
-    public static final String PATH_TIME = "time";
+    public static final String PATH_LIVE = "live";
+    public static final String PATH_FUTURE = "future";
+    public static final String PATH_PAST = "past";
 
 
     public static final class ResourceEntry implements BaseColumns {
         public static final String TABLE_NAME = "resources_table";
 
-        public static final Uri CONTENT_URI =
+        public static final Uri CONTENT_URI_ALL_RESOURCES =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_RESOURCE).build();
 
         public static final String CONTENT_DIR_TYPE =
@@ -45,8 +48,33 @@ public class DBContract {
     public static final class ContestEntry implements BaseColumns {
         public static final String TABLE_NAME = "contests_table";
 
-        public static final Uri CONTENT_URI =
+        public static final Uri CONTENT_URI_ALL =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_CONTEST).build();
+
+        public static final Uri CONTENT_URI_LIVE =
+                CONTENT_URI_ALL.buildUpon().appendPath(PATH_LIVE).build();
+
+        public static Uri buildLiveContestUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI_LIVE, id);
+        }
+
+        public static final Uri CONTENT_URI_FUTURE =
+                CONTENT_URI_ALL.buildUpon().appendPath(PATH_FUTURE).build();
+
+        public static Uri buildFutureContestUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI_FUTURE, id);
+        }
+
+        public static final Uri CONTENT_URI_PAST =
+                CONTENT_URI_ALL.buildUpon().appendPath(PATH_PAST).build();
+
+        public static Uri buildPastContestUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI_PAST, id);
+        }
+
+        public static long getTimeFromContestUri(Uri uri) {
+            return ContentUris.parseId(uri);
+        }
 
         public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CONTEST;
@@ -79,7 +107,7 @@ public class DBContract {
     public static final class NotificationEntry implements BaseColumns {
         public static final String TABLE_NAME = "notifications_table";
 
-        public static final Uri CONTENT_URI =
+        public static final Uri CONTENT_URI_ALL_NOTIFICATIONS =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_NOTIFICATION).build();
 
         public static final String CONTENT_DIR_TYPE =

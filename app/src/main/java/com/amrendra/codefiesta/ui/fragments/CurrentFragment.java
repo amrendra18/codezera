@@ -1,6 +1,7 @@
 package com.amrendra.codefiesta.ui.fragments;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -35,8 +36,6 @@ public class CurrentFragment extends BaseFragment {
     ProgressBar progressBar;
     @Bind(R.id.error_message)
     TextView errorTv;
-
-    long currentTime;
     ContestAdapter mAdapter;
 
     public CurrentFragment() {
@@ -46,9 +45,6 @@ public class CurrentFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        currentTime = DateUtils.getCurrentEpochTime();
-        Debug.e("currentTime : " + currentTime);
-        Debug.showToastShort("curretTime : " + currentTime, getActivity());
     }
 
     @Override
@@ -102,9 +98,10 @@ public class CurrentFragment extends BaseFragment {
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             Debug.c();
+            Uri uri = DBContract.ContestEntry.buildLiveContestUri(DateUtils.getCurrentEpochTime());
             return new CursorLoader(
                     getActivity(),
-                    DBContract.ContestEntry.CONTENT_URI,
+                    uri,
                     null,
                     null,
                     null,

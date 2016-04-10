@@ -22,7 +22,9 @@ public class Provider extends ContentProvider {
     private static final int CONTEST = 100;
     private static final int CONTEST_WITH_ID = 101;
     private static final int CONTEST_WITH_RESOURCE_ID = 102;
-    private static final int CONTEST_WITH_START_DATE = 103;
+    private static final int CONTEST_FUTURE = 103;
+    private static final int CONTEST_PAST = 104;
+    private static final int CONTEST_LIVE = 105;
 
     private static final int RESOURCE = 200;
     private static final int RESOURCE_WITH_ID = 201;
@@ -45,9 +47,15 @@ public class Provider extends ContentProvider {
         // contests/resource/12
         matcher.addURI(authority, DBContract.PATH_CONTEST + "/" + DBContract.PATH_RESOURCE + "/#",
                 CONTEST_WITH_RESOURCE_ID);
-        // contest/time/12233213
-        matcher.addURI(authority, DBContract.PATH_CONTEST + "/" + DBContract.PATH_TIME + "/#",
-                CONTEST_WITH_START_DATE);
+        // contest/start/12233213
+        matcher.addURI(authority, DBContract.PATH_CONTEST + "/" + DBContract.PATH_FUTURE + "/#",
+                CONTEST_FUTURE);
+        // contest/end/12233213
+        matcher.addURI(authority, DBContract.PATH_CONTEST + "/" + DBContract.PATH_PAST + "/#",
+                CONTEST_PAST);
+        // contest/live/12233213
+        matcher.addURI(authority, DBContract.PATH_CONTEST + "/" + DBContract.PATH_LIVE + "/#",
+                CONTEST_LIVE);
 
         // Resource Table
         //  resources/
@@ -93,11 +101,51 @@ public class Provider extends ContentProvider {
                 );
             }
             break;
+            case CONTEST_LIVE: {
+                long currentTime = DBContract.ContestEntry.getTimeFromContestUri(uri);
+                retCursor = db.query(
+                        DBContract.ContestEntry.TABLE_NAME, //table name
+                        projection, //projection
+                        DBContract.ContestEntry.CONTEST_START_COL + " < ? and " + DBContract
+                                .ContestEntry.CONTEST_END_COL + " > ?",
+                        new String[]{Long.toString(currentTime), Long.toString(currentTime)},
+                        null,
+                        null,
+                        sortOrder
+                );
+            }
+            break;
+            case CONTEST_PAST: {
+                long endTime = DBContract.ContestEntry.getTimeFromContestUri(uri);
+                retCursor = db.query(
+                        DBContract.ContestEntry.TABLE_NAME, //table name
+                        projection, //projection
+                        DBContract.ContestEntry.CONTEST_END_COL + " < ?",
+                        new String[]{Long.toString(endTime)},
+                        null,
+                        null,
+                        sortOrder
+                );
+            }
+            break;
+            case CONTEST_FUTURE: {
+                long startTime = DBContract.ContestEntry.getTimeFromContestUri(uri);
+                retCursor = db.query(
+                        DBContract.ContestEntry.TABLE_NAME, //table name
+                        projection, //projection
+                        DBContract.ContestEntry.CONTEST_START_COL + " > ?",
+                        new String[]{Long.toString(startTime)},
+                        null,
+                        null,
+                        sortOrder
+                );
+            }
+            break;
             /*case CONTEST_WITH_ID:
                 return DBContract.ContestEntry.CONTENT_ITEM_TYPE;
             case CONTEST_WITH_RESOURCE_ID:
                 return DBContract.ContestEntry.CONTENT_DIR_TYPE;
-            case CONTEST_WITH_START_DATE:
+            case CONTEST_FUTURE:
                 return DBContract.ContestEntry.CONTENT_DIR_TYPE;
             case RESOURCE:
                 return DBContract.ResourceEntry.CONTENT_DIR_TYPE;
@@ -132,7 +180,7 @@ public class Provider extends ContentProvider {
                 return DBContract.ContestEntry.CONTENT_ITEM_TYPE;
             case CONTEST_WITH_RESOURCE_ID:
                 return DBContract.ContestEntry.CONTENT_DIR_TYPE;
-            case CONTEST_WITH_START_DATE:
+            case CONTEST_FUTURE:
                 return DBContract.ContestEntry.CONTENT_DIR_TYPE;
             case RESOURCE:
                 return DBContract.ResourceEntry.CONTENT_DIR_TYPE;

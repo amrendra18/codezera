@@ -18,6 +18,7 @@ import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.sync.CodeFiestaSyncAdapter;
 import com.amrendra.codefiesta.ui.fragments.CurrentFragment;
 import com.amrendra.codefiesta.ui.fragments.PastFragment;
+import com.amrendra.codefiesta.ui.fragments.SelectionFragment;
 import com.amrendra.codefiesta.ui.fragments.UpcomingFragment;
 import com.amrendra.codefiesta.utils.Debug;
 
@@ -125,6 +126,8 @@ public class ListActivity extends BaseActivity implements
                 break;
             case R.id.nav_settings_menu:
                 Debug.showToastShort("nav_settings_menu", this);
+                fragmentClass = SelectionFragment.class;
+                mTitle = "Selection";
                 break;
             case R.id.nav_rate_menu:
                 Debug.showToastShort("nav_rate_menu", this);

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.amrendra.codefiesta.R;
+import com.amrendra.codefiesta.sync.CodeFiestaSyncAdapter;
 import com.amrendra.codefiesta.ui.fragments.CurrentFragment;
 import com.amrendra.codefiesta.ui.fragments.PastFragment;
 import com.amrendra.codefiesta.ui.fragments.UpcomingFragment;
@@ -24,7 +25,7 @@ import butterknife.Bind;
 
 public class ListActivity extends BaseActivity implements
         NavigationView.OnNavigationItemSelectedListener {
-    private static final long DRAWER_CLOSE_DELAY_MS = 250;
+    private static final long DRAWER_CLOSE_DELAY_MS = 150;
     private static final String NAV_ITEM_ID = "navItemId";
     private static final String TITLE = "title";
 
@@ -77,7 +78,6 @@ public class ListActivity extends BaseActivity implements
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                getSupportActionBar().setTitle(mTitle);
             }
 
             @Override
@@ -108,14 +108,17 @@ public class ListActivity extends BaseActivity implements
             case R.id.nav_current_menu:
                 Debug.showToastShort("nav_current_menu", this);
                 fragmentClass = CurrentFragment.class;
+                mTitle = "Current Comp";
                 break;
             case R.id.nav_upcoming_menu:
                 Debug.showToastShort("nav_upcoming_menu", this);
                 fragmentClass = UpcomingFragment.class;
+                mTitle = "Future Comp";
                 break;
             case R.id.nav_past_menu:
                 Debug.showToastShort("nav_past_menu", this);
                 fragmentClass = PastFragment.class;
+                mTitle = "Past Comp";
                 break;
             case R.id.nav_settings_menu:
                 Debug.showToastShort("nav_settings_menu", this);
@@ -129,6 +132,9 @@ public class ListActivity extends BaseActivity implements
                 break;
             case R.id.nav_open_source_menu:
                 Debug.showToastShort("nav_open_source_menu", this);
+                CodeFiestaSyncAdapter.syncImmediately(this);
+                fragmentClass = CurrentFragment.class;
+                mTitle = "Current Comp";
                 break;
             default:
                 fragmentClass = CurrentFragment.class;
@@ -143,7 +149,19 @@ public class ListActivity extends BaseActivity implements
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .addToBackStack(mTitle)
+                .commit();
+
+        setUpTitle(mTitle);
+    }
+
+    public void setUpTitle(String title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
     }
 
     @Override
@@ -156,7 +174,6 @@ public class ListActivity extends BaseActivity implements
     protected void onResume() {
         super.onResume();
         Debug.c();
-        //initResourceLoader(null);
     }
 
 
@@ -166,29 +183,7 @@ public class ListActivity extends BaseActivity implements
         menuItem.setChecked(true);
         // allow some time after closing the drawer before performing real navigation
         // so the user can see what is happening
-        int itemId = menuItem.getItemId();
-        switch (itemId) {
-            case R.id.nav_current_menu:
-                mTitle = "Current Comp";
-                break;
-            case R.id.nav_upcoming_menu:
-                mTitle = "Upcoming Comp";
-                break;
-            case R.id.nav_past_menu:
-                mTitle = "Past Comp";
-                break;
-            case R.id.nav_settings_menu:
-                break;
-            case R.id.nav_rate_menu:
-                break;
-            case R.id.nav_feedback_menu:
-                break;
-            case R.id.nav_open_source_menu:
-                break;
-            default:
-                mTitle = getString(R.string.app_name);
-        }
-
+        mNavItemId = menuItem.getItemId();
         mDrawerLayout.closeDrawer(GravityCompat.START);
         mDrawerActionHandler.postDelayed(new Runnable() {
             @Override
@@ -218,6 +213,13 @@ public class ListActivity extends BaseActivity implements
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
+            int pos = getSupportFragmentManager().getBackStackEntryCount();
+            if (pos < 2) {
+                finish();
+            } else {
+                String tr = getSupportFragmentManager().getBackStackEntryAt(pos - 2).getName();
+                setUpTitle(tr);
+            }
             super.onBackPressed();
         }
     }

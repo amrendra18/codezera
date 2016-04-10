@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.db.DBContract;
+import com.amrendra.codefiesta.utils.AppUtils;
+import com.amrendra.codefiesta.utils.DateUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,11 +43,30 @@ public class ContestAdapter extends CursorAdapter {
 
         mHolder.contestTitleTv.setText(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_NAME_COL)));
+        int contestId = cursor.getInt(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_RESOURCE_ID_COL));
+        mHolder.contestWebsiteTv.setText(AppUtils.getResourceName(context, contestId));
+        mHolder.contestDurationTv.setText(cursor.getString(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_DURATION_COL)));
+        long starTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_START_COL)));
+        long endTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_END_COL)));
+        mHolder.contestStartTv.setText(DateUtils.epochToDateTimeLocalShow(starTime));
+        mHolder.contestEndTv.setText(DateUtils.epochToDateTimeLocalShow(endTime));
     }
 
     class ViewHolder {
         @Bind(R.id.contest_title_tv)
         TextView contestTitleTv;
+        @Bind(R.id.contest_website_tv)
+        TextView contestWebsiteTv;
+        @Bind(R.id.contest_duration_tv)
+        TextView contestDurationTv;
+        @Bind(R.id.contest_start_tv)
+        TextView contestStartTv;
+        @Bind(R.id.contest_end_tv)
+        TextView contestEndTv;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

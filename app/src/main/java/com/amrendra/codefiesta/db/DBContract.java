@@ -24,7 +24,7 @@ public class DBContract {
     public static final class ResourceEntry implements BaseColumns {
         public static final String TABLE_NAME = "resources_table";
 
-        public static final Uri CONTENT_URI_ALL_RESOURCES =
+        public static final Uri CONTENT_URI_ALL =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_RESOURCE).build();
 
         public static final String CONTENT_DIR_TYPE =

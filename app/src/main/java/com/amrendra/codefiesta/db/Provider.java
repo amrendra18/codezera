@@ -141,6 +141,18 @@ public class Provider extends ContentProvider {
                 );
             }
             break;
+            case RESOURCE: {
+                retCursor = db.query(
+                        DBContract.ResourceEntry.TABLE_NAME, //table name
+                        projection, //projection
+                        null, //selection
+                        null, //selectionArgs
+                        null,
+                        null,
+                        sortOrder
+                );
+            }
+            break;
             /*case CONTEST_WITH_ID:
                 return DBContract.ContestEntry.CONTENT_ITEM_TYPE;
             case CONTEST_WITH_RESOURCE_ID:

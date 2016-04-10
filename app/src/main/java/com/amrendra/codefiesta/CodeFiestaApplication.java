@@ -3,6 +3,7 @@ package com.amrendra.codefiesta;
 import android.app.Application;
 import android.content.Context;
 
+import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.Debug;
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
@@ -20,6 +21,7 @@ public class CodeFiestaApplication extends Application {
         super.onCreate();
         refWatcher = installLeakCanary();
         Stetho.initializeWithDefaults(this);
+        AppUtils.cacheResources(this);
     }
 
 

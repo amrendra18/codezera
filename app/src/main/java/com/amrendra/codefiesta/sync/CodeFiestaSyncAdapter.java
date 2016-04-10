@@ -18,6 +18,7 @@ import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.model.Website;
 import com.amrendra.codefiesta.rest.RestApiClient;
+import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.Debug;
 
 import java.util.ArrayList;
@@ -112,7 +113,8 @@ public class CodeFiestaSyncAdapter extends AbstractThreadedSyncAdapter {
                         ContentValues[] insert_data = new ContentValues[list.size()];
                         list.toArray(insert_data);
                         getContext().getContentResolver().bulkInsert(
-                                DBContract.ResourceEntry.CONTENT_URI_ALL_RESOURCES, insert_data);
+                                DBContract.ResourceEntry.CONTENT_URI_ALL, insert_data);
+                        AppUtils.cacheResources(getContext());
                     }
                 });
     }

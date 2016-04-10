@@ -8,12 +8,47 @@
     android:layout_gravity="center"
     android:paddingBottom="16dp"
     android:paddingTop="16dp">
-
-    <TextView
-        android:id="@+id/contest_title_tv"
+    
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        tools:text="April Long Challenge"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/contest_title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            tools:text="April Long Challenge"/>
+
+        <TextView
+            android:id="@+id/contest_website_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            tools:text="April Long Challenge"/>
+
+        <TextView
+            android:id="@+id/contest_duration_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            tools:text="April Long Challenge"/>
+
+        <TextView
+            android:id="@+id/contest_start_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            tools:text="April Long Challenge"/>
+
+        <TextView
+            android:id="@+id/contest_end_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            tools:text="April Long Challenge"/>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

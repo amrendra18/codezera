@@ -9,6 +9,7 @@ import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +40,23 @@ public class Provider extends ContentProvider {
 
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
+
+
+    private static final SQLiteQueryBuilder mContestByShowSettingsQueryBuilder;
+
+    static {
+        mContestByShowSettingsQueryBuilder = new SQLiteQueryBuilder();
+
+        //This is an inner join which looks like
+        //weather INNER JOIN location ON weather.location_id = location._id
+        mContestByShowSettingsQueryBuilder.setTables(
+                DBContract.ContestEntry.TABLE_NAME + " JOIN " +
+                        DBContract.ResourceEntry.TABLE_NAME +
+                        " ON " + DBContract.ContestEntry.TABLE_NAME +
+                        "." + DBContract.ContestEntry.CONTEST_RESOURCE_ID_COL +
+                        " = " + DBContract.ResourceEntry.TABLE_NAME +
+                        "." + DBContract.ResourceEntry.RESOURCE_ID_COL);
+    }
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -95,10 +113,12 @@ public class Provider extends ContentProvider {
         Cursor retCursor;
         switch (match) {
             case CONTEST: {
-                retCursor = db.query(
-                        DBContract.ContestEntry.TABLE_NAME, //table name
+                retCursor = mContestByShowSettingsQueryBuilder.query(
+                        db,
                         projection, //projection
-                        null, //selection
+                        DBContract.ResourceEntry.TABLE_NAME +
+                                "." + DBContract.ResourceEntry.RESOURCE_SHOW_COL +
+                                " = 1",
                         null, //selectionArgs
                         null,
                         null,
@@ -108,10 +128,13 @@ public class Provider extends ContentProvider {
             break;
             case CONTEST_LIVE: {
                 long currentTime = DBContract.ContestEntry.getTimeFromContestUri(uri);
-                retCursor = db.query(
-                        DBContract.ContestEntry.TABLE_NAME, //table name
+                retCursor = mContestByShowSettingsQueryBuilder.query(
+                        db,
                         projection, //projection
-                        DBContract.ContestEntry.CONTEST_START_COL + " < ? and " + DBContract
+                        DBContract.ResourceEntry.TABLE_NAME +
+                                "." + DBContract.ResourceEntry.RESOURCE_SHOW_COL +
+                                " = 1 and " +
+                                DBContract.ContestEntry.CONTEST_START_COL + " < ? and " + DBContract
                                 .ContestEntry.CONTEST_END_COL + " > ?",
                         new String[]{Long.toString(currentTime), Long.toString(currentTime)},
                         null,
@@ -122,9 +145,12 @@ public class Provider extends ContentProvider {
             break;
             case CONTEST_PAST: {
                 long endTime = DBContract.ContestEntry.getTimeFromContestUri(uri);
-                retCursor = db.query(
-                        DBContract.ContestEntry.TABLE_NAME, //table name
+                retCursor = mContestByShowSettingsQueryBuilder.query(
+                        db,
                         projection, //projection
+                        DBContract.ResourceEntry.TABLE_NAME +
+                                "." + DBContract.ResourceEntry.RESOURCE_SHOW_COL +
+                                " = 1 and " +
                         DBContract.ContestEntry.CONTEST_END_COL + " < ?",
                         new String[]{Long.toString(endTime)},
                         null,
@@ -135,9 +161,12 @@ public class Provider extends ContentProvider {
             break;
             case CONTEST_FUTURE: {
                 long startTime = DBContract.ContestEntry.getTimeFromContestUri(uri);
-                retCursor = db.query(
-                        DBContract.ContestEntry.TABLE_NAME, //table name
+                retCursor = mContestByShowSettingsQueryBuilder.query(
+                        db,
                         projection, //projection
+                        DBContract.ResourceEntry.TABLE_NAME +
+                                "." + DBContract.ResourceEntry.RESOURCE_SHOW_COL +
+                                " = 1 and " +
                         DBContract.ContestEntry.CONTEST_START_COL + " > ?",
                         new String[]{Long.toString(startTime)},
                         null,

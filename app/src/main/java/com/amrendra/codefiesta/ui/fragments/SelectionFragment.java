@@ -160,7 +160,7 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
 
     private void saveSettingsList() {
         Debug.c();
-        if (settingsHashMap != null && settingsHashMap.size() > 1) {
+        if (settingsHashMap != null && settingsHashMap.size() > 0) {
             ArrayList<ContentProviderOperation> cpo = new ArrayList<>();
             for (Map.Entry<Integer, Integer> entry : settingsHashMap.entrySet()) {
                 int resourceId = entry.getKey();

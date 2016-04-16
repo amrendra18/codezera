@@ -12,12 +12,6 @@ import java.util.HashMap;
  */
 public class AppUtils {
 
-    public enum CONTEST_STATUS {
-        ENDED,
-        RUNNING,
-        FUTURE
-    }
-
     public static final String UNKNOWN_RESOURCE = "Unknown Website";
 
     static HashMap<Integer, String> resourceHashMap;

@@ -110,34 +110,27 @@ public class ListActivity extends BaseActivity implements
         Fragment fragment = null;
         switch (itemId) {
             case R.id.nav_current_menu:
-                Debug.showToastShort("nav_current_menu", this);
                 fragmentClass = CurrentFragment.class;
                 mTitle = "Current Comp";
                 break;
             case R.id.nav_upcoming_menu:
-                Debug.showToastShort("nav_upcoming_menu", this);
                 fragmentClass = UpcomingFragment.class;
                 mTitle = "Future Comp";
                 break;
             case R.id.nav_past_menu:
-                Debug.showToastShort("nav_past_menu", this);
                 fragmentClass = PastFragment.class;
                 mTitle = "Past Comp";
                 break;
             case R.id.nav_settings_menu:
-                Debug.showToastShort("nav_settings_menu", this);
                 fragmentClass = SelectionFragment.class;
                 mTitle = "Selection";
                 break;
             case R.id.nav_rate_menu:
-                Debug.showToastShort("nav_rate_menu", this);
                 //CodeFiestaSyncAdapter.syncImmediately(this);
                 break;
             case R.id.nav_feedback_menu:
-                Debug.showToastShort("nav_feedback_menu", this);
                 break;
             case R.id.nav_open_source_menu:
-                Debug.showToastShort("nav_open_source_menu", this);
                 CodeFiestaSyncAdapter.syncImmediately(this);
                 fragmentClass = CurrentFragment.class;
                 mTitle = "Current Comp";

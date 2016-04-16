@@ -1,8 +1,11 @@
 package com.amrendra.codefiesta.db;
 
 import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +14,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.amrendra.codefiesta.utils.Debug;
+
+import java.util.ArrayList;
 
 /**
  * Created by Amrendra Kumar on 09/04/16.
@@ -247,8 +252,34 @@ public class Provider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        Debug.i("uri : " + uri);
-        return 0;
+        final int match = sUriMatcher.match(uri);
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        int rowsUpdated;
+        switch (match) {
+            case CONTEST: {
+                rowsUpdated = db.update(DBContract.ContestEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+            }
+            break;
+            case RESOURCE: {
+                rowsUpdated = db.update(DBContract.ResourceEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+            }
+            break;
+            case NOTIFICATION: {
+                rowsUpdated = db.update(DBContract.NotificationEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+            }
+            break;
+            default:
+                Debug.e("ERROR : " + uri, false);
+                throw new UnsupportedOperationException("Update : Unknown uri: " + uri);
+        }
+        if (rowsUpdated != 0) {
+            notify(uri);
+        }
+        Debug.e("CP update : " + uri + " match : " + match + " updated : " + rowsUpdated, false);
+        return rowsUpdated;
     }
 
     @Override
@@ -303,6 +334,30 @@ public class Provider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         } catch (NullPointerException e) {
             Debug.e(e.getMessage(), false);
+        }
+    }
+
+
+    /**
+     * Apply the given set of {@link ContentProviderOperation}, executing inside
+     * a {@link SQLiteDatabase} transaction. All changes will be rolled back if
+     * any single one fails.
+     */
+    public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations)
+            throws OperationApplicationException {
+        Debug.c();
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            final int numOperations = operations.size();
+            final ContentProviderResult[] results = new ContentProviderResult[numOperations];
+            for (int i = 0; i < numOperations; i++) {
+                results[i] = operations.get(i).apply(this, results, i);
+            }
+            db.setTransactionSuccessful();
+            return results;
+        } finally {
+            db.endTransaction();
         }
     }
 }

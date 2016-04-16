@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
@@ -29,10 +28,17 @@ public class SelectionAdapter extends CursorAdapter {
 
     final LayoutInflater mInflator;
 
-    public SelectionAdapter(Context context, Cursor c, int flags) {
+    CompetitionSettingsChangedListener settingsChangedListener;
+
+    public interface CompetitionSettingsChangedListener {
+        void settingsChanged(int competitionId, int want);
+    }
+
+    public SelectionAdapter(Context context, Cursor c, int flags,
+                            CompetitionSettingsChangedListener mListner) {
         super(context, c, flags);
         mInflator = LayoutInflater.from(context);
-
+        settingsChangedListener = mListner;
     }
 
     @Override
@@ -55,10 +61,13 @@ public class SelectionAdapter extends CursorAdapter {
         final int resourceId = cursor.getInt(cursor.getColumnIndex(DBContract
                 .ResourceEntry.RESOURCE_ID_COL));
 
-        mHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mHolder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Debug.showToastShort("" + resourceId + " " + isChecked, context);
+            public void onClick(View v) {
+                //Debug.showToastShort("" + resourceId + " " + isChecked, context);
+                int toShow = (((CheckBox) v).isChecked() ? 1 : 0);
+                Debug.i("resource : " + resourceId + " change : " + toShow);
+                settingsChangedListener.settingsChanged(resourceId, toShow);
             }
         });
 

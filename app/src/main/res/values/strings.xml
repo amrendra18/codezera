@@ -18,6 +18,8 @@
     <string name="nav_feedback">Feedback</string>
     <string name="nav_open_source">Open Source</string>
 
+    <string name="save">Save</string>
+
     <string-array name="nav_menus">
         <item>@string/nav_current</item>
         <item>@string/nav_upcoming</item>

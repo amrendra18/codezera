@@ -1,9 +1,14 @@
 package com.amrendra.codefiesta.ui.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
+
+import com.amrendra.codefiesta.CodeFiestaApplication;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import butterknife.ButterKnife;
 
@@ -13,6 +18,14 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
 
     private Toast mToast;
+    Tracker mTracker;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        CodeFiestaApplication application = (CodeFiestaApplication) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -33,6 +46,11 @@ public abstract class BaseFragment extends Fragment {
         }
         mToast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
         mToast.show();
+    }
+
+    protected void trackFragment(String screenName) {
+        mTracker.setScreenName(screenName);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     protected void showToast(int resId) {

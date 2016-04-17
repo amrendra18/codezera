@@ -19,6 +19,7 @@ import com.amrendra.codefiesta.adapter.ContestAdapter;
 import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
+import com.amrendra.codefiesta.utils.TrackingConstants;
 
 import butterknife.Bind;
 
@@ -45,6 +46,7 @@ public class UpcomingFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        trackFragment(TrackingConstants.FUTURE_FRAGMENT_SCREEN_NAME);
     }
 
     @Override
@@ -77,7 +79,6 @@ public class UpcomingFragment extends BaseFragment {
         mAdapter = new ContestAdapter(getActivity(), null, 0);
         mListView.setAdapter(mAdapter);
         restartLoader(null);
-
     }
 
     private void restartLoader(Bundle bundle) {

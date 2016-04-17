@@ -3,6 +3,7 @@ package com.amrendra.codefiesta.ui.activities;
 import android.os.Bundle;
 
 import com.amrendra.codefiesta.R;
+import com.amrendra.codefiesta.utils.TrackingConstants;
 
 public class DetailActivity extends BaseActivity {
 
@@ -13,4 +14,10 @@ public class DetailActivity extends BaseActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        trackActivity(TrackingConstants.DETAIL_ACTIVITY_SCREEN_NAME);
+    }
 }

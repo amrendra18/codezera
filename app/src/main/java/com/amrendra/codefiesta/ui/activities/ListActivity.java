@@ -21,6 +21,7 @@ import com.amrendra.codefiesta.ui.fragments.PastFragment;
 import com.amrendra.codefiesta.ui.fragments.SelectionFragment;
 import com.amrendra.codefiesta.ui.fragments.UpcomingFragment;
 import com.amrendra.codefiesta.utils.Debug;
+import com.amrendra.codefiesta.utils.TrackingConstants;
 
 import butterknife.Bind;
 
@@ -172,6 +173,7 @@ public class ListActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        trackActivity(TrackingConstants.LIST_ACTIVITY_SCREEN_NAME);
         Debug.c();
     }
 

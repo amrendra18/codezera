@@ -45,7 +45,7 @@ public class SelectionAdapter extends RecyclerView.Adapter<SelectionAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         final Website website = mWebsitesList.get(position);
         final int show = website.getShow();
         holder.checkBox.setChecked(show != 0);
@@ -59,7 +59,7 @@ public class SelectionAdapter extends RecyclerView.Adapter<SelectionAdapter.View
                 //Debug.showToastShort("" + resourceId + " " + isChecked, context);
                 int toShow = (((CheckBox) v).isChecked() ? 1 : 0);
                 Debug.i("resource : " + resourceId + " change : " + toShow);
-                settingsChangedListener.settingsChanged(resourceId, toShow, position);
+                settingsChangedListener.settingsChanged(resourceId, toShow);
                 website.setShow(toShow);
             }
         });
@@ -88,7 +88,7 @@ public class SelectionAdapter extends RecyclerView.Adapter<SelectionAdapter.View
     }
 
     public interface CompetitionSettingsChangedListener {
-        void settingsChanged(int competitionId, int want, int pos);
+        void settingsChanged(int competitionId, int want);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

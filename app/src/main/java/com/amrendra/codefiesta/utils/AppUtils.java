@@ -36,6 +36,7 @@ public class AppUtils {
                     String name = cursor.getString(cursor.getColumnIndex(DBContract.ResourceEntry
                             .RESOURCE_NAME_COL));
                     resourceHashMap.put(id, name);
+                    Debug.e("resource : " + id + " name : " + name);
                 }
             } finally {
                 cursor.close();

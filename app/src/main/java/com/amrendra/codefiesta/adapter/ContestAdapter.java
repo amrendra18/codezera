@@ -43,9 +43,9 @@ public class ContestAdapter extends CursorAdapter {
 
         mHolder.contestTitleTv.setText(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_NAME_COL)));
-        int contestId = cursor.getInt(cursor.getColumnIndex(DBContract
+        int resourceId = cursor.getInt(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_RESOURCE_ID_COL));
-        mHolder.contestWebsiteTv.setText(AppUtils.getResourceName(context, contestId));
+        mHolder.contestWebsiteTv.setText(AppUtils.getResourceName(context, resourceId));
         long duration = cursor.getLong(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_DURATION_COL));
         mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration, false));

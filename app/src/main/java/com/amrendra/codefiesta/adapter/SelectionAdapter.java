@@ -4,9 +4,8 @@ package com.amrendra.codefiesta.adapter;
  * Created by Amrendra Kumar on 11/04/16.
  */
 
-import android.content.Context;
-import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,11 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
-import com.amrendra.codefiesta.db.DBContract;
+import com.amrendra.codefiesta.model.Website;
 import com.amrendra.codefiesta.utils.Debug;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,62 +26,84 @@ import butterknife.ButterKnife;
 /**
  * Created by Amrendra Kumar on 10/04/16.
  */
-public class SelectionAdapter extends CursorAdapter {
+public class SelectionAdapter extends RecyclerView.Adapter<SelectionAdapter.ViewHolder> {
 
-    final LayoutInflater mInflator;
+    private List<Website> mWebsitesList = new ArrayList<>();
 
     CompetitionSettingsChangedListener settingsChangedListener;
 
-    public interface CompetitionSettingsChangedListener {
-        void settingsChanged(int competitionId, int want);
-    }
-
-    public SelectionAdapter(Context context, Cursor c, int flags,
-                            CompetitionSettingsChangedListener mListner) {
-        super(context, c, flags);
-        mInflator = LayoutInflater.from(context);
+    public SelectionAdapter(List<Website> wlist, CompetitionSettingsChangedListener mListner) {
+        this.mWebsitesList = wlist;
         settingsChangedListener = mListner;
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View mItem = mInflator.inflate(R.layout.select_item_row, parent, false);
-        ViewHolder mHolder = new ViewHolder(mItem);
-        mItem.setTag(mHolder);
-        return mItem;
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.select_item_row, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void bindView(View view, final Context context, Cursor cursor) {
-        final ViewHolder mHolder = (ViewHolder) view.getTag();
-        int show = cursor.getInt(cursor.getColumnIndex(DBContract
-                .ResourceEntry.RESOURCE_SHOW_COL));
-        mHolder.checkBox.setChecked(show != 0);
-        mHolder.resourceName.setText(cursor.getString(cursor.getColumnIndex(DBContract
-                .ResourceEntry.RESOURCE_NAME_COL)));
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        final Website website = mWebsitesList.get(position);
+        int show = website.getShow();
+        holder.checkBox.setChecked(show != 0);
+        holder.resourceName.setText(website.getName());
 
-        final int resourceId = cursor.getInt(cursor.getColumnIndex(DBContract
-                .ResourceEntry.RESOURCE_ID_COL));
+        final int resourceId = website.getId();
 
-        mHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Debug.showToastShort("" + resourceId + " " + isChecked, context);
                 int toShow = (((CheckBox) v).isChecked() ? 1 : 0);
                 Debug.i("resource : " + resourceId + " change : " + toShow);
-                settingsChangedListener.settingsChanged(resourceId, toShow);
+                settingsChangedListener.settingsChanged(resourceId, toShow, position);
             }
         });
-
     }
 
-    class ViewHolder {
+    @Override
+    public int getItemCount() {
+        return mWebsitesList.size();
+    }
+
+    public void updateWebsiteSettingStatus(int pos, int show) {
+        Website website = mWebsitesList.get(pos);
+        website.setShow(show);
+        //mWebsitesList.add(pos, website);
+    }
+
+    public void resetWebsiteList(@NonNull List<Website> data) {
+        mWebsitesList = data;
+        notifyDataSetChanged();
+    }
+
+    @NonNull
+    public List<Website> getWebsiteList() {
+        return mWebsitesList;
+    }
+
+    public void clearWebsites() {
+        if (!mWebsitesList.isEmpty()) {
+            mWebsitesList.clear();
+            notifyDataSetChanged();
+        }
+    }
+
+    public interface CompetitionSettingsChangedListener {
+        void settingsChanged(int competitionId, int want, int pos);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.checkBox)
         CheckBox checkBox;
         @Bind(R.id.resource_name)
         TextView resourceName;
 
         public ViewHolder(View view) {
+            super(view);
             ButterKnife.bind(this, view);
         }
     }

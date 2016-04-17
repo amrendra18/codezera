@@ -1,27 +1,29 @@
 package com.amrendra.codefiesta.ui.fragments;
 
 import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.content.OperationApplicationException;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.adapter.SelectionAdapter;
 import com.amrendra.codefiesta.db.DBContract;
+import com.amrendra.codefiesta.loaders.ResourceSettingLoader;
+import com.amrendra.codefiesta.model.Website;
 import com.amrendra.codefiesta.utils.Debug;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -35,14 +37,10 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
     private static final int RESOURCE_SELECTION_LOADER = 1;
 
     @Bind(R.id.contest_list)
-    ListView mListView;
-
-    @Bind(R.id.save_button)
-    Button saveButton;
+    RecyclerView mRecyclerView;
 
     @OnClick(R.id.save_button)
     void onSaveButtonClick() {
-        Debug.showToastShort("save clicked", getActivity());
         saveSettingsList();
     }
 
@@ -93,47 +91,46 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new SelectionAdapter(getActivity(), null, 0, this);
-        mListView.setAdapter(mAdapter);
+        List<Website> list = new ArrayList<>();
+        mAdapter = new SelectionAdapter(list, this);
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
         restartLoader(null);
-
     }
 
     private void restartLoader(Bundle bundle) {
         LoaderManager mLoaderManager = getActivity().getSupportLoaderManager();
         if (mLoaderManager.getLoader(RESOURCE_SELECTION_LOADER) == null) {
-            mLoaderManager.initLoader(RESOURCE_SELECTION_LOADER, bundle, currentContestLoaderCallbacks);
+            mLoaderManager.initLoader(RESOURCE_SELECTION_LOADER, bundle, resourceSettingsLoader);
         } else {
-            mLoaderManager.restartLoader(RESOURCE_SELECTION_LOADER, bundle, currentContestLoaderCallbacks);
+            mLoaderManager.restartLoader(RESOURCE_SELECTION_LOADER, bundle, resourceSettingsLoader);
         }
     }
 
-    private LoaderManager.LoaderCallbacks<Cursor> currentContestLoaderCallbacks
-            = new LoaderManager.LoaderCallbacks<Cursor>() {
+    private LoaderManager.LoaderCallbacks<List<Website>> resourceSettingsLoader
+            = new LoaderManager.LoaderCallbacks<List<Website>>() {
 
         @Override
-        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        public Loader<List<Website>> onCreateLoader(int id, Bundle args) {
             Debug.c();
-            return new CursorLoader(
-                    getActivity(),
-                    DBContract.ResourceEntry.CONTENT_URI_ALL,
-                    null,
-                    null,
-                    null,
-                    DBContract.ResourceEntry.RESOURCE_NAME_COL + " ASC"
-            );
+            return new ResourceSettingLoader(getActivity());
         }
 
         @Override
-        public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        public void onLoadFinished(Loader<List<Website>> loader, List<Website> list) {
             Debug.c();
-            mAdapter.swapCursor(cursor);
+            if (list != null) {
+                Debug.e(" size : " + list.size());
+                mAdapter.resetWebsiteList(list);
+            }
+
         }
 
         @Override
-        public void onLoaderReset(Loader<Cursor> loader) {
+        public void onLoaderReset(Loader<List<Website>> loader) {
             Debug.c();
-            mAdapter.swapCursor(null);
+            mAdapter.clearWebsites();
 
         }
     };
@@ -144,8 +141,9 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
     }
 
     @Override
-    public void settingsChanged(int competitionId, int want) {
+    public void settingsChanged(int competitionId, int want, int position) {
         Debug.e("Change required : " + competitionId + " change : " + want);
+        mAdapter.updateWebsiteSettingStatus(position, want);
         settingsHashMap.put(competitionId, want);
     }
 
@@ -175,7 +173,9 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
                 );
             }
             try {
-                getActivity().getContentResolver().applyBatch(getString(R.string.contentauthority), cpo);
+                ContentProviderResult[] cpr = getActivity().getContentResolver()
+                        .applyBatch(getString(R.string.contentauthority), cpo);
+                Debug.showToastShort("Updated settings for " + cpr.length + " websites", getActivity());
             } catch (RemoteException | OperationApplicationException e) {
                 e.printStackTrace();
                 Debug.e(" error : " + e.getLocalizedMessage());

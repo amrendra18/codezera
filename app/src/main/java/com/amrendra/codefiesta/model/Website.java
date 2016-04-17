@@ -1,6 +1,7 @@
 package com.amrendra.codefiesta.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -101,4 +102,30 @@ public class Website implements Parcelable {
         @SerializedName("objects")
         public List<Website> websites = new ArrayList<>();
     }
+
+    public static ArrayList<Website> cursorToList(Cursor cursor) {
+        ArrayList<Website> list = new ArrayList<>();
+        if (cursor != null) {
+            try {
+                while (cursor.moveToNext()) {
+                    int id = cursor.getInt(cursor.getColumnIndex(DBContract.ResourceEntry
+                            .RESOURCE_ID_COL));
+                    String name = cursor.getString(cursor.getColumnIndex(DBContract.ResourceEntry
+                            .RESOURCE_NAME_COL));
+                    int show = cursor.getInt(cursor.getColumnIndex(DBContract.ResourceEntry
+                            .RESOURCE_SHOW_COL));
+                    Website website = new Website();
+                    website.setId(id);
+                    website.setName(name);
+                    website.setShow(show);
+                    list.add(website);
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        return list;
+    }
+
+    ;
 }

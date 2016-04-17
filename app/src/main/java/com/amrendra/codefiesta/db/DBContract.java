@@ -34,7 +34,7 @@ public class DBContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RESOURCE;
 
         public static final String RESOURCE_ID_COL = "id";
-        public static final String RESOURCE_NAME_COL = "name";
+        public static final String RESOURCE_NAME_COL = "rname";
         public static final String RESOURCE_SHOW_COL = "show";
 
         public static final String[] RESOURCE_PROJECTION = new String[]{

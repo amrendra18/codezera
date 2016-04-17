@@ -143,7 +143,6 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
     @Override
     public void settingsChanged(int competitionId, int want, int position) {
         Debug.e("Change required : " + competitionId + " change : " + want);
-        mAdapter.updateWebsiteSettingStatus(position, want);
         settingsHashMap.put(competitionId, want);
     }
 

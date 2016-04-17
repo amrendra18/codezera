@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.model.Website;
+import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.Debug;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class SelectionAdapter extends RecyclerView.Adapter<SelectionAdapter.View
         final Website website = mWebsitesList.get(position);
         final int show = website.getShow();
         holder.checkBox.setChecked(show != 0);
-        holder.resourceName.setText(website.getName());
+        holder.resourceName.setText(AppUtils.getGoodResourceName(website.getName()));
 
         final int resourceId = website.getId();
 

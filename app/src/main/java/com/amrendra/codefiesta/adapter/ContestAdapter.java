@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.utils.AppUtils;
+import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
 
 import butterknife.Bind;
@@ -45,7 +46,8 @@ public class ContestAdapter extends CursorAdapter {
                 .ContestEntry.CONTEST_NAME_COL)));
         int resourceId = cursor.getInt(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_RESOURCE_ID_COL));
-        mHolder.contestWebsiteTv.setText(AppUtils.getResourceName(context, resourceId));
+        mHolder.contestWebsiteTv.setText(AppUtils.getGoodResourceName(AppUtils.getResourceName
+                (context, resourceId)));
         long duration = cursor.getLong(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_DURATION_COL));
         mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration, false));
@@ -53,8 +55,16 @@ public class ContestAdapter extends CursorAdapter {
                 .ContestEntry.CONTEST_START_COL)));
         long endTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_END_COL)));
-        mHolder.contestStartTv.setText(DateUtils.epochToDateTimeLocalShow(starTime));
-        mHolder.contestEndTv.setText(DateUtils.epochToDateTimeLocalShow(endTime));
+        CustomDate startDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(starTime));
+        CustomDate endDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(endTime));
+        mHolder.contestStartTime.setText(startDate.getTime());
+        mHolder.contestStartAmPm.setText(startDate.getAmPm());
+        mHolder.contestStartDate.setText(startDate.getDateMonthYear());
+
+        mHolder.contestEndTime.setText(endDate.getTime());
+        mHolder.contestEndAmPm.setText(endDate.getAmPm());
+        mHolder.contestEndDate.setText(endDate.getDateMonthYear());
+
         mHolder.contestTimeLeftTv.setText(DateUtils.getTimeLeftForEnd(starTime, endTime));
     }
 
@@ -65,12 +75,22 @@ public class ContestAdapter extends CursorAdapter {
         TextView contestWebsiteTv;
         @Bind(R.id.contest_duration_tv)
         TextView contestDurationTv;
-        @Bind(R.id.contest_start_tv)
-        TextView contestStartTv;
-        @Bind(R.id.contest_end_tv)
-        TextView contestEndTv;
         @Bind(R.id.contest_timeleft_tv)
         TextView contestTimeLeftTv;
+
+        @Bind(R.id.contest_start_time_tv)
+        TextView contestStartTime;
+        @Bind(R.id.contest_start_time_ampm)
+        TextView contestStartAmPm;
+        @Bind(R.id.contest_start_date_tv)
+        TextView contestStartDate;
+
+        @Bind(R.id.contest_end_time_tv)
+        TextView contestEndTime;
+        @Bind(R.id.contest_end_time_ampm)
+        TextView contestEndAmPm;
+        @Bind(R.id.contest_end_date_tv)
+        TextView contestEndDate;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.utils.Debug;
+import com.amrendra.codefiesta.utils.TrackingConstants;
 
 import butterknife.Bind;
 
@@ -92,4 +93,10 @@ public class SplashScreenActivity extends BaseActivity {
             startMainListActivity();
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        trackActivity(TrackingConstants.SPLASH_ACTIVITY_SCREEN_NAME);
+    }
 }

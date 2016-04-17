@@ -2,4 +2,16 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- contest list item -->
+    <dimen name="card_content_padding">16dp</dimen>
+    <dimen name="contest_title_text_size">16sp</dimen>
+    <dimen name="contest_title_padding">4dp</dimen>
+    <dimen name="contest_resource_text_size">16sp</dimen>
+    <dimen name="contest_date_time_block_padding">8dp</dimen>
+    <dimen name="contest_time_text_size">32sp</dimen>
+    <dimen name="contest_ampm_text_size">16sp</dimen>
+    <dimen name="contest_date_text_size">18sp</dimen>
+    <dimen name="contest_ampm_left_margin">4dp</dimen>
+    <dimen name="contest_start_end_text">16sp</dimen>
 </resources>

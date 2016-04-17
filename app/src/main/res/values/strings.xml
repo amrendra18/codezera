@@ -18,6 +18,12 @@
     <string name="nav_feedback">Feedback</string>
     <string name="nav_open_source">Open Source</string>
 
+
+    <string name="start_present">Start</string>
+    <string name="start_past">Started</string>
+    <string name="end_present">End</string>
+    <string name="end_past">Ended</string>
+
     <string name="save">Save</string>
 
     <string-array name="nav_menus">

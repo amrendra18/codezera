@@ -11,5 +11,6 @@ public class TrackingConstants {
 
     public static final String LIST_ACTIVITY_SCREEN_NAME = "list_act";
     public static final String DETAIL_ACTIVITY_SCREEN_NAME = "detail_act";
+    public static final String SPLASH_ACTIVITY_SCREEN_NAME = "splash_act";
 
 }

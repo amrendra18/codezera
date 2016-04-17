@@ -54,10 +54,11 @@ public class DateUtils {
 
     public static String epochToDateTimeLocalShow(long time) {
         long timems = time * 1000L;
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE dd MMM yy hh:mm a");
         formatter.setTimeZone(TimeZone.getDefault());
         return formatter.format(new Date(timems));
     }
+
 
     public static long getCurrentEpochTime() {
         return System.currentTimeMillis() / 1000;

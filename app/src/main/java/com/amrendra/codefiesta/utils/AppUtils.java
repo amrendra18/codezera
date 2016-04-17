@@ -55,4 +55,19 @@ public class AppUtils {
         }
         return UNKNOWN_RESOURCE;
     }
+
+    public static String getGoodResourceName(String resource) {
+        String ret = resource;
+        int slash = resource.indexOf("/");
+        if (slash != -1) {
+            ret = resource.substring(slash + 1);
+        } else {
+            int lastDot = resource.lastIndexOf(".");
+            if (lastDot != -1) {
+                ret = resource.substring(0, lastDot);
+            }
+        }
+        ret = ret.replaceAll("\\.", " ").toUpperCase();
+        return ret;
+    }
 }

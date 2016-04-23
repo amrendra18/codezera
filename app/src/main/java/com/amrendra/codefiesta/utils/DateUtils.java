@@ -40,7 +40,7 @@ public class DateUtils {
 
     public static String epochToDateTimeGmt(long time) {
         long timems = time * 1000L;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         return formatter.format(new Date(timems));
     }

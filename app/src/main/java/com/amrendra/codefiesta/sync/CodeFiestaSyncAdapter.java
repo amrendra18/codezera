@@ -19,6 +19,7 @@ import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.model.Website;
 import com.amrendra.codefiesta.rest.RestApiClient;
 import com.amrendra.codefiesta.utils.AppUtils;
+import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
 
 import java.util.ArrayList;
@@ -130,8 +131,11 @@ public class CodeFiestaSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void fetchContests() {
         Debug.c();
+        long time = DateUtils.getCurrentEpochTime();
+        String date = DateUtils.epochToDateTimeGmt(time);
         RestApiClient.getInstance()
-                .getContestsList(200, "2016-04-08T00:00:00", "end", BuildConfig.API_USERNAME,
+                .getContestsList(200, date, "end", BuildConfig
+                                .API_USERNAME,
                         BuildConfig.API_KEY)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<Contest.Response>() {

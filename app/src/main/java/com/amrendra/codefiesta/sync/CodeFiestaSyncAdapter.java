@@ -85,6 +85,15 @@ public class CodeFiestaSyncAdapter extends AbstractThreadedSyncAdapter {
         fetchContests();
     }
 
+    private void deleteOldContests() {
+        long curr = System.currentTimeMillis() / 1000;
+        long back = curr - 7 * 24 * 60 * 60;
+        getContext().getContentResolver().delete(DBContract.ContestEntry.CONTENT_URI_ALL,
+                DBContract.ContestEntry.CONTEST_END_COL + " <= ?",
+                new String[]{Long.toString(back)});
+
+    }
+
     private void fetchResourceInfo() {
         Debug.c();
         RestApiClient.getInstance()
@@ -149,6 +158,8 @@ public class CodeFiestaSyncAdapter extends AbstractThreadedSyncAdapter {
                         list.toArray(insert_data);
                         getContext().getContentResolver().bulkInsert(
                                 DBContract.ContestEntry.CONTENT_URI_ALL, insert_data);
+
+                        deleteOldContests();
                     }
                 });
     }

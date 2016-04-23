@@ -14,7 +14,9 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.Debug;
+import com.amrendra.codefiesta.utils.UserPreferences;
 
 import java.util.ArrayList;
 
@@ -111,6 +113,8 @@ public class Provider extends ContentProvider {
         Debug.e("Query : " + uri + " match : " + match, false);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         Cursor retCursor;
+        long maxDuration = UserPreferences.getInstance(getContext())
+                .readValue(AppUtils.MAX_CONTEST_DURATION, AppUtils.MAX_DEFAULT_CONTEST_DURATION);
         switch (match) {
             case CONTEST: {
                 retCursor = mContestByShowSettingsQueryBuilder.query(
@@ -118,7 +122,9 @@ public class Provider extends ContentProvider {
                         projection, //projection
                         DBContract.ResourceEntry.TABLE_NAME +
                                 "." + DBContract.ResourceEntry.RESOURCE_SHOW_COL +
-                                " = 1",
+                                " = 1 and " +
+                                DBContract.ContestEntry.CONTEST_DURATION_COL + " <= " +
+                                Long.toString(maxDuration),
                         null, //selectionArgs
                         null,
                         null,
@@ -135,7 +141,9 @@ public class Provider extends ContentProvider {
                                 "." + DBContract.ResourceEntry.RESOURCE_SHOW_COL +
                                 " = 1 and " +
                                 DBContract.ContestEntry.CONTEST_START_COL + " < ? and " + DBContract
-                                .ContestEntry.CONTEST_END_COL + " > ?",
+                                .ContestEntry.CONTEST_END_COL + " > ? and " +
+                                DBContract.ContestEntry.CONTEST_DURATION_COL + " <= " +
+                                Long.toString(maxDuration),
                         new String[]{Long.toString(currentTime), Long.toString(currentTime)},
                         null,
                         null,
@@ -151,7 +159,9 @@ public class Provider extends ContentProvider {
                         DBContract.ResourceEntry.TABLE_NAME +
                                 "." + DBContract.ResourceEntry.RESOURCE_SHOW_COL +
                                 " = 1 and " +
-                        DBContract.ContestEntry.CONTEST_END_COL + " < ?",
+                                DBContract.ContestEntry.CONTEST_END_COL + " < ? and " +
+                                DBContract.ContestEntry.CONTEST_DURATION_COL + " <= " +
+                                Long.toString(maxDuration),
                         new String[]{Long.toString(endTime)},
                         null,
                         null,
@@ -167,7 +177,9 @@ public class Provider extends ContentProvider {
                         DBContract.ResourceEntry.TABLE_NAME +
                                 "." + DBContract.ResourceEntry.RESOURCE_SHOW_COL +
                                 " = 1 and " +
-                        DBContract.ContestEntry.CONTEST_START_COL + " > ?",
+                                DBContract.ContestEntry.CONTEST_START_COL + " > ? and " +
+                                DBContract.ContestEntry.CONTEST_DURATION_COL + " <= " +
+                                Long.toString(maxDuration),
                         new String[]{Long.toString(startTime)},
                         null,
                         null,

@@ -13,6 +13,9 @@ import java.util.HashMap;
  */
 public class AppUtils {
 
+    public static final String MAX_CONTEST_DURATION = "MAX_CONTEST_DURATION";
+    public static final int MAX_DEFAULT_CONTEST_DURATION = 3 * 30 * 24 * 60 * 60;
+
     public static final String UNKNOWN_RESOURCE = "Unknown Website";
 
     static HashMap<Integer, String> resourceHashMap;

@@ -43,7 +43,7 @@
         <provider
             android:name=".db.Provider"
             android:authorities="com.amrendra.codefiesta"
-            android:exported="true" />
+            android:exported="false" />
 
         <!-- SyncAdapter's authentication service -->
         <service android:name=".sync.CodeFiestaAuthenticatorService" >

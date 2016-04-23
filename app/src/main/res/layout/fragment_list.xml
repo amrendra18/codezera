@@ -2,15 +2,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLight">
+    android:background="@color/grey_300">
 
     <ListView
         android:id="@+id/contest_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_list_view_margin_side"
+        android:layout_marginLeft="@dimen/activity_list_view_margin_side"
+        android:layout_marginRight="@dimen/activity_list_view_margin_side"
+        android:layout_marginStart="@dimen/activity_list_view_margin_side"
+        android:clipToPadding="false"
         android:divider="@android:color/transparent"
-        android:dividerHeight="4dp"/>
+        android:dividerHeight="@dimen/card_content_margin_between"
+        android:paddingBottom="@dimen/card_content_padding_vertical"
+        android:paddingTop="@dimen/card_content_padding_vertical"/>
 
     <include
         layout="@layout/loading_view"

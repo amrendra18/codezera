@@ -3,15 +3,25 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="activity_list_view_margin_side">2dp</dimen>
+    <dimen name="divider_height">2dp</dimen>
+    <dimen name="divider_margin_vertical">4dp</dimen>
+
     <!-- contest list item -->
-    <dimen name="card_content_padding">16dp</dimen>
-    <dimen name="contest_title_text_size">16sp</dimen>
-    <dimen name="contest_title_padding">4dp</dimen>
+    <dimen name="list_item_padding">8dp</dimen>
+    <dimen name="card_content_margin_between">10dp</dimen>
+    <dimen name="card_content_padding_vertical">10dp</dimen>
+    <dimen name="card_content_padding_horizontal">16dp</dimen>
+    <dimen name="contest_title_text_size">18sp</dimen>
+    <dimen name="contest_title_padding">8dp</dimen>
     <dimen name="contest_resource_text_size">16sp</dimen>
     <dimen name="contest_date_time_block_padding">8dp</dimen>
     <dimen name="contest_time_text_size">32sp</dimen>
     <dimen name="contest_ampm_text_size">16sp</dimen>
     <dimen name="contest_date_text_size">18sp</dimen>
+    <dimen name="contest_status_size">14sp</dimen>
     <dimen name="contest_ampm_left_margin">4dp</dimen>
     <dimen name="contest_start_end_text">16sp</dimen>
+    <dimen name="contest_card_elevation">2dp</dimen>
+    <dimen name="contest_card_radius">4dp</dimen>
 </resources>

@@ -285,12 +285,19 @@ https://gist.github.com/kalehv/bae765c756e94455ed88
     <color name="white">#FFFFFF</color>
 
     <!-- Colors for the app -->
-    <color name="colorPrimary">@color/orange_500</color>
-    <color name="colorPrimaryDark">@color/orange_700</color>
-    <color name="colorAccent">@color/deep_orange_500</color>
-    <color name="colorPrimaryLight">@color/orange_100</color>
-    <color name="colorPrimaryText">@color/grey_900</color>
+    <color name="colorPrimaryDark">@color/green_700</color>
+    <color name="colorPrimary">@color/green_500</color>
+    <color name="colorPrimaryLight">@color/green_100</color>
+    <color name="colorAccent">@color/orange_500</color>
+    <color name="colorPrimaryText">@color/grey_800</color>
     <color name="colorSecondaryText">@color/grey_600</color>
     <color name="colorDivider">@color/grey_400</color>
 
+
+
+    <!-- colors for contest card -->
+    <color name="colorTitleBackground">#D7D7D7</color>
+    <color name="colorTitleText">@color/colorPrimaryText</color>
+    <color name="colorResourceBackground">#D7D7D7</color>
+    <color name="colorResourceText">@color/colorPrimaryText</color>
 </resources>

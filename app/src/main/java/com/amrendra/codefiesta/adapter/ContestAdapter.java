@@ -23,10 +23,12 @@ import butterknife.ButterKnife;
 public class ContestAdapter extends CursorAdapter {
 
     final LayoutInflater mInflator;
+    Context mContext;
 
     public ContestAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         mInflator = LayoutInflater.from(context);
+        mContext = context;
 
     }
 
@@ -42,15 +44,15 @@ public class ContestAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder mHolder = (ViewHolder) view.getTag();
 
+
         mHolder.contestTitleTv.setText(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_NAME_COL)));
         int resourceId = cursor.getInt(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_RESOURCE_ID_COL));
-        mHolder.contestWebsiteTv.setText(AppUtils.getGoodResourceName(AppUtils.getResourceName
-                (context, resourceId)));
+        mHolder.contestWebsiteTv.setText(AppUtils.getGoodResourceName(AppUtils.getResourceName(context, resourceId)));
         long duration = cursor.getLong(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_DURATION_COL));
-        mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration, false));
+        //mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration, false));
         long starTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_START_COL)));
         long endTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
@@ -65,7 +67,7 @@ public class ContestAdapter extends CursorAdapter {
         mHolder.contestEndAmPm.setText(endDate.getAmPm());
         mHolder.contestEndDate.setText(endDate.getDateMonthYear());
 
-        mHolder.contestTimeLeftTv.setText(DateUtils.getTimeLeftForEnd(starTime, endTime));
+        mHolder.statusTv.setText(DateUtils.getTimeLeftForEnd(starTime, endTime));
     }
 
     class ViewHolder {
@@ -73,10 +75,10 @@ public class ContestAdapter extends CursorAdapter {
         TextView contestTitleTv;
         @Bind(R.id.contest_website_tv)
         TextView contestWebsiteTv;
-        @Bind(R.id.contest_duration_tv)
-        TextView contestDurationTv;
-        @Bind(R.id.contest_timeleft_tv)
-        TextView contestTimeLeftTv;
+        /*     @Bind(R.id.contest_duration_tv)
+            TextView contestDurationTv;*/
+        @Bind(R.id.status_tv)
+        TextView statusTv;
 
         @Bind(R.id.contest_start_time_tv)
         TextView contestStartTime;

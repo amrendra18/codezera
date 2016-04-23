@@ -71,7 +71,7 @@ public class DateUtils {
         }
         long left = endTime - currTime;
         if (left > 0) {
-            return getDurationString(left, true) + " left";
+            return "Ends in " + getDurationString(left, true);
         } else {
             return "Ended";
         }
@@ -88,19 +88,19 @@ public class DateUtils {
         long mins = time / SEC_IN_ONE_MINUTE;
         time %= SEC_IN_ONE_MINUTE;
         if (years > 0) {
-            sb.append(Long.toString(years)).append((years > 1 ? "years " : "year "));
+            sb.append(Long.toString(years)).append("y ");
         }
         if (days > 0) {
-            sb.append(Long.toString(days)).append((days > 1 ? "days " : "day "));
+            sb.append(Long.toString(days)).append("d ");
         }
         if (hours > 0) {
-            sb.append(Long.toString(hours)).append((hours > 1 ? "hours " : "hour "));
+            sb.append(Long.toString(hours)).append("h ");
         }
         if (mins > 0) {
-            sb.append(Long.toString(mins)).append((mins > 1 ? "mins " : "min "));
+            sb.append(Long.toString(mins)).append("m ");
         }
         if (secRequired && time > 0) {
-            sb.append(Long.toString(time)).append((time > 1 ? "secs " : "sec "));
+            sb.append(Long.toString(time)).append("s ");
         }
         return sb.toString().trim();
     }

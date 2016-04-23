@@ -3,6 +3,7 @@ package com.amrendra.codefiesta.utils;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.db.DBContract;
 
 import java.util.HashMap;
@@ -69,5 +70,23 @@ public class AppUtils {
         }
         ret = ret.replaceAll("\\.", " ").toUpperCase();
         return ret;
+    }
+
+    public static int getImageForResource(String resource) {
+        if (resource != null) {
+            String res = resource.toLowerCase();
+            if (res.contains("codechef")) {
+                return R.drawable.codechef;
+            } else if (res.contains("hackerrank")) {
+                return R.drawable.hackerrank;
+            } else if (res.contains("hackerearth")) {
+                return R.drawable.hackerearth;
+            } else if (res.contains("codeforces")) {
+                return R.drawable.codeforces;
+            } else if (res.contains("topcoder")) {
+                return R.drawable.topcoder;
+            }
+        }
+        return R.mipmap.ic_launcher;
     }
 }

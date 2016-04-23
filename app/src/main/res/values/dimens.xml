@@ -13,7 +13,7 @@
     <dimen name="card_content_padding_vertical">10dp</dimen>
     <dimen name="card_content_padding_horizontal">16dp</dimen>
     <dimen name="contest_title_text_size">18sp</dimen>
-    <dimen name="contest_title_padding">8dp</dimen>
+    <dimen name="contest_title_padding">2dp</dimen>
     <dimen name="contest_resource_text_size">16sp</dimen>
     <dimen name="contest_date_time_block_padding">8dp</dimen>
     <dimen name="contest_time_text_size">32sp</dimen>
@@ -24,4 +24,7 @@
     <dimen name="contest_start_end_text">16sp</dimen>
     <dimen name="contest_card_elevation">2dp</dimen>
     <dimen name="contest_card_radius">4dp</dimen>
+    <dimen name="resource_logo_size">40dp</dimen>
+
+    <integer name="title_max_lines">2</integer>
 </resources>

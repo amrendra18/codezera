@@ -6,6 +6,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
@@ -13,6 +14,7 @@ import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
+import com.bumptech.glide.Glide;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,7 +51,8 @@ public class ContestAdapter extends CursorAdapter {
                 .ContestEntry.CONTEST_NAME_COL)));
         int resourceId = cursor.getInt(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_RESOURCE_ID_COL));
-        mHolder.contestWebsiteTv.setText(AppUtils.getGoodResourceName(AppUtils.getResourceName(context, resourceId)));
+        String resourceName = AppUtils.getResourceName(context, resourceId);
+        mHolder.contestWebsiteTv.setText(AppUtils.getGoodResourceName(resourceName));
         long duration = cursor.getLong(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_DURATION_COL));
         //mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration, false));
@@ -68,6 +71,13 @@ public class ContestAdapter extends CursorAdapter {
         mHolder.contestEndDate.setText(endDate.getDateMonthYear());
 
         mHolder.statusTv.setText(DateUtils.getTimeLeftForEnd(starTime, endTime));
+
+        Glide.with(mContext)
+                .load(AppUtils.getImageForResource(resourceName))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .crossFade()
+                .into(mHolder.resourceImageView);
     }
 
     class ViewHolder {
@@ -75,8 +85,8 @@ public class ContestAdapter extends CursorAdapter {
         TextView contestTitleTv;
         @Bind(R.id.contest_website_tv)
         TextView contestWebsiteTv;
-        /*     @Bind(R.id.contest_duration_tv)
-            TextView contestDurationTv;*/
+        @Bind(R.id.resource_logo)
+        ImageView resourceImageView;
         @Bind(R.id.status_tv)
         TextView statusTv;
 

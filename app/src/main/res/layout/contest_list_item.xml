@@ -17,26 +17,59 @@
         android:orientation="vertical"
         android:padding="@dimen/list_item_padding">
 
-        <TextView
-            android:id="@+id/contest_title_tv"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/round_tv_top"
-            android:padding="@dimen/contest_title_padding"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/contest_title_text_size"
-            android:textStyle="bold"
-            tools:text="April Long Challenge"/>
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/list_item_padding"
+            android:paddingEnd="@dimen/contest_title_padding"
+            android:paddingLeft="@dimen/contest_title_padding"
+            android:paddingRight="@dimen/contest_title_padding"
+            android:paddingStart="@dimen/contest_title_padding"
+            android:paddingTop="@dimen/list_item_padding">
 
-        <TextView
-            android:id="@+id/contest_website_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryLight"
-            android:padding="@dimen/contest_title_padding"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/contest_resource_text_size"
-            tools:text="Codechef"/>
+            <ImageView
+                android:id="@+id/resource_logo"
+                android:layout_width="@dimen/resource_logo_size"
+                android:layout_height="@dimen/resource_logo_size"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginStart="@dimen/list_item_padding"
+                android:layout_marginRight="@dimen/contest_title_padding"
+                android:layout_marginEnd="@dimen/contest_title_padding"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_launcher"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/contest_title_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="@integer/title_max_lines"
+                    android:padding="@dimen/contest_title_padding"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/contest_title_text_size"
+                    android:textStyle="bold"
+                    tools:text="April Long Challenge"/>
+
+                <TextView
+                    android:id="@+id/contest_website_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryLight"
+                    android:maxLines="@integer/title_max_lines"
+                    android:padding="@dimen/contest_title_padding"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/contest_resource_text_size"
+                    tools:text="Codechef"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
 
         <LinearLayout

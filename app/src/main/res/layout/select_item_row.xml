@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/linear_layout_settings"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,16 +14,36 @@
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/contest_title_padding"
+        android:layout_marginLeft="@dimen/contest_title_padding"
+        android:layout_marginRight="@dimen/check_box_left"
+        android:layout_marginStart="@dimen/check_box_left"
         tools:text="New CheckBox"/>
+
+    <ImageView
+        android:id="@+id/website_logo"
+        android:layout_width="@dimen/resource_logo_size"
+        android:layout_height="@dimen/resource_logo_size"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/contest_title_padding"
+        android:layout_marginLeft="@dimen/list_item_padding"
+        android:layout_marginRight="@dimen/contest_title_padding"
+        android:layout_marginStart="@dimen/list_item_padding"
+        android:src="@mipmap/ic_launcher"/>
+
 
     <TextView
         android:id="@+id/resource_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:paddingLeft="12dp"
-        android:paddingStart="12dp"
-        android:paddingTop="4dp"
+        android:paddingEnd="@dimen/settings_resource_right_padding"
+        android:paddingLeft="@dimen/settings_resource_left_padding"
+        android:paddingRight="@dimen/settings_resource_right_padding"
+        android:paddingStart="@dimen/settings_resource_left_padding"
+        android:paddingTop="@dimen/settings_resource_topt_padding"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/black"/>

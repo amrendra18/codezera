@@ -92,7 +92,7 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         List<Website> list = new ArrayList<>();
-        mAdapter = new SelectionAdapter(list, this);
+        mAdapter = new SelectionAdapter(getActivity(), list, this);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);

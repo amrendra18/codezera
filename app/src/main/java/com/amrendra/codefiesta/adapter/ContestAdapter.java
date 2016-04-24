@@ -14,6 +14,7 @@ import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
+import com.amrendra.codefiesta.utils.Debug;
 import com.bumptech.glide.Glide;
 
 import butterknife.Bind;
@@ -78,6 +79,28 @@ public class ContestAdapter extends CursorAdapter {
                 .placeholder(R.mipmap.ic_launcher)
                 .crossFade()
                 .into(mHolder.resourceImageView);
+
+
+        mHolder.calendarImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Debug.c();
+            }
+        });
+
+        mHolder.notificationImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Debug.c();
+            }
+        });
+
+        mHolder.shareImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Debug.c();
+            }
+        });
     }
 
     class ViewHolder {
@@ -87,6 +110,12 @@ public class ContestAdapter extends CursorAdapter {
         TextView contestWebsiteTv;
         @Bind(R.id.resource_logo)
         ImageView resourceImageView;
+        @Bind(R.id.calendar_image)
+        ImageView calendarImageView;
+        @Bind(R.id.notification_image)
+        ImageView notificationImageView;
+        @Bind(R.id.share_image)
+        ImageView shareImageView;
         @Bind(R.id.status_tv)
         TextView statusTv;
 

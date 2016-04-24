@@ -5,7 +5,7 @@
 
     <dimen name="activity_list_view_margin_side">2dp</dimen>
     <dimen name="divider_height">2dp</dimen>
-    <dimen name="divider_margin_vertical">4dp</dimen>
+    <dimen name="divider_margin_vertical">1dp</dimen>
 
     <!-- contest list item -->
     <dimen name="list_item_padding">8dp</dimen>
@@ -19,12 +19,14 @@
     <dimen name="contest_time_text_size">32sp</dimen>
     <dimen name="contest_ampm_text_size">16sp</dimen>
     <dimen name="contest_date_text_size">18sp</dimen>
-    <dimen name="contest_status_size">14sp</dimen>
+    <dimen name="contest_status_size">16sp</dimen>
     <dimen name="contest_ampm_left_margin">4dp</dimen>
     <dimen name="contest_start_end_text">16sp</dimen>
     <dimen name="contest_card_elevation">2dp</dimen>
     <dimen name="contest_card_radius">4dp</dimen>
     <dimen name="resource_logo_size">40dp</dimen>
+    <dimen name="share_image_size">32dp</dimen>
+    <dimen name="image_size_padding">10dp</dimen>
 
     <integer name="title_max_lines">2</integer>
 
@@ -33,4 +35,6 @@
     <dimen name="settings_resource_left_padding">12dp</dimen>
     <dimen name="settings_resource_right_padding">4dp</dimen>
     <dimen name="settings_resource_topt_padding">4dp</dimen>
+
+
 </resources>

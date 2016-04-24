@@ -238,7 +238,7 @@
                 android:layout_marginLeft="@dimen/image_size_padding"
                 android:layout_marginRight="@dimen/image_size_padding"
                 android:layout_marginStart="@dimen/image_size_padding"
-                android:src="@drawable/calendar_default"/>
+                android:src="@drawable/calendar_selector"/>
 
             <ImageView
                 android:id="@+id/notification_image"
@@ -249,7 +249,7 @@
                 android:layout_marginLeft="@dimen/image_size_padding"
                 android:layout_marginRight="@dimen/image_size_padding"
                 android:layout_marginStart="@dimen/image_size_padding"
-                android:src="@drawable/notification_default"/>
+                android:src="@drawable/notification_selector"/>
 
             <ImageView
                 android:id="@+id/share_image"

@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 public class AppUtils {
     public static final long SIX_HOURS = 6 * 60 * 60;
-    public static final long ONE_DAY = SIX_HOURS * 2;
+    public static final long ONE_DAY = SIX_HOURS * 4;
     public static final long ONE_WEEK = ONE_DAY * 7;
     public static final long ONE_MONTH = ONE_WEEK * 4;
 

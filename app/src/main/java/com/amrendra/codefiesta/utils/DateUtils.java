@@ -77,6 +77,18 @@ public class DateUtils {
         }
     }
 
+    public static int getContestStatus(long start, long end) {
+        long currTime = System.currentTimeMillis() / 1000;
+        if (currTime < start) {
+            return AppUtils.STATUS_CONTEST_FUTURE;
+        }
+        long left = end - currTime;
+        if (left > 0) {
+            return AppUtils.STATUS_CONTEST_LIVE;
+        }
+        return AppUtils.STATUS_CONTEST_ENDED;
+    }
+
     public static String getDurationString(long time, boolean secRequired) {
         StringBuilder sb = new StringBuilder();
         long years = time / SEC_IN_ONE_YEAR;

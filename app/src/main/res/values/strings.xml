@@ -42,4 +42,12 @@
 
 
     <string name="nomatch">No Contests found!!</string>
+
+
+    <string name="contest_started">Contest &lt;b&gt;%1$s&lt;/&gt; @ &lt;b&gt;%2$s&lt;/&gt; already
+        started.
+    </string>
+    <string name="contest_ended">Contest &lt;b&gt;%1$s&lt;/&gt; @ &lt;b&gt;%2$s&lt;/&gt; already
+        ended.
+    </string>
 </resources>

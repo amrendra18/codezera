@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +30,12 @@ import com.amrendra.codefiesta.utils.TrackingConstants;
 import butterknife.Bind;
 
 
-public class CurrentFragment extends BaseFragment implements ContestAdapter.ShareListener {
+public class CurrentFragment extends BaseFragment implements ContestAdapter.ContestElementsClickListener {
 
     private static final int CURRENT_CONTESTS_LOADER = 0;
 
+    @Bind(R.id.list_fragment_coordinator_layout)
+    CoordinatorLayout mCoordinatorLayout;
     @Bind(R.id.contest_list)
     ListView mListView;
     @Bind(R.id.view_error)
@@ -144,11 +150,17 @@ public class CurrentFragment extends BaseFragment implements ContestAdapter.Shar
 
 
     @Override
-    public void share(String msg) {
-        Debug.c();
+    public void onShareClick(String msg) {
         startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
                 .setType("text/plain")
                 .setText(msg)
                 .getIntent(), getString(R.string.action_share)));
+    }
+
+    @Override
+    public void onError(String msg) {
+        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, Html.fromHtml(msg), Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+        snackbar.show();
     }
 }

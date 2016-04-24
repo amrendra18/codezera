@@ -14,7 +14,6 @@ import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
-import com.amrendra.codefiesta.utils.Debug;
 import com.bumptech.glide.Glide;
 
 import butterknife.Bind;
@@ -27,13 +26,15 @@ public class ContestAdapter extends CursorAdapter {
 
     final LayoutInflater mInflator;
     Context mContext;
-    ShareListener mListener;
+    ContestElementsClickListener mListener;
 
-    public interface ShareListener{
-        void share(String msg);
+    public interface ContestElementsClickListener {
+        void onShareClick(String msg);
+
+        void onError(String msg);
     }
 
-    public ContestAdapter(Context context, Cursor c, int flags, ShareListener listener) {
+    public ContestAdapter(Context context, Cursor c, int flags, ContestElementsClickListener listener) {
         super(context, c, flags);
         mInflator = LayoutInflater.from(context);
         mContext = context;
@@ -63,9 +64,9 @@ public class ContestAdapter extends CursorAdapter {
         long duration = cursor.getLong(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_DURATION_COL));
         //mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration, false));
-        long starTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
+        final long starTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_START_COL)));
-        long endTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
+        final long endTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_END_COL)));
         CustomDate startDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(starTime));
         final CustomDate endDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(endTime));
@@ -95,14 +96,40 @@ public class ContestAdapter extends CursorAdapter {
         mHolder.calendarImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Debug.c();
+                int contestStatus = DateUtils.getContestStatus(starTime, endTime);
+                if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
+
+                } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
+                    String text = String.format(mContext.getString(R.string.contest_started),
+                            contest,
+                            shortResourceName);
+                    mListener.onError(text);
+                } else {
+                    String text = String.format(mContext.getString(R.string.contest_ended),
+                            contest,
+                            shortResourceName);
+                    mListener.onError(text);
+                }
             }
         });
 
         mHolder.notificationImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Debug.c();
+                int contestStatus = DateUtils.getContestStatus(starTime, endTime);
+                if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
+
+                } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
+                    String text = String.format(mContext.getString(R.string.contest_started),
+                            contest,
+                            shortResourceName);
+                    mListener.onError(text);
+                } else {
+                    String text = String.format(mContext.getString(R.string.contest_ended),
+                            contest,
+                            shortResourceName);
+                    mListener.onError(text);
+                }
             }
         });
 
@@ -116,7 +143,7 @@ public class ContestAdapter extends CursorAdapter {
                 sb.append(starts).append("\n");
                 sb.append(ends).append("\n");
                 sb.append("#").append(mContext.getString(R.string.app_name));
-                mListener.share(sb.toString());
+                mListener.onShareClick(sb.toString());
             }
         });
     }

@@ -23,6 +23,11 @@ public class AppUtils {
     public static final long LAST_SYNC_PERFORMED_DEFAULT_VALUE = -1;
 
 
+    public static final int STATUS_CONTEST_ENDED = -1;
+    public static final int STATUS_CONTEST_LIVE = 0;
+    public static final int STATUS_CONTEST_FUTURE = 1;
+
+
     public static final String UNKNOWN_RESOURCE = "Unknown Website";
 
     static HashMap<Integer, String> resourceHashMap;

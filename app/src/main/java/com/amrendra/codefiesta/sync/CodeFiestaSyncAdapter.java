@@ -21,6 +21,7 @@ import com.amrendra.codefiesta.rest.RestApiClient;
 import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
+import com.amrendra.codefiesta.utils.UserPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,10 +89,13 @@ public class CodeFiestaSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void deleteOldContests() {
         long curr = System.currentTimeMillis() / 1000;
-        long back = curr - 7 * 24 * 60 * 60;
+        long back = curr - AppUtils.ONE_WEEK;
         getContext().getContentResolver().delete(DBContract.ContestEntry.CONTENT_URI_ALL,
                 DBContract.ContestEntry.CONTEST_END_COL + " <= ?",
                 new String[]{Long.toString(back)});
+
+        UserPreferences.getInstance(getContext())
+                .writeValue(AppUtils.LAST_SYNC_PERFORMED, curr);
 
     }
 
@@ -131,10 +135,15 @@ public class CodeFiestaSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void fetchContests() {
         Debug.c();
-        long time = DateUtils.getCurrentEpochTime();
+        long time = System.currentTimeMillis() / 1000;
+        long lastSync = UserPreferences.getInstance(getContext())
+                .readValue(AppUtils.LAST_SYNC_PERFORMED, AppUtils.LAST_SYNC_PERFORMED_DEFAULT_VALUE);
+        if (lastSync == AppUtils.LAST_SYNC_PERFORMED_DEFAULT_VALUE) {
+            time = time - 2 * AppUtils.ONE_DAY;
+        }
         String date = DateUtils.epochToDateTimeGmt(time);
         RestApiClient.getInstance()
-                .getContestsList(200, date, "end", BuildConfig
+                .getContestsList(300, date, "end", BuildConfig
                                 .API_USERNAME,
                         BuildConfig.API_KEY)
                 .subscribeOn(Schedulers.io())

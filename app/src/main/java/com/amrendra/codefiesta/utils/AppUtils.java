@@ -12,9 +12,16 @@ import java.util.HashMap;
  * Created by Amrendra Kumar on 11/04/16.
  */
 public class AppUtils {
+    public static final long SIX_HOURS = 6 * 60 * 60;
+    public static final long ONE_DAY = SIX_HOURS * 2;
+    public static final long ONE_WEEK = ONE_DAY * 7;
+    public static final long ONE_MONTH = ONE_WEEK * 4;
 
     public static final String MAX_CONTEST_DURATION = "MAX_CONTEST_DURATION";
-    public static final int MAX_DEFAULT_CONTEST_DURATION = 3 * 30 * 24 * 60 * 60;
+    public static final long MAX_DEFAULT_CONTEST_DURATION = 3 * ONE_MONTH;
+    public static final String LAST_SYNC_PERFORMED = "LAST_SYNC_PERFORMED";
+    public static final long LAST_SYNC_PERFORMED_DEFAULT_VALUE = -1;
+
 
     public static final String UNKNOWN_RESOURCE = "Unknown Website";
 

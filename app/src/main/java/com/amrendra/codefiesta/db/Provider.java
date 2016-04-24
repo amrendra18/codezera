@@ -224,11 +224,11 @@ public class Provider extends ContentProvider {
             break;
 
             case CALENDAR_WITH_ID: {
-                long id = DBContract.CalendarEntry.getEventIdFromCalendarEventUri(uri);
+                long id = DBContract.CalendarEntry.getContestIdFromCalendarEventUri(uri);
                 retCursor = db.query(
                         DBContract.CalendarEntry.TABLE_NAME, //table name
                         projection, //projection
-                        DBContract.CalendarEntry.CALENDAR_EVENT_ID_COL + " = ?", //selection
+                        DBContract.CalendarEntry.CALENDAR_CONTEST_ID_COL + " = ?", //selection
                         new String[]{Long.toString(id)}, //selectionArgs
                         null,
                         null,
@@ -299,7 +299,36 @@ public class Provider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
         Debug.i("uri : " + uri);
-        return null;
+        final int match = sUriMatcher.match(uri);
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        Uri returnUri = null;
+        switch (match) {
+            case CONTEST: {
+
+            }
+            break;
+            case RESOURCE: {
+
+            }
+            break;
+            case NOTIFICATION: {
+
+            }
+            break;
+            case CALENDAR: {
+                long _id = db.insert(DBContract.CalendarEntry.TABLE_NAME, null, values);
+                if (_id > 0)
+                    returnUri = DBContract.CalendarEntry.buildCalendarEventUriWithContestId(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+            }
+            break;
+            default:
+                Debug.e("ERROR : " + uri, false);
+                throw new UnsupportedOperationException("Update : Unknown uri: " + uri);
+        }
+        Debug.e("CP insert : " + uri + " match : " + match + " returnUri : " + returnUri, false);
+        return returnUri;
     }
 
     @Override

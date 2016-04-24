@@ -135,11 +135,11 @@ public class DBContract {
         public static final Uri CONTENT_URI_ALL_CALENDAR_EVENTS =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_CALENDAR).build();
 
-        public static Uri buildCalendarEventUriWithId(long id) {
+        public static Uri buildCalendarEventUriWithContestId(long id) {
             return ContentUris.withAppendedId(CONTENT_URI_ALL_CALENDAR_EVENTS, id);
         }
 
-        public static long getEventIdFromCalendarEventUri(Uri uri) {
+        public static long getContestIdFromCalendarEventUri(Uri uri) {
             return ContentUris.parseId(uri);
         }
 

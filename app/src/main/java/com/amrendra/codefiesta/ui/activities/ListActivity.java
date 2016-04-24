@@ -20,6 +20,7 @@ import com.amrendra.codefiesta.ui.fragments.CurrentFragment;
 import com.amrendra.codefiesta.ui.fragments.PastFragment;
 import com.amrendra.codefiesta.ui.fragments.SelectionFragment;
 import com.amrendra.codefiesta.ui.fragments.UpcomingFragment;
+import com.amrendra.codefiesta.utils.CalendarUtils;
 import com.amrendra.codefiesta.utils.Debug;
 import com.amrendra.codefiesta.utils.TrackingConstants;
 
@@ -115,6 +116,7 @@ public class ListActivity extends BaseActivity implements
                 mTitle = "Current Comp";
                 break;
             case R.id.nav_upcoming_menu:
+                CalendarUtils.getInstance(this).getCalendarId();
                 fragmentClass = UpcomingFragment.class;
                 mTitle = "Future Comp";
                 break;

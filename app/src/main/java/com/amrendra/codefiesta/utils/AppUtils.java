@@ -27,6 +27,11 @@ public class AppUtils {
     public static final int STATUS_CONTEST_LIVE = 0;
     public static final int STATUS_CONTEST_FUTURE = 1;
 
+    public static final int STATUS_CALENDAR_EVENT_SUCCESS = 0;
+    public static final int STATUS_CALENDAR_PERMISSION_ERROR = -1;
+    public static final int STATUS_CALENDAR_NO_ACCOUNT = -2;
+    public static final int STATUS_CALENDAR_EVENT_ALREADY_ADDED = -3;
+
 
     public static final String UNKNOWN_RESOURCE = "Unknown Website";
 
@@ -52,7 +57,6 @@ public class AppUtils {
                     String name = cursor.getString(cursor.getColumnIndex(DBContract.ResourceEntry
                             .RESOURCE_NAME_COL));
                     resourceHashMap.put(id, name);
-                    Debug.e("resource : " + id + " name : " + name);
                 }
             } finally {
                 cursor.close();

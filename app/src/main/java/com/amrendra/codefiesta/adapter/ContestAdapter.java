@@ -10,10 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
-import com.amrendra.codefiesta.db.DBContract;
+import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.utils.AppUtils;
+import com.amrendra.codefiesta.utils.CalendarUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
+import com.amrendra.codefiesta.utils.Debug;
 import com.bumptech.glide.Glide;
 
 import butterknife.Bind;
@@ -52,24 +54,22 @@ public class ContestAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder mHolder = (ViewHolder) view.getTag();
-
-        final String contest = cursor.getString(cursor.getColumnIndex(DBContract
-                .ContestEntry.CONTEST_NAME_COL));
-        mHolder.contestTitleTv.setText(contest);
-        final int resourceId = cursor.getInt(cursor.getColumnIndex(DBContract
-                .ContestEntry.CONTEST_RESOURCE_ID_COL));
+        final Contest contest = Contest.cursorToContest(mContext, cursor);
+/*        final String contest = cursor.getString(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_NAME_COL));*/
+        mHolder.contestTitleTv.setText(contest.getEvent());
+        final int resourceId = contest.getWebsite().getId();
         String resourceName = AppUtils.getResourceName(context, resourceId);
         final String shortResourceName = AppUtils.getGoodResourceName(resourceName);
         mHolder.contestWebsiteTv.setText(shortResourceName);
-        long duration = cursor.getLong(cursor.getColumnIndex(DBContract
-                .ContestEntry.CONTEST_DURATION_COL));
+/*        long duration = cursor.getLong(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_DURATION_COL));*/
         //mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration, false));
-        final long starTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
-                .ContestEntry.CONTEST_START_COL)));
-        final long endTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
-                .ContestEntry.CONTEST_END_COL)));
-        CustomDate startDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(starTime));
+        final long starTime = DateUtils.getEpochTime(contest.getStart());
+        final long endTime = DateUtils.getEpochTime(contest.getEnd());
+        final CustomDate startDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(starTime));
         final CustomDate endDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(endTime));
+
         mHolder.contestStartTime.setText(startDate.getTime());
         mHolder.contestStartAmPm.setText(startDate.getAmPm());
         mHolder.contestStartDate.setText(startDate.getDateMonthYear());
@@ -98,15 +98,16 @@ public class ContestAdapter extends CursorAdapter {
             public void onClick(View v) {
                 int contestStatus = DateUtils.getContestStatus(starTime, endTime);
                 if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
-
+                    Debug.c();
+                    CalendarUtils.getInstance(mContext).addEvent(contest);
                 } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
                     String text = String.format(mContext.getString(R.string.contest_started),
-                            contest,
+                            contest.getEvent(),
                             shortResourceName);
                     mListener.onError(text);
                 } else {
                     String text = String.format(mContext.getString(R.string.contest_ended),
-                            contest,
+                            contest.getEvent(),
                             shortResourceName);
                     mListener.onError(text);
                 }
@@ -118,15 +119,16 @@ public class ContestAdapter extends CursorAdapter {
             public void onClick(View v) {
                 int contestStatus = DateUtils.getContestStatus(starTime, endTime);
                 if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
-
+                    Debug.c();
+                    CalendarUtils.getInstance(mContext).deleteEvent(contest);
                 } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
                     String text = String.format(mContext.getString(R.string.contest_started),
-                            contest,
+                            contest.getEvent(),
                             shortResourceName);
                     mListener.onError(text);
                 } else {
                     String text = String.format(mContext.getString(R.string.contest_ended),
-                            contest,
+                            contest.getEvent(),
                             shortResourceName);
                     mListener.onError(text);
                 }
@@ -138,7 +140,7 @@ public class ContestAdapter extends CursorAdapter {
             public void onClick(View v) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("Checkout this contest!!\n");
-                sb.append(contest).append("\n");
+                sb.append(contest.getEvent()).append("\n");
                 sb.append("@ ").append(shortResourceName).append("\n");
                 sb.append(starts).append("\n");
                 sb.append(ends).append("\n");

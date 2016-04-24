@@ -113,7 +113,7 @@ public class UpcomingFragment extends BaseFragment implements ContestAdapter.Con
                     null,
                     null,
                     null,
-                    DBContract.ContestEntry.CONTEST_END_COL + " ASC"
+                    DBContract.ContestEntry.CONTEST_START_COL + " ASC"
             );
         }
 

@@ -1,10 +1,14 @@
 package com.amrendra.codefiesta.model;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.CalendarContract;
 
 import com.amrendra.codefiesta.db.DBContract;
+import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -146,6 +150,41 @@ public class Contest implements Parcelable {
         value.put(DBContract.ContestEntry.CONTEST_END_COL, DateUtils.getEpochTime(getEnd()));
         value.put(DBContract.ContestEntry.CONTEST_DURATION_COL, getDuration());
         return value;
+    }
+
+    public static Contest cursorToContest(Context context, Cursor cursor) {
+        Contest contest = new Contest();
+        contest.setId(cursor.getInt(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_ID_COL)));
+        contest.setEvent(cursor.getString(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_NAME_COL)));
+        contest.setUrl(cursor.getString(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_URL_COL)));
+        Website website = new Website();
+        int wid = cursor.getInt(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_RESOURCE_ID_COL));
+        website.setId(wid);
+        website.setName(AppUtils.getResourceName(context, wid));
+        contest.setWebsite(website);
+        contest.setStart(DateUtils.epochToDateTimeGmt(cursor.getInt(cursor.getColumnIndex
+                (DBContract.ContestEntry.CONTEST_START_COL))));
+        contest.setEnd(DateUtils.epochToDateTimeGmt(cursor.getInt(cursor.getColumnIndex
+                (DBContract.ContestEntry.CONTEST_END_COL))));
+        contest.setDuration(cursor.getLong(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_DURATION_COL)));
+        return contest;
+    }
+
+    public ContentValues toCalendarEventContentValues(long id) {
+        ContentValues cv = new ContentValues();
+        cv.put(CalendarContract.Events.CALENDAR_ID, id);
+        cv.put(CalendarContract.Events.TITLE, getEvent());
+        cv.put(CalendarContract.Events.DESCRIPTION, getEvent() + " @ " + getWebsite().getName());
+        cv.put(CalendarContract.Events.EVENT_LOCATION, getWebsite().getName());
+        cv.put(CalendarContract.Events.DTSTART, DateUtils.getEpochTime(getStart()) * 1000);
+        cv.put(CalendarContract.Events.DTEND, DateUtils.getEpochTime(getEnd()) * 1000);
+        cv.put(CalendarContract.Events.EVENT_TIMEZONE, "GMT");
+        return cv;
     }
 
     public static final class Response {

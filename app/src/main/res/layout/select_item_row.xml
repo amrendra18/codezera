@@ -21,17 +21,6 @@
         android:layout_marginStart="@dimen/check_box_left"
         tools:text="New CheckBox"/>
 
-    <ImageView
-        android:id="@+id/website_logo"
-        android:layout_width="@dimen/resource_logo_size"
-        android:layout_height="@dimen/resource_logo_size"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="@dimen/contest_title_padding"
-        android:layout_marginLeft="@dimen/list_item_padding"
-        android:layout_marginRight="@dimen/contest_title_padding"
-        android:layout_marginStart="@dimen/list_item_padding"
-        android:src="@mipmap/ic_launcher"/>
-
 
     <TextView
         android:id="@+id/resource_name"
@@ -48,5 +37,15 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/black"/>
 
+    <ImageView
+        android:id="@+id/website_logo"
+        android:layout_width="@dimen/resource_logo_size"
+        android:layout_height="@dimen/resource_logo_size"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/settings_resource_left_padding"
+        android:layout_marginLeft="@dimen/contest_title_padding"
+        android:layout_marginRight="@dimen/settings_resource_left_padding"
+        android:layout_marginStart="@dimen/contest_title_padding"
+        android:src="@mipmap/ic_launcher"/>
 
 </LinearLayout>

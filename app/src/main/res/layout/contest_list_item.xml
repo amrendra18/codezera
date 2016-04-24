@@ -29,19 +29,9 @@
             android:paddingStart="@dimen/contest_title_padding"
             android:paddingTop="@dimen/list_item_padding">
 
-            <ImageView
-                android:id="@+id/resource_logo"
-                android:layout_width="@dimen/resource_logo_size"
-                android:layout_height="@dimen/resource_logo_size"
-                android:layout_marginLeft="@dimen/list_item_padding"
-                android:layout_marginStart="@dimen/list_item_padding"
-                android:layout_marginRight="@dimen/contest_title_padding"
-                android:layout_marginEnd="@dimen/contest_title_padding"
-                android:layout_gravity="center_vertical"
-                android:src="@mipmap/ic_launcher"/>
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical">
@@ -68,6 +58,17 @@
                     android:textSize="@dimen/contest_resource_text_size"
                     tools:text="Codechef"/>
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/resource_logo"
+                android:layout_width="@dimen/resource_logo_size"
+                android:layout_height="@dimen/resource_logo_size"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginEnd="@dimen/list_item_padding"
+                android:layout_marginLeft="@dimen/contest_title_padding"
+                android:layout_marginStart="@dimen/contest_title_padding"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_launcher"/>
 
         </LinearLayout>
 

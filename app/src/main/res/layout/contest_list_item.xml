@@ -260,7 +260,7 @@
                 android:layout_marginLeft="@dimen/image_size_padding"
                 android:layout_marginRight="@dimen/image_size_padding"
                 android:layout_marginStart="@dimen/image_size_padding"
-                android:src="@drawable/share"/>
+                android:src="@drawable/share_button_selector"/>
 
 
         </LinearLayout>

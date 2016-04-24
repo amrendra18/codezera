@@ -1,9 +1,11 @@
 package com.amrendra.codefiesta.ui.fragments;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
@@ -23,7 +25,7 @@ import com.amrendra.codefiesta.utils.TrackingConstants;
 
 import butterknife.Bind;
 
-public class PastFragment extends BaseFragment {
+public class PastFragment extends BaseFragment implements ContestAdapter.ShareListener {
 
     private static final int CURRENT_CONTESTS_LOADER = 0;
 
@@ -76,7 +78,7 @@ public class PastFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new ContestAdapter(getActivity(), null, 0);
+        mAdapter = new ContestAdapter(getActivity(), null, 0, this);
         mListView.setAdapter(mAdapter);
         restartLoader(null);
     }
@@ -139,4 +141,12 @@ public class PastFragment extends BaseFragment {
     };
 
 
+    @Override
+    public void share(String msg) {
+        Debug.c();
+        startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
+                .setType("text/plain")
+                .setText(msg)
+                .getIntent(), getString(R.string.action_share)));
+    }
 }

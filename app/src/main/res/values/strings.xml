@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Code Fiesta</string>
+    <string name="app_name" translatable="false">CodeFiesta</string>
     <string name="splash_name" translatable="false">&lt; Code Fiesta /&gt;</string>
     <string name="hello_world">Hello World!</string>
     <string name="start_button_text">Lets Get Started</string>
@@ -17,6 +17,8 @@
     <string name="nav_rate">Rate app</string>
     <string name="nav_feedback">Feedback</string>
     <string name="nav_open_source">Open Source</string>
+
+    <string name="action_share">Share</string>
 
     <string name="status">Status</string>
     <string name="start_present">Start</string>

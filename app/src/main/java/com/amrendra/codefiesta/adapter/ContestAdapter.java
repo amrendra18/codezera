@@ -27,12 +27,17 @@ public class ContestAdapter extends CursorAdapter {
 
     final LayoutInflater mInflator;
     Context mContext;
+    ShareListener mListener;
 
-    public ContestAdapter(Context context, Cursor c, int flags) {
+    public interface ShareListener{
+        void share(String msg);
+    }
+
+    public ContestAdapter(Context context, Cursor c, int flags, ShareListener listener) {
         super(context, c, flags);
         mInflator = LayoutInflater.from(context);
         mContext = context;
-
+        mListener = listener;
     }
 
     @Override
@@ -47,13 +52,14 @@ public class ContestAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder mHolder = (ViewHolder) view.getTag();
 
-
-        mHolder.contestTitleTv.setText(cursor.getString(cursor.getColumnIndex(DBContract
-                .ContestEntry.CONTEST_NAME_COL)));
-        int resourceId = cursor.getInt(cursor.getColumnIndex(DBContract
+        final String contest = cursor.getString(cursor.getColumnIndex(DBContract
+                .ContestEntry.CONTEST_NAME_COL));
+        mHolder.contestTitleTv.setText(contest);
+        final int resourceId = cursor.getInt(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_RESOURCE_ID_COL));
         String resourceName = AppUtils.getResourceName(context, resourceId);
-        mHolder.contestWebsiteTv.setText(AppUtils.getGoodResourceName(resourceName));
+        final String shortResourceName = AppUtils.getGoodResourceName(resourceName);
+        mHolder.contestWebsiteTv.setText(shortResourceName);
         long duration = cursor.getLong(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_DURATION_COL));
         //mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration, false));
@@ -62,10 +68,15 @@ public class ContestAdapter extends CursorAdapter {
         long endTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(DBContract
                 .ContestEntry.CONTEST_END_COL)));
         CustomDate startDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(starTime));
-        CustomDate endDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(endTime));
+        final CustomDate endDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(endTime));
         mHolder.contestStartTime.setText(startDate.getTime());
         mHolder.contestStartAmPm.setText(startDate.getAmPm());
         mHolder.contestStartDate.setText(startDate.getDateMonthYear());
+
+        final String starts = "Starts : " + startDate.getTime() + " " + startDate.getAmPm() + " " +
+                "" + startDate.getDateMonthYear();
+        final String ends = "Ends : " + endDate.getTime() + " " + endDate.getAmPm() + " " +
+                "" + endDate.getDateMonthYear();
 
         mHolder.contestEndTime.setText(endDate.getTime());
         mHolder.contestEndAmPm.setText(endDate.getAmPm());
@@ -98,7 +109,14 @@ public class ContestAdapter extends CursorAdapter {
         mHolder.shareImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Debug.c();
+                StringBuilder sb = new StringBuilder();
+                sb.append("Checkout this contest!!\n");
+                sb.append(contest).append("\n");
+                sb.append("@ ").append(shortResourceName).append("\n");
+                sb.append(starts).append("\n");
+                sb.append(ends).append("\n");
+                sb.append("#").append(mContext.getString(R.string.app_name));
+                mListener.share(sb.toString());
             }
         });
     }

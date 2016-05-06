@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.utils.AppUtils;
-import com.amrendra.codefiesta.utils.CalendarUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
@@ -99,7 +98,7 @@ public class ContestAdapter extends CursorAdapter {
                 int contestStatus = DateUtils.getContestStatus(starTime, endTime);
                 if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
                     Debug.c();
-                    CalendarUtils.getInstance(mContext).addEvent(contest);
+                    //CalendarUtils.getInstance(mContext).addEvent(contest);
                 } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
                     String text = String.format(mContext.getString(R.string.contest_started),
                             contest.getEvent(),
@@ -120,7 +119,7 @@ public class ContestAdapter extends CursorAdapter {
                 int contestStatus = DateUtils.getContestStatus(starTime, endTime);
                 if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
                     Debug.c();
-                    CalendarUtils.getInstance(mContext).deleteEvent(contest);
+                    //CalendarUtils.getInstance(mContext).deleteEvent(contest);
                 } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
                     String text = String.format(mContext.getString(R.string.contest_started),
                             contest.getEvent(),
@@ -149,6 +148,7 @@ public class ContestAdapter extends CursorAdapter {
             }
         });
     }
+
 
     class ViewHolder {
         @Bind(R.id.contest_title_tv)

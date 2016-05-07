@@ -3,6 +3,7 @@ package com.amrendra.codefiesta.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
+import com.amrendra.codefiesta.bus.BusProvider;
+import com.amrendra.codefiesta.bus.events.ContestClickEvent;
 import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
@@ -26,19 +29,11 @@ public class ContestAdapter extends CursorAdapter {
 
     final LayoutInflater mInflator;
     Context mContext;
-    ContestElementsClickListener mListener;
 
-    public interface ContestElementsClickListener {
-        void onShareClick(String msg);
-
-        void onError(String msg);
-    }
-
-    public ContestAdapter(Context context, Cursor c, int flags, ContestElementsClickListener listener) {
+    public ContestAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         mInflator = LayoutInflater.from(context);
         mContext = context;
-        mListener = listener;
     }
 
     @Override
@@ -53,16 +48,11 @@ public class ContestAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder mHolder = (ViewHolder) view.getTag();
         final Contest contest = Contest.cursorToContest(mContext, cursor);
-/*        final String contest = cursor.getString(cursor.getColumnIndex(DBContract
-                .ContestEntry.CONTEST_NAME_COL));*/
         mHolder.contestTitleTv.setText(contest.getEvent());
         final int resourceId = contest.getWebsite().getId();
         String resourceName = AppUtils.getResourceName(context, resourceId);
         final String shortResourceName = AppUtils.getGoodResourceName(resourceName);
         mHolder.contestWebsiteTv.setText(shortResourceName);
-/*        long duration = cursor.getLong(cursor.getColumnIndex(DBContract
-                .ContestEntry.CONTEST_DURATION_COL));*/
-        //mHolder.contestDurationTv.setText(DateUtils.getDurationString(duration, false));
         final long starTime = DateUtils.getEpochTime(contest.getStart());
         final long endTime = DateUtils.getEpochTime(contest.getEnd());
         final CustomDate startDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(starTime));
@@ -71,11 +61,6 @@ public class ContestAdapter extends CursorAdapter {
         mHolder.contestStartTime.setText(startDate.getTime());
         mHolder.contestStartAmPm.setText(startDate.getAmPm());
         mHolder.contestStartDate.setText(startDate.getDateMonthYear());
-
-        final String starts = "Starts : " + startDate.getTime() + " " + startDate.getAmPm() + " " +
-                "" + startDate.getDateMonthYear();
-        final String ends = "Ends : " + endDate.getTime() + " " + endDate.getAmPm() + " " +
-                "" + endDate.getDateMonthYear();
 
         mHolder.contestEndTime.setText(endDate.getTime());
         mHolder.contestEndAmPm.setText(endDate.getAmPm());
@@ -89,10 +74,20 @@ public class ContestAdapter extends CursorAdapter {
                 .placeholder(R.mipmap.ic_launcher)
                 .crossFade()
                 .into(mHolder.resourceImageView);
+
+        mHolder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BusProvider.getInstance().post(new ContestClickEvent(contest));
+            }
+        });
     }
 
 
     class ViewHolder {
+
+        @Bind(R.id.card_view)
+        CardView mCardView;
         @Bind(R.id.contest_title_tv)
         TextView contestTitleTv;
         @Bind(R.id.contest_website_tv)

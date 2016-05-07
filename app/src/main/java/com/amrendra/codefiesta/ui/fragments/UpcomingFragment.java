@@ -1,17 +1,12 @@
 package com.amrendra.codefiesta.ui.fragments;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +24,7 @@ import com.amrendra.codefiesta.utils.TrackingConstants;
 
 import butterknife.Bind;
 
-public class UpcomingFragment extends BaseFragment implements ContestAdapter.ContestElementsClickListener {
+public class UpcomingFragment extends BaseFragment {
 
     private static final int CURRENT_CONTESTS_LOADER = 0;
     @Bind(R.id.list_fragment_coordinator_layout)
@@ -83,7 +78,7 @@ public class UpcomingFragment extends BaseFragment implements ContestAdapter.Con
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new ContestAdapter(getActivity(), null, 0, this);
+        mAdapter = new ContestAdapter(getActivity(), null, 0);
         mListView.setAdapter(mAdapter);
         restartLoader(null);
     }
@@ -144,20 +139,4 @@ public class UpcomingFragment extends BaseFragment implements ContestAdapter.Con
             mAdapter.swapCursor(null);
         }
     };
-
-
-    @Override
-    public void onShareClick(String msg) {
-        startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
-                .setType("text/plain")
-                .setText(msg)
-                .getIntent(), getString(R.string.action_share)));
-    }
-
-    @Override
-    public void onError(String msg) {
-        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, Html.fromHtml(msg), Snackbar.LENGTH_LONG);
-        snackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-        snackbar.show();
-    }
 }

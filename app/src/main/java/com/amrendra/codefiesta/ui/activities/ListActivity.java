@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.amrendra.codefiesta.R;
+import com.amrendra.codefiesta.bus.events.ContestClickEvent;
+import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.sync.CodeFiestaSyncAdapter;
 import com.amrendra.codefiesta.ui.fragments.CurrentFragment;
 import com.amrendra.codefiesta.ui.fragments.PastFragment;
@@ -23,6 +25,7 @@ import com.amrendra.codefiesta.ui.fragments.UpcomingFragment;
 import com.amrendra.codefiesta.utils.CalendarUtils;
 import com.amrendra.codefiesta.utils.Debug;
 import com.amrendra.codefiesta.utils.TrackingConstants;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 
@@ -234,6 +237,12 @@ public class ListActivity extends BaseActivity implements
         super.onSaveInstanceState(outState);
         outState.putInt(NAV_ITEM_ID, mNavItemId);
         outState.putString(TITLE, mTitle);
+    }
+
+    @Subscribe
+    public void onContestListItemClick(ContestClickEvent event) {
+        Contest contest = event.getContest();
+        Debug.e(contest.toString(), false);
     }
 }
 

@@ -1,12 +1,227 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context=".ui.fragments.DetailActivityFragment">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".ui.fragments.DetailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/list_item_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_tv_top"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/list_item_padding"
+            android:paddingEnd="@dimen/contest_title_padding"
+            android:paddingLeft="@dimen/contest_title_padding"
+            android:paddingRight="@dimen/contest_title_padding"
+            android:paddingStart="@dimen/contest_title_padding"
+            android:paddingTop="@dimen/list_item_padding">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/contest_title_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="@integer/title_max_lines"
+                    android:padding="@dimen/contest_title_padding"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/contest_title_text_size"
+                    android:textStyle="bold"
+                    tools:text="April Long Challenge"/>
+
+                <TextView
+                    android:id="@+id/contest_website_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryLight"
+                    android:maxLines="@integer/title_max_lines"
+                    android:padding="@dimen/contest_title_padding"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/contest_resource_text_size"
+                    tools:text="Codechef"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/resource_logo"
+                android:layout_width="@dimen/resource_logo_size"
+                android:layout_height="@dimen/resource_logo_size"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/list_item_padding"
+                android:layout_marginLeft="@dimen/contest_title_padding"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginStart="@dimen/contest_title_padding"
+                android:src="@mipmap/ic_launcher"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/contest_ampm_left_margin"
+            android:layout_marginTop="@dimen/contest_ampm_left_margin"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/contest_date_time_block_padding">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/contest_start_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:text="@string/start_present"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/contest_start_end_text"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/contest_start_time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/contest_time_text_size"
+                        android:textStyle="bold"
+                        tools:text="03:00"/>
+
+
+                    <TextView
+                        android:id="@+id/contest_start_time_ampm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/contest_ampm_left_margin"
+                        android:layout_marginStart="@dimen/contest_ampm_left_margin"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/contest_ampm_text_size"
+                        android:textStyle="bold"
+                        tools:text="PM"/>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/contest_start_date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/contest_ampm_left_margin"
+                    android:layout_marginStart="@dimen/contest_ampm_left_margin"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/contest_date_text_size"
+                    tools:text="SUN, 08 Apr '14"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/contest_start_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:text="@string/end_present"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/contest_start_end_text"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/contest_end_time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/contest_time_text_size"
+                        android:textStyle="bold"
+                        tools:text="03:00"/>
+
+                    <TextView
+                        android:id="@+id/contest_end_time_ampm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/contest_ampm_left_margin"
+                        android:layout_marginStart="@dimen/contest_ampm_left_margin"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/contest_ampm_text_size"
+                        android:textStyle="bold"
+                        tools:text="PM"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/contest_end_date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/contest_ampm_left_margin"
+                    android:layout_marginStart="@dimen/contest_ampm_left_margin"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/contest_date_text_size"
+                    tools:text="SAT, 08 Apr '14"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <include layout="@layout/divider"/>
+
+
+        <TextView
+            android:id="@+id/status_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/contest_ampm_left_margin"
+            android:layout_marginStart="@dimen/contest_ampm_left_margin"
+            android:gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:textSize="@dimen/contest_status_size"
+            android:textStyle="bold"
+            tools:text="Contests ends in 15d 12h 45m"/>
+    </LinearLayout>
 
 
 </RelativeLayout>

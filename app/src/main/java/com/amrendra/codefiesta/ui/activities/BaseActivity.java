@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.amrendra.codefiesta.CodeFiestaApplication;
+import com.amrendra.codefiesta.bus.BusProvider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -23,6 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CodeFiestaApplication application = (CodeFiestaApplication) getApplication();
         mTracker = application.getDefaultTracker();
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -35,6 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        BusProvider.getInstance().unregister(this);
         CodeFiestaApplication.getRefWatcher(this).watch(this);
     }
 

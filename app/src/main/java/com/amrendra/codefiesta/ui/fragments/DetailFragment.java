@@ -10,9 +10,9 @@ import com.amrendra.codefiesta.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailActivityFragment extends BaseFragment {
+public class DetailFragment extends BaseFragment {
 
-    public DetailActivityFragment() {
+    public DetailFragment() {
     }
 
     @Override

@@ -34,7 +34,7 @@ public class DBContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RESOURCE;
 
-        public static final String RESOURCE_ID_COL = "id";
+        public static final String RESOURCE_ID_COL = "rid";
         public static final String RESOURCE_NAME_COL = "rname";
         public static final String RESOURCE_SHOW_COL = "show";
 
@@ -83,7 +83,7 @@ public class DBContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CONTEST;
 
-        public static final String CONTEST_ID_COL = "id";
+        public static final String CONTEST_ID_COL = "cid";
         public static final String CONTEST_NAME_COL = "name";
         public static final String CONTEST_URL_COL = "url";
         public static final String CONTEST_RESOURCE_ID_COL = "resource_id";

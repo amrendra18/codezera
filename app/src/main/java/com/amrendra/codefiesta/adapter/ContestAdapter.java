@@ -17,6 +17,7 @@ import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
+import com.amrendra.codefiesta.utils.Debug;
 import com.bumptech.glide.Glide;
 
 import butterknife.Bind;
@@ -78,7 +79,9 @@ public class ContestAdapter extends CursorAdapter {
         mHolder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BusProvider.getInstance().post(new ContestClickEvent(contest));
+                Debug.e(contest.toString(), false);
+                BusProvider.getInstance().post(new ContestClickEvent(contest.getId(), contest
+                        .getEvent()));
             }
         });
     }

@@ -32,16 +32,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.ListActivity"
+            android:name=".ui.activities.MainActivity"
             android:label="@string/title_activity_list">
         </activity>
         <activity
             android:name=".ui.activities.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".ui.activities.ListActivity">
+            android:parentActivityName=".ui.activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.amrendra.codefiesta.ui.activities.ListActivity"/>
+                android:value=".ui.activities.MainActivity"/>
         </activity>
 
         <provider

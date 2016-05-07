@@ -49,7 +49,7 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     private void startMainListActivity() {
-        Intent intent = new Intent(this, ListActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }

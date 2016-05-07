@@ -38,7 +38,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         ButterKnife.unbind(this);
         BusProvider.getInstance().unregister(this);
-        CodeFiestaApplication.getRefWatcher(this).watch(this);
     }
 
     protected void trackActivity(String screenName) {

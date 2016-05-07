@@ -1,7 +1,6 @@
 package com.amrendra.codefiesta;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.amrendra.codefiesta.sync.CodeFiestaSyncAdapter;
 import com.amrendra.codefiesta.utils.AppUtils;
@@ -10,8 +9,6 @@ import com.amrendra.codefiesta.utils.UserPreferences;
 import com.facebook.stetho.Stetho;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 /**
  * Created by Amrendra Kumar on 05/04/16.
@@ -19,12 +16,10 @@ import com.squareup.leakcanary.RefWatcher;
 public class CodeFiestaApplication extends Application {
 
     private Tracker mTracker;
-    private RefWatcher refWatcher;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        refWatcher = installLeakCanary();
         Stetho.initializeWithDefaults(this);
         AppUtils.cacheResources(this);
         getDefaultTracker();
@@ -45,16 +40,6 @@ public class CodeFiestaApplication extends Application {
 
     public static void shouldNotHappen(String msg) {
         Debug.e(msg);
-    }
-
-    protected RefWatcher installLeakCanary() {
-        return LeakCanary.install(this);
-        //return RefWatcher.DISABLED;
-    }
-
-    public static RefWatcher getRefWatcher(Context context) {
-        CodeFiestaApplication application = (CodeFiestaApplication) context.getApplicationContext();
-        return application.refWatcher;
     }
 
     synchronized public Tracker getDefaultTracker() {

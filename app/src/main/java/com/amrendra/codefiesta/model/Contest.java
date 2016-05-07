@@ -38,10 +38,11 @@ public class Contest implements Parcelable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Contest{\n");
+        sb.append("Id: ").append(getId()).append("\n");
         sb.append("Event: ").append(getEvent()).append("\n");
         sb.append("Start: ").append(getStart()).append("\n");
         sb.append("End: ").append(getEnd()).append("\n");
-        sb.append("Website: ").append(getWebsite()).append("\n");
+        sb.append("Website: ").append(getWebsite());
         sb.append("}\n");
         return sb.toString();
     }

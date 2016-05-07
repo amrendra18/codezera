@@ -32,6 +32,8 @@ public class AppUtils {
     public static final int STATUS_CALENDAR_NO_ACCOUNT = -2;
     public static final int STATUS_CALENDAR_EVENT_ALREADY_ADDED = -3;
 
+    public static final String CONTEST_ID_KEY = "CONTEST_ID_KEY";
+
 
     public static final String UNKNOWN_RESOURCE = "Unknown Website";
 

@@ -16,12 +16,13 @@ import android.view.View;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.bus.events.ContestClickEvent;
-import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.sync.CodeFiestaSyncAdapter;
 import com.amrendra.codefiesta.ui.fragments.CurrentFragment;
+import com.amrendra.codefiesta.ui.fragments.DetailFragment;
 import com.amrendra.codefiesta.ui.fragments.PastFragment;
 import com.amrendra.codefiesta.ui.fragments.SelectionFragment;
 import com.amrendra.codefiesta.ui.fragments.UpcomingFragment;
+import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.CalendarUtils;
 import com.amrendra.codefiesta.utils.Debug;
 import com.amrendra.codefiesta.utils.TrackingConstants;
@@ -29,7 +30,7 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 
-public class ListActivity extends BaseActivity implements
+public class MainActivity extends BaseActivity implements
         NavigationView.OnNavigationItemSelectedListener {
     private static final long DRAWER_CLOSE_DELAY_MS = 150;
     private static final String NAV_ITEM_ID = "navItemId";
@@ -152,14 +153,18 @@ public class ListActivity extends BaseActivity implements
             e.printStackTrace();
         }
 
+        changeFragment(fragment, mTitle);
+    }
+
+    private void changeFragment(Fragment fragment, String title) {
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame, fragment)
-                .addToBackStack(mTitle)
+                .addToBackStack(title)
                 .commit();
 
-        setUpTitle(mTitle);
+        setUpTitle(title);
     }
 
     public void setUpTitle(String title) {
@@ -241,8 +246,12 @@ public class ListActivity extends BaseActivity implements
 
     @Subscribe
     public void onContestListItemClick(ContestClickEvent event) {
-        Contest contest = event.getContest();
-        Debug.e(contest.toString(), false);
+        int contestId = event.getContestId();
+        DetailFragment detailFragment = new DetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppUtils.CONTEST_ID_KEY, contestId);
+        detailFragment.setArguments(bundle);
+        changeFragment(detailFragment, event.getTitle());
     }
 }
 

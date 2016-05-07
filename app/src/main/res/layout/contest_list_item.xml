@@ -210,61 +210,20 @@
 
         <include layout="@layout/divider"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/status_tv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/list_item_padding">
-
-            <TextView
-                android:id="@+id/status_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginLeft="@dimen/contest_ampm_left_margin"
-                android:layout_marginStart="@dimen/contest_ampm_left_margin"
-                android:layout_weight="1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/contest_status_size"
-                android:textStyle="bold"
-                tools:text="Contests ends in 15d 12h 45m"/>
-
-            <ImageView
-                android:id="@+id/calendar_image"
-                android:layout_width="@dimen/share_image_size"
-                android:layout_height="@dimen/share_image_size"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/image_size_padding"
-                android:layout_marginLeft="@dimen/image_size_padding"
-                android:layout_marginRight="@dimen/image_size_padding"
-                android:layout_marginStart="@dimen/image_size_padding"
-                android:src="@drawable/calendar_selector"/>
-
-            <ImageView
-                android:id="@+id/notification_image"
-                android:layout_width="@dimen/share_image_size"
-                android:layout_height="@dimen/share_image_size"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/image_size_padding"
-                android:layout_marginLeft="@dimen/image_size_padding"
-                android:layout_marginRight="@dimen/image_size_padding"
-                android:layout_marginStart="@dimen/image_size_padding"
-                android:src="@drawable/notification_selector"/>
-
-            <ImageView
-                android:id="@+id/share_image"
-                android:layout_width="@dimen/share_image_size"
-                android:layout_height="@dimen/share_image_size"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/image_size_padding"
-                android:layout_marginLeft="@dimen/image_size_padding"
-                android:layout_marginRight="@dimen/image_size_padding"
-                android:layout_marginStart="@dimen/image_size_padding"
-                android:src="@drawable/share_button_selector"/>
-
-
-        </LinearLayout>
-
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/contest_ampm_left_margin"
+            android:layout_marginStart="@dimen/contest_ampm_left_margin"
+            android:gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:textSize="@dimen/contest_status_size"
+            android:textStyle="bold"
+            tools:text="Contests ends in 15d 12h 45m"/>
     </LinearLayout>
+
 
 </android.support.v7.widget.CardView>

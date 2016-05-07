@@ -14,7 +14,6 @@ import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
-import com.amrendra.codefiesta.utils.Debug;
 import com.bumptech.glide.Glide;
 
 import butterknife.Bind;
@@ -90,63 +89,6 @@ public class ContestAdapter extends CursorAdapter {
                 .placeholder(R.mipmap.ic_launcher)
                 .crossFade()
                 .into(mHolder.resourceImageView);
-
-
-        mHolder.calendarImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int contestStatus = DateUtils.getContestStatus(starTime, endTime);
-                if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
-                    Debug.c();
-                    //CalendarUtils.getInstance(mContext).addEvent(contest);
-                } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
-                    String text = String.format(mContext.getString(R.string.contest_started),
-                            contest.getEvent(),
-                            shortResourceName);
-                    mListener.onError(text);
-                } else {
-                    String text = String.format(mContext.getString(R.string.contest_ended),
-                            contest.getEvent(),
-                            shortResourceName);
-                    mListener.onError(text);
-                }
-            }
-        });
-
-        mHolder.notificationImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int contestStatus = DateUtils.getContestStatus(starTime, endTime);
-                if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
-                    Debug.c();
-                    //CalendarUtils.getInstance(mContext).deleteEvent(contest);
-                } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
-                    String text = String.format(mContext.getString(R.string.contest_started),
-                            contest.getEvent(),
-                            shortResourceName);
-                    mListener.onError(text);
-                } else {
-                    String text = String.format(mContext.getString(R.string.contest_ended),
-                            contest.getEvent(),
-                            shortResourceName);
-                    mListener.onError(text);
-                }
-            }
-        });
-
-        mHolder.shareImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Checkout this contest!!\n");
-                sb.append(contest.getEvent()).append("\n");
-                sb.append("@ ").append(shortResourceName).append("\n");
-                sb.append(starts).append("\n");
-                sb.append(ends).append("\n");
-                sb.append("#").append(mContext.getString(R.string.app_name));
-                mListener.onShareClick(sb.toString());
-            }
-        });
     }
 
 
@@ -157,12 +99,6 @@ public class ContestAdapter extends CursorAdapter {
         TextView contestWebsiteTv;
         @Bind(R.id.resource_logo)
         ImageView resourceImageView;
-        @Bind(R.id.calendar_image)
-        ImageView calendarImageView;
-        @Bind(R.id.notification_image)
-        ImageView notificationImageView;
-        @Bind(R.id.share_image)
-        ImageView shareImageView;
         @Bind(R.id.status_tv)
         TextView statusTv;
 

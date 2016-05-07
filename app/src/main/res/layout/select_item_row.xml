@@ -32,7 +32,7 @@
         android:paddingLeft="@dimen/settings_resource_left_padding"
         android:paddingRight="@dimen/settings_resource_right_padding"
         android:paddingStart="@dimen/settings_resource_left_padding"
-        android:paddingTop="@dimen/settings_resource_topt_padding"
+        android:paddingTop="@dimen/settings_resource_top_padding"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/black"/>

@@ -268,7 +268,7 @@ public class DetailFragment extends BaseFragment {
     private void configureTimer() {
         if (starTime != -1 && endTime != -1) {
             int contestStatus = DateUtils.getContestStatus(starTime, endTime);
-            long timeNow = System.currentTimeMillis() / 1000;
+            final long timeNow = System.currentTimeMillis() / 1000;
             long diff = 0;
             if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
                 diff = starTime - timeNow;
@@ -282,16 +282,20 @@ public class DetailFragment extends BaseFragment {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (isTimerPaused) {
-                            Debug.e("timer cancellled", false);
+                            Debug.e("timer cancelled", false);
                             cancel();
                             return;
                         }
                         long secUntilFinished = millisUntilFinished / 1000;
                         TimerUtil timerUtil = new TimerUtil(secUntilFinished);
-                        daysProgressBar.setMiddleText(""+timerUtil.getDays());
-                        hoursProgressBar.setMiddleText(""+timerUtil.getHours());
-                        minsProgressBar.setMiddleText(""+timerUtil.getMin());
-                        secProgressBar.setMiddleText(""+timerUtil.getSec());
+                        long daysLeft = timerUtil.getDays();
+                        daysProgressBar.setMiddleText("" + daysLeft, 100.0f * daysLeft / 365);
+                        long hoursLeft = timerUtil.getHours();
+                        hoursProgressBar.setMiddleText("" + hoursLeft, 100.0f * hoursLeft / 24);
+                        long minLeft = timerUtil.getMin();
+                        minsProgressBar.setMiddleText("" + minLeft, 100.0f * minLeft / 60);
+                        long secLeft = timerUtil.getSec();
+                        secProgressBar.setMiddleText("" + secLeft, 100.0f * secLeft / 60);
                     }
 
                     @Override

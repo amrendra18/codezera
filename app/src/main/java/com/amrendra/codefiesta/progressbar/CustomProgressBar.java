@@ -38,7 +38,7 @@ public class CustomProgressBar extends View {
 
     // Text progress
     private boolean displayProgressPercentage = true;
-    private float textSize = 24;
+    private float textSize = 32;
 
     private RectF outerRing = new RectF();// ProgressBar rectangle
     private RectF innerRing = new RectF();// Center Background rectangle
@@ -156,8 +156,16 @@ public class CustomProgressBar extends View {
         }
     }
 
-    public void setMiddleText(String text) {
+    public void setMiddleText(String text, float progressLeft) {
         textMiddle = text;
+        float progress = 100.0f - progressLeft;
+        if (progress < 0) {
+            progress = 0;
+        }
+        if (progress > 100) {
+            progress = 100;
+        }
+        this.progress = progress;
         invalidate();
     }
 

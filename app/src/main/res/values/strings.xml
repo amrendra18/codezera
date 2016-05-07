@@ -26,6 +26,11 @@
     <string name="end_present">End</string>
     <string name="end_past">Ended</string>
 
+    <string name="days">days</string>
+    <string name="hours">hours</string>
+    <string name="min">min</string>
+    <string name="sec">sec</string>
+
     <string name="save">Save</string>
 
     <string-array name="nav_menus">

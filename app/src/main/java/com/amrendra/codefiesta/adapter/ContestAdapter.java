@@ -80,8 +80,7 @@ public class ContestAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 Debug.e(contest.toString(), false);
-                BusProvider.getInstance().post(new ContestClickEvent(contest.getId(), contest
-                        .getEvent()));
+                BusProvider.getInstance().post(new ContestClickEvent(contest));
             }
         });
     }

@@ -1,22 +1,18 @@
 package com.amrendra.codefiesta.bus.events;
 
+import com.amrendra.codefiesta.model.Contest;
+
 /**
  * Created by Amrendra Kumar on 07/05/16.
  */
 public final class ContestClickEvent {
-    int contestId;
-    String title;
+    Contest contest;
 
-    public ContestClickEvent(int contestId, String title) {
-        this.contestId = contestId;
-        this.title = title;
+    public ContestClickEvent(Contest contest) {
+        this.contest = contest;
     }
 
-    public int getContestId() {
-        return contestId;
-    }
-
-    public String getTitle() {
-        return title;
+    public Contest getContest() {
+        return contest;
     }
 }

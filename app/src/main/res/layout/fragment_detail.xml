@@ -1,19 +1,23 @@
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/detail_fragment_coordinator_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ui.fragments.DetailFragment">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical"
-        android:padding="@dimen/list_item_padding">
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context=".ui.fragments.DetailFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,6 +73,28 @@
                 android:src="@mipmap/ic_launcher"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/contest_link_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryLight"
+            android:maxLines="@integer/title_max_lines"
+            android:padding="@dimen/contest_title_padding"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/contest_resource_text_size"
+            tools:text="https://www.codechef.com/JUNE13"/>
+
+        <TextView
+            android:id="@+id/contest_timezone_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryLight"
+            android:maxLines="@integer/title_max_lines"
+            android:padding="@dimen/contest_title_padding"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/contest_resource_text_size"
+            tools:text="UTC/GMT +5:30 hours"/>
 
 
         <LinearLayout
@@ -206,9 +232,6 @@
         </LinearLayout>
 
 
-        <include layout="@layout/divider"/>
-
-
         <TextView
             android:id="@+id/status_tv"
             android:layout_width="wrap_content"
@@ -221,7 +244,132 @@
             android:textSize="@dimen/contest_status_size"
             android:textStyle="bold"
             tools:text="Contests ends in 15d 12h 45m"/>
+
+
+        <LinearLayout
+            android:id="@+id/progress_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.amrendra.codefiesta.progressbar.CustomProgressBar
+                android:id="@+id/progress_bar_days"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <com.amrendra.codefiesta.progressbar.CustomProgressBar
+                android:id="@+id/progress_bar_hours"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <com.amrendra.codefiesta.progressbar.CustomProgressBar
+                android:id="@+id/progress_bar_mins"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <com.amrendra.codefiesta.progressbar.CustomProgressBar
+                android:id="@+id/progress_bar_sec"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/progress_bar_label_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/progress_bar_label_days"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/days"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <TextView
+                android:id="@+id/progress_bar_label_hours"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/hours"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <TextView
+                android:id="@+id/progress_bar_label_mins"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/min"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <TextView
+                android:id="@+id/progress_bar_label_sec"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/sec"
+                android:textColor="@color/colorPrimaryDark"/>
+
+        </LinearLayout>
     </LinearLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/calendar_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|bottom"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:elevation="@dimen/fav_elevation"
+        android:scaleType="centerCrop"
+        android:src="@drawable/calendar_selector"
+        app:backgroundTint="@color/colorPrimaryLight"
+        app:borderWidth="@dimen/fav_border_width"
+        app:fabSize="normal"
+        app:rippleColor="@android:color/transparent"/>
 
-</RelativeLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/notification_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:elevation="@dimen/fav_elevation"
+        android:scaleType="centerCrop"
+        android:src="@drawable/notification_selector"
+        app:backgroundTint="@color/colorPrimaryLight"
+        app:borderWidth="@dimen/fav_border_width"
+        app:fabSize="normal"
+        app:rippleColor="@android:color/transparent"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/share_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:elevation="@dimen/fav_elevation"
+        android:scaleType="centerCrop"
+        android:src="@drawable/share_button_selector"
+        app:backgroundTint="@color/colorPrimaryLight"
+        app:borderWidth="@dimen/fav_border_width"
+        app:fabSize="normal"
+        app:rippleColor="@android:color/transparent"/>
+</android.support.design.widget.CoordinatorLayout>

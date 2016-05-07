@@ -37,5 +37,8 @@
     <dimen name="settings_resource_top_padding">4dp</dimen>
 
     <dimen name="status_padding">4dp</dimen>
+    <dimen name="fav_border_width">1dp</dimen>
+    <dimen name="fav_elevation">4dp</dimen>
+
 
 </resources>

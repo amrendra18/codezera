@@ -27,7 +27,7 @@ public class Debug {
             StackTraceElement strace = Thread.currentThread().getStackTrace()[4];
             // String fileName = strace.getFileName();
             String className = strace.getClassName();
-            className = className.replace(packageName, "");
+            //className = className.replace(packageName, "");
             String methodName = strace.getMethodName();
             int line = strace.getLineNumber();
             msg = className + "::" + methodName + "()[" + line + "]" + " : " + msg;

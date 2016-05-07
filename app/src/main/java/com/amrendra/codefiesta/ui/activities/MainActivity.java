@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.bus.events.ContestClickEvent;
+import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.sync.CodeFiestaSyncAdapter;
 import com.amrendra.codefiesta.ui.fragments.CurrentFragment;
 import com.amrendra.codefiesta.ui.fragments.DetailFragment;
@@ -246,12 +247,12 @@ public class MainActivity extends BaseActivity implements
 
     @Subscribe
     public void onContestListItemClick(ContestClickEvent event) {
-        int contestId = event.getContestId();
+        Contest contest = event.getContest();
         DetailFragment detailFragment = new DetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(AppUtils.CONTEST_ID_KEY, contestId);
+        bundle.putParcelable(AppUtils.CONTEST_ID_KEY, contest);
         detailFragment.setArguments(bundle);
-        changeFragment(detailFragment, event.getTitle());
+        changeFragment(detailFragment, contest.getEvent());
     }
 }
 

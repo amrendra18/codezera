@@ -37,7 +37,7 @@ public class CalendarUtils {
         }
 
         int eventIdCheck = checkEvent(contest);
-        Debug.e("check : " + eventIdCheck);
+        Debug.e("check : " + eventIdCheck, false);
         if (eventIdCheck == -1) {
             ContentValues cv = contest.toCalendarEventContentValues(calId);
             try {
@@ -46,8 +46,8 @@ public class CalendarUtils {
                                 insert(CalendarContract.Events.CONTENT_URI, cv);
                 if (uri != null) {
                     long eventId = Long.valueOf(uri.getLastPathSegment());
-                    Debug.e("uri : " + uri);
-                    Debug.e("eventId : " + eventId);
+                    Debug.e("uri : " + uri, false);
+                    Debug.e("eventId : " + eventId, false);
 
                     ContentValues cvv = new ContentValues();
                     cvv.put(DBContract.CalendarEntry.CALENDAR_CONTEST_ID_COL, contest.getId());
@@ -58,7 +58,7 @@ public class CalendarUtils {
                             .getEpochTime(contest.getStart()));
                     Uri uri2 = mContext.getContentResolver().insert(DBContract.CalendarEntry
                             .CONTENT_URI_ALL_CALENDAR_EVENTS, cvv);
-                    Debug.e("uri2 : " + uri2);
+                    Debug.e("uri2 : " + uri2, false);
                 }
                 success = AppUtils.STATUS_CALENDAR_EVENT_SUCCESS;
             } catch (SecurityException se) {
@@ -107,7 +107,7 @@ public class CalendarUtils {
         }
 
         long eventIdCheck = checkEvent(contest);
-        Debug.e("check : " + eventIdCheck);
+        Debug.e("check : " + eventIdCheck, false);
         if (eventIdCheck != -1) {
             try {
                 int deleted = mContext.getContentResolver().
@@ -116,7 +116,7 @@ public class CalendarUtils {
                                 CalendarContract.Events._ID + " =? ",
                                 new String[]{Long.toString(eventIdCheck)});
 
-                Debug.e("del : " + deleted);
+                Debug.e("del : " + deleted, false);
                 mContext.getContentResolver().delete(DBContract.CalendarEntry.CONTENT_URI_ALL_CALENDAR_EVENTS,
                         DBContract.CalendarEntry.CALENDAR_CONTEST_ID_COL + " = ?",
                         new String[]{Long.toString(contest.getId())});
@@ -157,7 +157,7 @@ public class CalendarUtils {
                                 .Calendars
                                 .CALENDAR_TIME_ZONE));
                         Debug.i("id: " + id + " name: " + name + " accName: " + accountName + " zone: " +
-                                "" + timezone);
+                                "" + timezone, false);
                         return id;
                     }
                 } finally {

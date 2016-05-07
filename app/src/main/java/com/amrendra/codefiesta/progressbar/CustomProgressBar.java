@@ -57,6 +57,8 @@ public class CustomProgressBar extends View {
     private Bitmap bitmap = null;
     private Canvas canvas = null;
 
+    private String textMiddle = "0";
+
     public CustomProgressBar(Context context) {
         this(context, null);
 
@@ -110,7 +112,7 @@ public class CustomProgressBar extends View {
         if (displayProgressPercentage) {
             float textHeight = textPaint.descent() - textPaint.ascent();
             float verticalTextOffset = (textHeight / 2) - textPaint.descent();
-            String s = "" + ((int) progress) + "%";
+            String s = textMiddle;
             float horizontalTextOffset = textPaint.measureText(s) / 2;
             canvas.drawText(s, this.getWidth() / 2 - horizontalTextOffset, this.getHeight() / 2
                     + verticalTextOffset, textPaint);
@@ -152,6 +154,11 @@ public class CustomProgressBar extends View {
         if (outerRing != null && outerRing.width() > 0) {
             postInvalidate();
         }
+    }
+
+    public void setMiddleText(String text) {
+        textMiddle = text;
+        invalidate();
     }
 
     public synchronized void setProgress(float progress) {

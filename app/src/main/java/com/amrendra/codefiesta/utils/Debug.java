@@ -41,26 +41,6 @@ public class Debug {
         }
     }
 
-    public static void e(String msg) {
-        e(msg, false);
-    }
-
-    public static void v(String msg) {
-        v(msg, false);
-    }
-
-    public static void d(String msg) {
-        d(msg, false);
-    }
-
-    public static void i(String msg) {
-        i(msg, false);
-    }
-
-    public static void w(String msg) {
-        w(msg, false);
-    }
-
     public static void e(String msg, Boolean show) {
         if (DEBUG || show) {
             Log.e(TAG, getMsg(msg));

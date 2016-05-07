@@ -121,7 +121,7 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
         public void onLoadFinished(Loader<List<Website>> loader, List<Website> list) {
             Debug.c();
             if (list != null) {
-                Debug.e(" size : " + list.size());
+                Debug.e(" size : " + list.size(), false);
                 mAdapter.resetWebsiteList(list);
             }
 
@@ -142,7 +142,7 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
 
     @Override
     public void settingsChanged(int competitionId, int want) {
-        Debug.e("Change required : " + competitionId + " change : " + want);
+        Debug.e("Change required : " + competitionId + " change : " + want, false);
         settingsHashMap.put(competitionId, want);
     }
 
@@ -162,7 +162,7 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
             for (Map.Entry<Integer, Integer> entry : settingsHashMap.entrySet()) {
                 int resourceId = entry.getKey();
                 int show = entry.getValue();
-                Debug.e("changing operation for : " + resourceId + " change : " + show);
+                Debug.e("changing operation for : " + resourceId + " change : " + show, false);
                 ContentValues cv = new ContentValues();
                 cv.put(DBContract.ResourceEntry.RESOURCE_ID_COL, resourceId);
                 cv.put(DBContract.ResourceEntry.RESOURCE_SHOW_COL, show);
@@ -177,7 +177,7 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
                 Debug.showToastShort("Updated settings for " + cpr.length + " websites", getActivity());
             } catch (RemoteException | OperationApplicationException e) {
                 e.printStackTrace();
-                Debug.e(" error : " + e.getLocalizedMessage());
+                Debug.e(" error : " + e.getLocalizedMessage(), false);
             }
             Debug.c();
             refreshSettingsList();

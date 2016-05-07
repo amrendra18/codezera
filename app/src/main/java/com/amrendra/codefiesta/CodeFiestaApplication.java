@@ -39,7 +39,7 @@ public class CodeFiestaApplication extends Application {
 
 
     public static void shouldNotHappen(String msg) {
-        Debug.e(msg);
+        Debug.e(msg, false);
     }
 
     synchronized public Tracker getDefaultTracker() {

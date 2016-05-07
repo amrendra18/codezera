@@ -81,7 +81,7 @@ public class SelectionAdapter extends RecyclerView.Adapter<SelectionAdapter.View
             public void onClick(View v) {
                 //Debug.showToastShort("" + resourceId + " " + isChecked, context);
                 int toShow = (((CheckBox) v).isChecked() ? 1 : 0);
-                Debug.i("resource : " + resourceId + " change : " + toShow);
+                Debug.i("resource : " + resourceId + " change : " + toShow, false);
                 settingsChangedListener.settingsChanged(resourceId, toShow);
                 website.setShow(toShow);
             }

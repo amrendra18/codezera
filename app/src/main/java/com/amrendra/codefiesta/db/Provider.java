@@ -298,7 +298,7 @@ public class Provider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
-        Debug.i("uri : " + uri);
+        Debug.i("uri : " + uri, false);
         final int match = sUriMatcher.match(uri);
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
         Uri returnUri = null;

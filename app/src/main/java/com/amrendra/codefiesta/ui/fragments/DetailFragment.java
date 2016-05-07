@@ -3,8 +3,8 @@ package com.amrendra.codefiesta.ui.fragments;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +25,7 @@ import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
+import com.amrendra.codefiesta.utils.TimerUtil;
 import com.bumptech.glide.Glide;
 
 import java.util.TimeZone;
@@ -37,6 +38,9 @@ import butterknife.Bind;
 public class DetailFragment extends BaseFragment {
 
     Contest contest;
+    long starTime = -1;
+    long endTime = -1;
+    boolean isTimerPaused = false;
 
     @Bind(R.id.detail_fragment_coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
@@ -97,7 +101,8 @@ public class DetailFragment extends BaseFragment {
         } else {
             Debug.e("Should not happen. DetailFragmet needs to have contestId", false);
         }
-        Debug.e("contest " + contest);
+        Debug.e("contest " + contest, false);
+        isTimerPaused = false;
     }
 
     @Override
@@ -121,8 +126,8 @@ public class DetailFragment extends BaseFragment {
             timeZoneTv.setText(tz.getID() + " " + tz.getDisplayName(false, TimeZone.SHORT));
 
 
-            final long starTime = DateUtils.getEpochTime(contest.getStart());
-            final long endTime = DateUtils.getEpochTime(contest.getEnd());
+            starTime = DateUtils.getEpochTime(contest.getStart());
+            endTime = DateUtils.getEpochTime(contest.getEnd());
             final CustomDate startDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(starTime));
             final CustomDate endDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(endTime));
 
@@ -216,7 +221,6 @@ public class DetailFragment extends BaseFragment {
             });
 
 
-
             secProgressBar.setStartAngle(180);
             secProgressBar.setRingRadiusRatio(0.75f);
             secProgressBar.setTextColor(Color.WHITE);
@@ -225,10 +229,21 @@ public class DetailFragment extends BaseFragment {
             secProgressBar.setProgressRingForegroundColor("#e300fc");
             secProgressBar.setCenterBackgroundColor("#213051");
             secProgressBar.setVisibility(View.VISIBLE);
-
-            new ShowProgress().execute();
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isTimerPaused = false;
+        configureTimer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isTimerPaused = true;
     }
 
     public void openWebsite(String url) {
@@ -250,58 +265,41 @@ public class DetailFragment extends BaseFragment {
         snackbar.show();
     }
 
-    class ShowProgress extends AsyncTask<Void, Integer, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            int i = 0;
-            while (true) {
-                publishProgress(i);
-                if (i >= 100) {
-                    break;
-                }
-                i++;
-                try {
-                    Thread.sleep(700);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+    private void configureTimer() {
+        if (starTime != -1 && endTime != -1) {
+            int contestStatus = DateUtils.getContestStatus(starTime, endTime);
+            long timeNow = System.currentTimeMillis() / 1000;
+            long diff = 0;
+            if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
+                diff = starTime - timeNow;
+            } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
+                diff = endTime - timeNow;
             }
-            return null;
-        }
+            diff = diff * 1000;
+            Debug.e("diff : " + diff, false);
+            if (diff > 0) {
+                new CountDownTimer(diff, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (isTimerPaused) {
+                            Debug.e("timer cancellled", false);
+                            cancel();
+                            return;
+                        }
+                        long secUntilFinished = millisUntilFinished / 1000;
+                        TimerUtil timerUtil = new TimerUtil(secUntilFinished);
+                        daysProgressBar.setMiddleText(""+timerUtil.getDays());
+                        hoursProgressBar.setMiddleText(""+timerUtil.getHours());
+                        minsProgressBar.setMiddleText(""+timerUtil.getMin());
+                        secProgressBar.setMiddleText(""+timerUtil.getSec());
+                    }
 
-        @Override
-        protected void onPreExecute() {
-            // TODO Auto-generated method stub
-            super.onPreExecute();
-            daysProgressBar.setProgress(0);
-            hoursProgressBar.setProgress(0);
-            minsProgressBar.setProgress(0);
-            secProgressBar.setProgress(0);
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            daysProgressBar.setProgress(values[0]);
-            hoursProgressBar.setProgress(values[0]);
-            minsProgressBar.setProgress(values[0]);
-            secProgressBar.setProgress(values[0]);
-        }
-
-        @Override
-        protected void onCancelled(Void result) {
-            super.onCancelled(result);
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
+                    @Override
+                    public void onFinish() {
+                        Debug.e("", false);
+                    }
+                }.start();
+            }
         }
 
     }

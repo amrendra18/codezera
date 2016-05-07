@@ -1,6 +1,9 @@
 package com.amrendra.codefiesta.ui.fragments;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.model.Contest;
+import com.amrendra.codefiesta.progressbar.CustomProgressBar;
 import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
@@ -60,9 +64,6 @@ public class DetailFragment extends BaseFragment {
     @Bind(R.id.contest_end_date_tv)
     TextView contestEndDate;
 
-
-    @Bind(R.id.contest_link_tv)
-    TextView contestLinkTv;
     @Bind(R.id.contest_timezone_tv)
     TextView timeZoneTv;
 
@@ -72,6 +73,17 @@ public class DetailFragment extends BaseFragment {
     FloatingActionButton notificationImageView;
     @Bind(R.id.share_image)
     FloatingActionButton shareImageView;
+    @Bind(R.id.link_website)
+    FloatingActionButton websiteLink;
+
+    @Bind(R.id.progress_bar_days)
+    CustomProgressBar daysProgressBar;
+    @Bind(R.id.progress_bar_hours)
+    CustomProgressBar hoursProgressBar;
+    @Bind(R.id.progress_bar_mins)
+    CustomProgressBar minsProgressBar;
+    @Bind(R.id.progress_bar_sec)
+    CustomProgressBar secProgressBar;
 
     public DetailFragment() {
     }
@@ -105,10 +117,9 @@ public class DetailFragment extends BaseFragment {
             contestWebsiteTv.setText(contest.getWebsite().getName());
 
             contestTitleTv.setText(contest.getEvent());
-            contestLinkTv.setText(contest.getUrl());
             TimeZone tz = TimeZone.getDefault();
             timeZoneTv.setText(tz.getID() + " " + tz.getDisplayName(false, TimeZone.SHORT));
-            statusTv.setText("status");
+
 
             final long starTime = DateUtils.getEpochTime(contest.getStart());
             final long endTime = DateUtils.getEpochTime(contest.getEnd());
@@ -127,6 +138,8 @@ public class DetailFragment extends BaseFragment {
             contestEndTime.setText(endDate.getTime());
             contestEndAmPm.setText(endDate.getAmPm());
             contestEndDate.setText(endDate.getDateMonthYear());
+
+            statusTv.setText(DateUtils.getContestStatusString(starTime, endTime));
 
             final int resourceId = contest.getWebsite().getId();
             String resourceName = AppUtils.getResourceName(getActivity(), resourceId);
@@ -168,12 +181,12 @@ public class DetailFragment extends BaseFragment {
 
                     } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
                         String text = String.format(getString(R.string.contest_started),
-                                contest,
+                                contest.getEvent(),
                                 shortResourceName);
                         onError(text);
                     } else {
                         String text = String.format(getString(R.string.contest_ended),
-                                contest,
+                                contest.getEvent(),
                                 shortResourceName);
                         onError(text);
                     }
@@ -193,8 +206,35 @@ public class DetailFragment extends BaseFragment {
                     onShareClick(sb.toString());
                 }
             });
+
+
+            websiteLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openWebsite(contest.getUrl());
+                }
+            });
+
+
+
+            secProgressBar.setStartAngle(180);
+            secProgressBar.setRingRadiusRatio(0.75f);
+            secProgressBar.setTextColor(Color.WHITE);
+            secProgressBar.setStyle(CustomProgressBar.Style.REGULAR);// Default style
+            secProgressBar.setProgressRingBackgroundColor(Color.TRANSPARENT);
+            secProgressBar.setProgressRingForegroundColor("#e300fc");
+            secProgressBar.setCenterBackgroundColor("#213051");
+            secProgressBar.setVisibility(View.VISIBLE);
+
+            new ShowProgress().execute();
         }
 
+    }
+
+    public void openWebsite(String url) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     public void onShareClick(String msg) {
@@ -205,8 +245,65 @@ public class DetailFragment extends BaseFragment {
     }
 
     public void onError(String msg) {
-        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, Html.fromHtml(msg), Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, Html.fromHtml(msg), Snackbar.LENGTH_SHORT);
         snackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
         snackbar.show();
     }
+
+    class ShowProgress extends AsyncTask<Void, Integer, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            int i = 0;
+            while (true) {
+                publishProgress(i);
+                if (i >= 100) {
+                    break;
+                }
+                i++;
+                try {
+                    Thread.sleep(700);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            daysProgressBar.setProgress(0);
+            hoursProgressBar.setProgress(0);
+            minsProgressBar.setProgress(0);
+            secProgressBar.setProgress(0);
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            daysProgressBar.setProgress(values[0]);
+            hoursProgressBar.setProgress(values[0]);
+            minsProgressBar.setProgress(values[0]);
+            secProgressBar.setProgress(values[0]);
+        }
+
+        @Override
+        protected void onCancelled(Void result) {
+            super.onCancelled(result);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+
+    }
+
 }

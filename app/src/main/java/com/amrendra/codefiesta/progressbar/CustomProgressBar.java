@@ -12,8 +12,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.amrendra.codefiesta.utils.Debug;
-
 /**
  * Created by Amrendra Kumar on 08/05/16.
  */
@@ -130,8 +128,6 @@ public class CustomProgressBar extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        Debug.i("w : " + w + " h : " + h + " oldw : " + oldw + " oldh : " + oldh);
-
         int wh = Math.min(w, h);
         outerRing.set(actualPadding, actualPadding, wh - actualPadding, wh - actualPadding);
         innerRing.set(actualPadding + outerRing.width() / 2 * (1.0f - ringRadiusRatio),

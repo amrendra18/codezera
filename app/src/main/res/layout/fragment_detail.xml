@@ -20,6 +20,7 @@
         tools:context=".ui.fragments.DetailFragment">
 
         <LinearLayout
+            android:id="@+id/top_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/round_tv_top"
@@ -75,17 +76,6 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/contest_link_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryLight"
-            android:maxLines="@integer/title_max_lines"
-            android:padding="@dimen/contest_title_padding"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/contest_resource_text_size"
-            tools:text="https://www.codechef.com/JUNE13"/>
-
-        <TextView
             android:id="@+id/contest_timezone_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,8 +91,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/contest_ampm_left_margin"
-            android:layout_marginTop="@dimen/contest_ampm_left_margin"
+            android:layout_marginBottom="@dimen/list_item_padding"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="@dimen/contest_date_time_block_padding">
@@ -371,5 +361,22 @@
         app:backgroundTint="@color/colorPrimaryLight"
         app:borderWidth="@dimen/fav_border_width"
         app:fabSize="normal"
+        app:rippleColor="@android:color/transparent"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/link_website"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:elevation="@dimen/fav_elevation"
+        android:scaleType="centerCrop"
+        android:src="@drawable/link_selector"
+        app:backgroundTint="@color/colorAccent"
+        app:borderWidth="@dimen/fav_border_width"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/top_header"
+        app:layout_anchorGravity="bottom|end"
         app:rippleColor="@android:color/transparent"/>
 </android.support.design.widget.CoordinatorLayout>

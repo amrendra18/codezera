@@ -111,6 +111,14 @@ public class DBContract {
         public static final Uri CONTENT_URI_ALL_NOTIFICATIONS =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_NOTIFICATION).build();
 
+        public static Uri buildNotificationEventUriWithContestId(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI_ALL_NOTIFICATIONS, id);
+        }
+
+        public static long getContestIdFromNotificationEventUri(Uri uri) {
+            return ContentUris.parseId(uri);
+        }
+
         public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_NOTIFICATION;
 

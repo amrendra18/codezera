@@ -199,6 +199,32 @@ public class Provider extends ContentProvider {
                 );
             }
             break;
+            case NOTIFICATION: {
+                retCursor = db.query(
+                        DBContract.NotificationEntry.TABLE_NAME, //table name
+                        projection, //projection
+                        null, //selection
+                        null, //selectionArgs
+                        null,
+                        null,
+                        sortOrder
+                );
+            }
+            break;
+
+            case NOTIFICATION_WITH_ID: {
+                long id = DBContract.NotificationEntry.getContestIdFromNotificationEventUri(uri);
+                retCursor = db.query(
+                        DBContract.NotificationEntry.TABLE_NAME, //table name
+                        projection, //projection
+                        DBContract.NotificationEntry.NOTIFICATION_CONTEST_ID_COL + " = ?", //selection
+                        new String[]{Long.toString(id)}, //selectionArgs
+                        null,
+                        null,
+                        sortOrder
+                );
+            }
+            break;
             /*case CONTEST_WITH_ID:
                 return DBContract.ContestEntry.CONTENT_ITEM_TYPE;
             case CONTEST_WITH_RESOURCE_ID:
@@ -271,7 +297,12 @@ public class Provider extends ContentProvider {
             }
             break;
             case NOTIFICATION: {
-
+                long _id = db.insert(DBContract.NotificationEntry.TABLE_NAME, null, values);
+                if (_id > 0) {
+                    returnUri = DBContract.NotificationEntry.buildNotificationEventUriWithContestId(_id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
             }
             break;
             default:

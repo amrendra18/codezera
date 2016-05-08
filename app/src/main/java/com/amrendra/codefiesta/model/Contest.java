@@ -188,6 +188,15 @@ public class Contest implements Parcelable {
         return cv;
     }
 
+    public ContentValues toNotificationEventContentValues(long time){
+        ContentValues cv = new ContentValues();
+        cv.put(DBContract.NotificationEntry.NOTIFICATION_CONTEST_ID_COL, getId());
+        cv.put(DBContract.NotificationEntry.NOTIFICATION_TIME_COL, time);
+        cv.put(DBContract.NotificationEntry.NOTIFICATION_CONTEST_START_TIME_COL, DateUtils
+                .getEpochTime(getStart()));
+        return cv;
+    }
+
     public static final class Response {
         @Expose
         @SerializedName("meta")

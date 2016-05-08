@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.bus.events.CalendarPermissionGrantedEvent;
 import com.amrendra.codefiesta.bus.events.SnackBarMessageDetailFragmentEvent;
+import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.handler.DBQueryHandler;
 import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.progressbar.CustomProgressBar;
@@ -52,15 +53,22 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     private static final int VERIFY_EVENT_ADDED_TO_CALENDAR_QUERY = 3000;
     private static final int EVENT_DELETE_FROM_CALENDAR = 3001;
     private static final int EVENT_INSERT_TO_CALENDAR = 3002;
+    private static final int VERIFY_NOTIFICATION_FOR_EVENT = 3003;
+    private static final int DELETE_NOTIFICATION_FOR_EVENT = 3004;
+    private static final int INSERT_NOTIFICATION_FOR_EVENT = 3005;
 
-    private static final int CALENDAR_EVENT_VALUE_NOT_RETRIEVED = -100;
-    private static final int CALENDAR_EVENT_VALUE_NOT_PRESENT = -1;
+    private static final int CALENDAR_EVENT_VALUE_NOT_RETRIEVED = -1;
+    private static final int CALENDAR_EVENT_VALUE_NOT_PRESENT = -2;
+    private static final int NOTIFICATION_EVENT_VALUE_NOT_RETRIEVED = -3;
+    private static final int NOTIFICATION_EVENT_VALUE_NOT_PRESENT = -4;
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_CALENDAR = 45;
-    private boolean CALENDAR_BUTTON_ACTIVE = false;
-    private boolean NOTIFICAION_BUTTON_ACTIVE = false;
 
-    long calendarId = -1;
+    private boolean CALENDAR_BUTTON_ACTIVE = false;
+    private boolean NOTIFICATION_BUTTON_ACTIVE = false;
+
+    long calendarId = CALENDAR_EVENT_VALUE_NOT_RETRIEVED;
+    long notificationId = NOTIFICATION_EVENT_VALUE_NOT_RETRIEVED;
 
     Contest contest;
     long starTime = -1;
@@ -126,9 +134,8 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
         if (bundle != null) {
             contest = bundle.getParcelable(AppUtils.CONTEST_ID_KEY);
         } else {
-            Debug.e("Should not happen. DetailFragmet needs to have contestId", false);
+            Debug.e("Should not happen. DetailFragment needs to have contestId", false);
         }
-        Debug.e("contest " + contest, false);
         isTimerPaused = false;
     }
 
@@ -189,7 +196,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 @Override
                 public void onClick(View v) {
                     int contestStatus = DateUtils.getContestStatus(starTime, endTime);
-                    String text = "";
+                    String text;
                     if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
                         if (CALENDAR_BUTTON_ACTIVE) {
                             text = String.format(getString(R.string.fetch_contest_calendar_status),
@@ -229,19 +236,26 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 @Override
                 public void onClick(View v) {
                     int contestStatus = DateUtils.getContestStatus(starTime, endTime);
+                    String text = "";
                     if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
-
+                        if (NOTIFICATION_BUTTON_ACTIVE) {
+                            text = String.format(getString(R.string.fetch_contest_notification_status),
+                                    contest.getEvent());
+                            onError(text);
+                            return;
+                        }
+                        toggleNotificationForEvent();
                     } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
-                        String text = String.format(getString(R.string.contest_started),
+                        text = String.format(getString(R.string.contest_started),
                                 contest.getEvent(),
                                 shortResourceName);
-                        onError(text);
+
                     } else {
-                        String text = String.format(getString(R.string.contest_ended),
+                        text = String.format(getString(R.string.contest_ended),
                                 contest.getEvent(),
                                 shortResourceName);
-                        onError(text);
                     }
+                    onError(text);
                 }
             });
 
@@ -277,16 +291,36 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             secProgressBar.setCenterBackgroundColor("#213051");
             secProgressBar.setVisibility(View.VISIBLE);
 
-            if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
-                int contestStatus = DateUtils.getContestStatus(starTime, endTime);
-                if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
-                    getCalendarEventStatus();
+
+            int contestStatus = DateUtils.getContestStatus(starTime, endTime);
+            if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
+                if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
+                    getEventCalendarStatus();
+                }
+                if (notificationId == NOTIFICATION_EVENT_VALUE_NOT_RETRIEVED) {
+                    getEventNotificationStatus();
                 }
             }
+
         }
     }
 
-    private void getCalendarEventStatus() {
+    private void getEventNotificationStatus() {
+        Debug.c();
+        NOTIFICATION_BUTTON_ACTIVE = true;
+        mDBQueryHandler.startQuery(
+                VERIFY_NOTIFICATION_FOR_EVENT,
+                null,
+                DBContract.NotificationEntry.buildNotificationEventUriWithContestId(contest.getId()),
+                null,
+                null,
+                null,
+                null
+        );
+
+    }
+
+    private void getEventCalendarStatus() {
         Debug.c();
         CALENDAR_BUTTON_ACTIVE = true;
         try {
@@ -302,6 +336,33 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
         } catch (SecurityException ex) {
             Debug.c();
             CALENDAR_BUTTON_ACTIVE = false;
+        }
+    }
+
+    private void toggleNotificationForEvent() {
+        NOTIFICATION_BUTTON_ACTIVE = true;
+        Debug.c();
+        if (notificationId >= 0) {
+            //delete
+            Debug.c();
+            mDBQueryHandler.startDelete(
+                    DELETE_NOTIFICATION_FOR_EVENT,
+                    null,
+                    DBContract.NotificationEntry.CONTENT_URI_ALL_NOTIFICATIONS,
+                    DBContract.NotificationEntry._ID + " =? ",
+                    new String[]{Long.toString(notificationId)}
+            );
+        } else {
+            //insert
+            Debug.c();
+            long notificationTime = starTime - DateUtils.SEC_IN_ONE_HOUR;
+            ContentValues cv = contest.toNotificationEventContentValues(notificationTime);
+            mDBQueryHandler.startInsert(
+                    INSERT_NOTIFICATION_FOR_EVENT,
+                    null,
+                    DBContract.NotificationEntry.CONTENT_URI_ALL_NOTIFICATIONS,
+                    cv
+            );
         }
     }
 
@@ -468,6 +529,27 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
         }
     }
 
+    void processNotificationQuery(Cursor cursor) {
+        Debug.c();
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    notificationId = cursor.getInt(cursor.getColumnIndex(DBContract
+                            .NotificationEntry._ID));
+                    notificationImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
+                            .drawable.notification_on));
+                } else {
+                    notificationImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
+                            .drawable.notification_default));
+                    notificationId = NOTIFICATION_EVENT_VALUE_NOT_PRESENT;
+                }
+                Debug.e("notificationId : " + notificationId, false);
+            } finally {
+                cursor.close();
+            }
+        }
+    }
+
     @Override
     public void onQueryComplete(int token, Cursor cursor) {
         Debug.e("onQueryComplete token : " + token, false);
@@ -475,6 +557,11 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             case VERIFY_EVENT_ADDED_TO_CALENDAR_QUERY: {
                 processCalendarQuery(cursor);
                 CALENDAR_BUTTON_ACTIVE = false;
+            }
+            break;
+            case VERIFY_NOTIFICATION_FOR_EVENT: {
+                processNotificationQuery(cursor);
+                NOTIFICATION_BUTTON_ACTIVE = false;
             }
             break;
         }
@@ -501,6 +588,23 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 CALENDAR_BUTTON_ACTIVE = false;
             }
             break;
+            case INSERT_NOTIFICATION_FOR_EVENT: {
+                String msg;
+                if (uri != null) {
+                    msg = String.format(getString(R.string.insert_notification), contest
+                            .getEvent());
+                    notificationImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
+                            .drawable.notification_on));
+                    notificationId = Long.valueOf(uri.getLastPathSegment());
+                    Debug.e("inserted : " + notificationId, false);
+                } else {
+                    msg = String.format(getString(R.string.insert_notification_error), contest
+                            .getEvent());
+                }
+                onError(msg);
+                NOTIFICATION_BUTTON_ACTIVE = false;
+            }
+            break;
         }
     }
 
@@ -522,6 +626,22 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 }
                 onError(msg);
                 CALENDAR_BUTTON_ACTIVE = false;
+            }
+            break;
+            case DELETE_NOTIFICATION_FOR_EVENT: {
+                String msg;
+                if (result == 1) {
+                    msg = String.format(getString(R.string.delete_notification), contest
+                            .getEvent());
+                    notificationImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
+                            .drawable.notification_default));
+                    notificationId = NOTIFICATION_EVENT_VALUE_NOT_PRESENT;
+                } else {
+                    msg = String.format(getString(R.string.delete_notification_error), contest
+                            .getEvent());
+                }
+                onError(msg);
+                NOTIFICATION_BUTTON_ACTIVE = false;
             }
             break;
         }

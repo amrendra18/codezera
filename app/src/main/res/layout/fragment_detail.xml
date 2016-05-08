@@ -341,7 +341,7 @@
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:elevation="@dimen/fav_elevation"
         android:scaleType="centerCrop"
-        android:src="@drawable/notification_selector"
+        android:src="@drawable/notification_default"
         app:backgroundTint="@color/colorPrimaryLight"
         app:borderWidth="@dimen/fav_border_width"
         app:fabSize="normal"

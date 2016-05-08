@@ -49,27 +49,46 @@
     <string name="nomatch">No Contests found!!</string>
 
 
-    <string name="contest_started">Contest &lt;b&gt;%1$s&lt;/&gt; @ &lt;b&gt;%2$s&lt;/&gt; already
+    <string name="contest_started">Contest &lt;b&gt;%1$s&lt;/b&gt; @ &lt;b&gt;%2$s&lt;/b&gt; already
         started.
     </string>
-    <string name="contest_ended">Contest &lt;b&gt;%1$s&lt;/&gt; @ &lt;b&gt;%2$s&lt;/&gt; already
+    <string name="contest_ended">Contest &lt;b&gt;%1$s&lt;/b&gt; @ &lt;b&gt;%2$s&lt;/b&gt; already
         ended.
     </string>
 
     <string name="fetch_contest_calendar_status">Please wait while we
-        fetch calendar event status for &lt;b&gt;%1$s&lt;/&gt;.
+        fetch calendar event status for &lt;b&gt;%1$s&lt;/b&gt;.
     </string>
-    <string name="event_added_calendar">Event &lt;b&gt;%1$s&lt;/&gt; added to your calendar.
+    <string name="fetch_contest_notification_status">Please wait while we
+        fetch notification status for &lt;b&gt;%1$s&lt;/b&gt;.
+    </string>
+    <string name="event_added_calendar">Event &lt;b&gt;%1$s&lt;/b&gt; added to your calendar.
     </string>
     <string name="calendar_permission_denied">Calendar Read/Write permission denied.
     </string>
     <string name="no_calendar_account_found">No calendar accounts found!! Please login to
-        google calendar and try again</string>
+        google calendar and try again
+    </string>
 
-    <string name="insert_event_error">&lt;b&gt;Error&lt;/&gt; occured in adding &lt;b&gt;%1$s&lt;/&gt; to your
-        calendar.</string>
-    <string name="delete_event">Event &lt;b&gt;%1$s&lt;/&gt; removed from your calendar.</string>
-    <string name="delete_event_error">&lt;b&gt;Error&lt;/&gt; occured in removing event
-        &lt;b&gt;%1$s&lt;/&gt; from your
-        calendar.</string>
+    <string name="insert_event_error">&lt;b&gt;Error&lt;/b&gt; occurred in adding
+        &lt;b&gt;%1$s&lt;/b&gt; to your
+        calendar.
+    </string>
+    <string name="delete_event">Event &lt;b&gt;%1$s&lt;/b&gt; removed from your calendar.</string>
+    <string name="delete_event_error">&lt;b&gt;Error&lt;/b&gt; occurred in removing event
+        &lt;b&gt;%1$s&lt;/b&gt; from your
+        calendar.
+    </string>
+
+
+    <string name="insert_notification">Reminder notification added for
+        &lt;b&gt;%1$s&lt;/b&gt;</string>
+    <string name="insert_notification_error">&lt;b&gt;Error&lt;/b&gt; occurred in setting
+        reminder notification for &lt;b&gt;%1$s&lt;/b&gt;.
+    </string>
+    <string name="delete_notification">Reminder notification deleted for
+        &lt;b&gt;%1$s&lt;/b&gt;</string>
+    <string name="delete_notification_error">&lt;b&gt;Error&lt;/b&gt; occurred in deleting
+        reminder notification for&lt;b&gt;%1$s&lt;/b&gt;</string>
+
 </resources>

@@ -35,6 +35,10 @@ public class CustomDate {
         return dayOfWeek.toUpperCase() + ", " + dateOfMonth + " " + month + " '" + year;
     }
 
+    public String getFullTime(){
+        return getTimeAmPm()+" "+getDateMonthYear();
+    }
+
     public String getMonth() {
         return month;
     }

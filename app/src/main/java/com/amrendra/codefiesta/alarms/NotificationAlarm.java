@@ -6,14 +6,20 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.NotificationCompat;
+import android.text.Html;
+import android.text.Spanned;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.ui.activities.MainActivity;
 import com.amrendra.codefiesta.utils.AppUtils;
+import com.amrendra.codefiesta.utils.CustomDate;
+import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
 
 /**
@@ -29,20 +35,34 @@ public class NotificationAlarm extends BroadcastReceiver {
         PendingIntent pIntent = PendingIntent.getActivity(context, 0, newIntent, 0);
 
         Notification n;
+
+        final int resourceId = contest.getWebsite().getId();
+        String resourceName = AppUtils.getResourceName(context, resourceId);
+        final String shortResourceName = AppUtils.getGoodResourceName(resourceName);
+
+        final long starTime = DateUtils.getEpochTime(contest.getStart());
+        final CustomDate startDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(starTime));
+
+        Spanned msg = Html.fromHtml(String.format(context.getString(R.string.notification_string),
+                shortResourceName, startDate.getFullTime()));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            n = new Notification.Builder(context)
+            n = new NotificationCompat.Builder(context)
+                    .setTicker(context.getString(R.string.app_name))
                     .setContentTitle(contest.getEvent())
-                    .setContentText(contest.getEvent() + " @ " + contest.getWebsite().getName() + " is " +
-                            "about to start")
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setContentText(msg)
                     .setColor(ContextCompat.getColor(context, R.color.colorAccent))
                     .setSmallIcon(R.drawable.icon_notification)
                     .setContentIntent(pIntent)
                     .build();
         } else {
-            n = new Notification.Builder(context)
+            n = new NotificationCompat.Builder(context)
+                    .setTicker(context.getString(R.string.app_name))
                     .setContentTitle(contest.getEvent())
-                    .setContentText(contest.getEvent() + " @ " + contest.getWebsite().getName() + " is " +
-                            "about to start")
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setContentText(msg)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentIntent(pIntent)
                     .build();
@@ -54,7 +74,7 @@ public class NotificationAlarm extends BroadcastReceiver {
         notificationManager.notify(contest.getId(), n);
 
 
-        //delete the notification
+        //delete the notification entry from db
         context.getContentResolver().delete(
                 DBContract.NotificationEntry.CONTENT_URI_ALL_NOTIFICATIONS,
                 DBContract.NotificationEntry.NOTIFICATION_CONTEST_ID_COL + " = ?",

@@ -252,7 +252,7 @@ public class MainActivity extends BaseActivity implements
         Contest contest = event.getContest();
         DetailFragment detailFragment = new DetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(AppUtils.CONTEST_ID_KEY, contest);
+        bundle.putParcelable(AppUtils.CONTEST_KEY, contest);
         detailFragment.setArguments(bundle);
         changeFragment(detailFragment, contest.getEvent());
     }

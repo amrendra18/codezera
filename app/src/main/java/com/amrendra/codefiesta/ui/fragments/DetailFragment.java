@@ -1,6 +1,8 @@
 package com.amrendra.codefiesta.ui.fragments;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
+import com.amrendra.codefiesta.alarms.NotificationAlarm;
 import com.amrendra.codefiesta.bus.events.CalendarPermissionGrantedEvent;
 import com.amrendra.codefiesta.bus.events.SnackBarMessageDetailFragmentEvent;
 import com.amrendra.codefiesta.db.DBContract;
@@ -69,6 +72,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
 
     long calendarId = CALENDAR_EVENT_VALUE_NOT_RETRIEVED;
     long notificationId = NOTIFICATION_EVENT_VALUE_NOT_RETRIEVED;
+    long notificationTime = -1;
 
     Contest contest;
     long starTime = -1;
@@ -132,7 +136,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            contest = bundle.getParcelable(AppUtils.CONTEST_ID_KEY);
+            contest = bundle.getParcelable(AppUtils.CONTEST_KEY);
         } else {
             Debug.e("Should not happen. DetailFragment needs to have contestId", false);
         }
@@ -344,7 +348,6 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
         Debug.c();
         if (notificationId >= 0) {
             //delete
-            Debug.c();
             mDBQueryHandler.startDelete(
                     DELETE_NOTIFICATION_FOR_EVENT,
                     null,
@@ -354,8 +357,8 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             );
         } else {
             //insert
-            Debug.c();
-            long notificationTime = starTime - DateUtils.SEC_IN_ONE_HOUR;
+            notificationTime = System.currentTimeMillis() / 1000 + DateUtils.SEC_IN_ONE_MINUTE;
+            // starTime - DateUtils.SEC_IN_ONE_HOUR;
             ContentValues cv = contest.toNotificationEventContentValues(notificationTime);
             mDBQueryHandler.startInsert(
                     INSERT_NOTIFICATION_FOR_EVENT,
@@ -597,6 +600,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                             .drawable.notification_on));
                     notificationId = Long.valueOf(uri.getLastPathSegment());
                     Debug.e("inserted : " + notificationId, false);
+                    addNotification();
                 } else {
                     msg = String.format(getString(R.string.insert_notification_error), contest
                             .getEvent());
@@ -662,5 +666,21 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     public void onShowErrorMsg(SnackBarMessageDetailFragmentEvent event) {
         Debug.c();
         onError(event.getMsg());
+    }
+
+    private void addNotification() {
+        Debug.c();
+        if (notificationTime != -1) {
+            Debug.e("" + notificationTime, false);
+            Intent alarmIntent = new Intent(getActivity(), NotificationAlarm.class);
+            alarmIntent.putExtra(AppUtils.CONTEST_KEY, contest);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), contest.getId(),
+                    alarmIntent, PendingIntent
+                    .FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService
+                    (Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime * 1000, pendingIntent);
+            notificationTime = -1;
+        }
     }
 }

@@ -73,6 +73,8 @@
                 android:resource="@xml/syncadapter"/>
         </service>
 
+        <receiver android:name="com.amrendra.codefiesta.alarms.NotificationAlarm"/>
+
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true">

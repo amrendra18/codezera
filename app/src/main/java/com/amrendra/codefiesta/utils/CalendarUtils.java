@@ -16,7 +16,7 @@ public class CalendarUtils {
 
     Context mContext;
     static CalendarUtils mCalendarUtils = null;
-    long calId = -1;
+    long calId = AppUtils.STATUS_CALENDAR_PERMISSION_ERROR;
 
     private CalendarUtils(Context context) {
         mContext = context;
@@ -30,15 +30,18 @@ public class CalendarUtils {
         return mCalendarUtils;
     }
 
-    public int addEvent(Contest contest) {
-        int success = AppUtils.STATUS_CALENDAR_PERMISSION_ERROR;
-        if (calId == -1) {
-            return success;
+    public int addEventToCalendar(Contest contest) {
+        if (calId < 0) {
+            calId = getCalendarId();
+            if(calId < 0){
+                return (int) calId;
+            }
         }
-
+        int success = AppUtils.STATUS_CALENDAR_PERMISSION_ERROR;
         int eventIdCheck = checkEvent(contest);
         Debug.e("check : " + eventIdCheck, false);
-        if (eventIdCheck == -1) {
+        if (eventIdCheck == AppUtils.STATUS_CALENDAR_EVENT_NOT_PRESENT) {
+            Debug.e("event not found, hence adding", false);
             ContentValues cv = contest.toCalendarEventContentValues(calId);
             try {
                 Uri uri =
@@ -66,7 +69,7 @@ public class CalendarUtils {
                 Debug.c();
                 se.printStackTrace();
             }
-        } else {
+        } else if(eventIdCheck >= 0){
             Debug.c();
             success = AppUtils.STATUS_CALENDAR_EVENT_ALREADY_ADDED;
         }
@@ -75,10 +78,13 @@ public class CalendarUtils {
 
 
     public int checkEvent(Contest contest) {
-        int eventId = -1;
-        if (calId == -1) {
-            return eventId;
+        if (calId < 0) {
+            calId = getCalendarId();
+            if(calId < 0){
+                return (int) calId;
+            }
         }
+        int eventId = AppUtils.STATUS_CALENDAR_EVENT_NOT_PRESENT;
         Uri uri = DBContract.CalendarEntry.buildCalendarEventUriWithContestId(contest.getId());
         Cursor cursor = mContext.getContentResolver().query(
                 uri,
@@ -101,11 +107,13 @@ public class CalendarUtils {
     }
 
     public int deleteEvent(Contest contest) {
-        int success = AppUtils.STATUS_CALENDAR_PERMISSION_ERROR;
-        if (calId == -1) {
-            return success;
+        if (calId < 0) {
+            calId = getCalendarId();
+            if(calId < 0){
+                return (int) calId;
+            }
         }
-
+        int success = AppUtils.STATUS_CALENDAR_PERMISSION_ERROR;
         long eventIdCheck = checkEvent(contest);
         Debug.e("check : " + eventIdCheck, false);
         if (eventIdCheck != -1) {
@@ -159,16 +167,17 @@ public class CalendarUtils {
                         Debug.i("id: " + id + " name: " + name + " accName: " + accountName + " zone: " +
                                 "" + timezone, false);
                         return id;
+                    } else {
+                        return AppUtils.STATUS_CALENDAR_NO_ACCOUNT;
                     }
                 } finally {
                     cursor.close();
                 }
             }
         } catch (SecurityException ex) {
-            Debug.c();
             ex.printStackTrace();
         }
         Debug.c();
-        return -1;
+        return AppUtils.STATUS_CALENDAR_PERMISSION_ERROR;
     }
 }

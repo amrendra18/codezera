@@ -24,17 +24,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
+import com.amrendra.codefiesta.bus.events.CalendarPermissionGrantedEvent;
+import com.amrendra.codefiesta.bus.events.SnackBarMessageDetailFragmentEvent;
 import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.handler.DBQueryHandler;
 import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.progressbar.CustomProgressBar;
 import com.amrendra.codefiesta.utils.AppUtils;
-import com.amrendra.codefiesta.utils.CalendarUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
 import com.amrendra.codefiesta.utils.TimerUtil;
 import com.bumptech.glide.Glide;
+import com.squareup.otto.Subscribe;
 
 import java.util.TimeZone;
 
@@ -48,6 +50,11 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     private static final int EVENT_ADDED_TO_CALENDAR_QUERY = 3000;
     private static final int CALENDAR_EVENT_VALUE_NOT_RETRIEVED = -100;
     private static final int CALENDAR_EVENT_VALUE_NOT_PRESENT = -1;
+
+    public static final int MY_PERMISSIONS_REQUEST_WRITE_CALENDAR = 45;
+    private boolean CALENDAR_BUTTON_ACTIVE = false;
+    private boolean NOTIFICAION_BUTTON_ACTIVE = false;
+
     Contest contest;
     long starTime = -1;
     long endTime = -1;
@@ -177,31 +184,28 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     int contestStatus = DateUtils.getContestStatus(starTime, endTime);
                     String text = "";
                     if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
-                        if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
+                        if (CALENDAR_BUTTON_ACTIVE || calendarEventId ==
+                                CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
                             text = String.format(getString(R.string.fetch_contest_calendar_status),
                                     contest.getEvent());
                             onError(text);
                             return;
                         }
-                        int ret = CalendarUtils.getInstance(getActivity()).addEvent(contest);
-                        if (ret == AppUtils.STATUS_CALENDAR_EVENT_ALREADY_ADDED) {
-                            //delete it.
-                            /*text = String.format(getString(R.string.event_started_calendar),
-                                    contest.getEvent());*/
-                        } else if (ret == AppUtils.STATUS_CALENDAR_PERMISSION_ERROR) {
-                            text = getString(R.string.calendar_permission_denied);
-                            if (ContextCompat.checkSelfPermission(getActivity(),
-                                    Manifest.permission.READ_CONTACTS)
-                                    != PackageManager.PERMISSION_GRANTED) {
-                                ActivityCompat.requestPermissions(getActivity(),
-                                        new String[]{Manifest.permission.READ_CALENDAR,
-                                                Manifest.permission.WRITE_CALENDAR},
-                                        0);
-                            }
-                        } else if (ret == AppUtils.STATUS_CALENDAR_EVENT_SUCCESS) {
-                            text = String.format(getString(R.string.event_added_calendar),
-                                    contest.getEvent());
+
+                        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
+                                Manifest.permission.WRITE_CALENDAR);
+                        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                            Debug.e("already have calendar permission", false);
+                            toggleEventStatusInCalendar();
+                        } else {
+                            // dont have permission, should request it
+                            Debug.e("dont have calendar permission, should request it", false);
+                            ActivityCompat.requestPermissions(getActivity(),
+                                    new String[]{Manifest.permission.WRITE_CALENDAR},
+                                    MY_PERMISSIONS_REQUEST_WRITE_CALENDAR);
+                            CALENDAR_BUTTON_ACTIVE = false;
                         }
+                        return;
                     } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
                         text = String.format(getString(R.string.contest_started),
                                 contest.getEvent(),
@@ -269,6 +273,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
 
 
             Uri uri = DBContract.CalendarEntry.buildCalendarEventUriWithContestId(contest.getId());
+            CALENDAR_BUTTON_ACTIVE = true;
             mDBQueryHandler.startQuery(
                     EVENT_ADDED_TO_CALENDAR_QUERY,
                     null,
@@ -278,8 +283,14 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     null,
                     null
             );
-        }
 
+        }
+    }
+
+    private void toggleEventStatusInCalendar() {
+        CALENDAR_BUTTON_ACTIVE = true;
+        Debug.e("toggle can be done", false);
+        CALENDAR_BUTTON_ACTIVE = false;
     }
 
     @Override
@@ -390,6 +401,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
         switch (token) {
             case EVENT_ADDED_TO_CALENDAR_QUERY:
                 processCalendarQuery(cursor);
+                CALENDAR_BUTTON_ACTIVE = false;
                 break;
         }
     }
@@ -407,5 +419,16 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     @Override
     public void onUpdateComplete(int token, int result) {
 
+    }
+
+    @Subscribe
+    public void onCalendarPermissionGrant(CalendarPermissionGrantedEvent event) {
+        toggleEventStatusInCalendar();
+    }
+
+    @Subscribe
+    public void onShowErrorMsg(SnackBarMessageDetailFragmentEvent event) {
+        Debug.c();
+        onError(event.getMsg());
     }
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.amrendra.codefiesta.CodeFiestaApplication;
+import com.amrendra.codefiesta.bus.BusProvider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -31,6 +32,7 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        BusProvider.getInstance().register(this);
     }
 
 
@@ -38,6 +40,7 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         ButterKnife.unbind(this);
         super.onDestroyView();
+        BusProvider.getInstance().unregister(this);
     }
 
     protected void showToast(String message) {

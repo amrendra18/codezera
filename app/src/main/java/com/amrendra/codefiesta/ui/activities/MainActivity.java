@@ -1,5 +1,6 @@
 package com.amrendra.codefiesta.ui.activities;
 
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +16,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.amrendra.codefiesta.R;
+import com.amrendra.codefiesta.bus.BusProvider;
+import com.amrendra.codefiesta.bus.events.CalendarPermissionGrantedEvent;
 import com.amrendra.codefiesta.bus.events.ContestClickEvent;
+import com.amrendra.codefiesta.bus.events.SnackBarMessageDetailFragmentEvent;
 import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.sync.CodeFiestaSyncAdapter;
 import com.amrendra.codefiesta.ui.fragments.CurrentFragment;
@@ -253,6 +257,24 @@ public class MainActivity extends BaseActivity implements
         bundle.putParcelable(AppUtils.CONTEST_ID_KEY, contest);
         detailFragment.setArguments(bundle);
         changeFragment(detailFragment, contest.getEvent());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case DetailFragment.MY_PERMISSIONS_REQUEST_WRITE_CALENDAR: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    BusProvider.getInstance().post(new CalendarPermissionGrantedEvent());
+                } else {
+                    String text = getString(R.string.calendar_permission_denied);
+                    BusProvider.getInstance().post(new SnackBarMessageDetailFragmentEvent(text));
+                }
+                break;
+            }
+        }
     }
 }
 

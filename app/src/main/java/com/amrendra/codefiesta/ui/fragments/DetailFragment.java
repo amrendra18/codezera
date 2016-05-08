@@ -1,6 +1,7 @@
 package com.amrendra.codefiesta.ui.fragments;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -26,11 +28,11 @@ import android.widget.TextView;
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.bus.events.CalendarPermissionGrantedEvent;
 import com.amrendra.codefiesta.bus.events.SnackBarMessageDetailFragmentEvent;
-import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.handler.DBQueryHandler;
 import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.progressbar.CustomProgressBar;
 import com.amrendra.codefiesta.utils.AppUtils;
+import com.amrendra.codefiesta.utils.CalendarUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
@@ -47,13 +49,18 @@ import butterknife.Bind;
  */
 public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQueryCompleteListener {
 
-    private static final int EVENT_ADDED_TO_CALENDAR_QUERY = 3000;
+    private static final int VERIFY_EVENT_ADDED_TO_CALENDAR_QUERY = 3000;
+    private static final int EVENT_DELETE_FROM_CALENDAR = 3001;
+    private static final int EVENT_INSERT_TO_CALENDAR = 3002;
+
     private static final int CALENDAR_EVENT_VALUE_NOT_RETRIEVED = -100;
     private static final int CALENDAR_EVENT_VALUE_NOT_PRESENT = -1;
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_CALENDAR = 45;
     private boolean CALENDAR_BUTTON_ACTIVE = false;
     private boolean NOTIFICAION_BUTTON_ACTIVE = false;
+
+    long calendarId = -1;
 
     Contest contest;
     long starTime = -1;
@@ -184,18 +191,17 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     int contestStatus = DateUtils.getContestStatus(starTime, endTime);
                     String text = "";
                     if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
-                        if (CALENDAR_BUTTON_ACTIVE || calendarEventId ==
-                                CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
+                        if (CALENDAR_BUTTON_ACTIVE) {
                             text = String.format(getString(R.string.fetch_contest_calendar_status),
                                     contest.getEvent());
                             onError(text);
                             return;
                         }
-
                         int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
                                 Manifest.permission.WRITE_CALENDAR);
                         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
                             Debug.e("already have calendar permission", false);
+                            calendarId = CalendarUtils.getCalendarId(getActivity());
                             toggleEventStatusInCalendar();
                         } else {
                             // dont have permission, should request it
@@ -271,26 +277,90 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             secProgressBar.setCenterBackgroundColor("#213051");
             secProgressBar.setVisibility(View.VISIBLE);
 
+            if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
+                getCalendarEventStatus();
+            }
+        }
+    }
 
-            Uri uri = DBContract.CalendarEntry.buildCalendarEventUriWithContestId(contest.getId());
-            CALENDAR_BUTTON_ACTIVE = true;
+    private void getCalendarEventStatus() {
+        Debug.c();
+        CALENDAR_BUTTON_ACTIVE = true;
+        try {
             mDBQueryHandler.startQuery(
-                    EVENT_ADDED_TO_CALENDAR_QUERY,
+                    VERIFY_EVENT_ADDED_TO_CALENDAR_QUERY,
                     null,
-                    uri,
-                    DBContract.CalendarEntry.CALENDAR_PROJECTION,
+                    CalendarContract.Events.CONTENT_URI,
                     null,
-                    null,
+                    CalendarContract.Events.TITLE + " = ?",
+                    new String[]{contest.getEvent()},
                     null
             );
-
+        } catch (SecurityException ex) {
+            Debug.c();
+            CALENDAR_BUTTON_ACTIVE = false;
         }
     }
 
     private void toggleEventStatusInCalendar() {
         CALENDAR_BUTTON_ACTIVE = true;
-        Debug.e("toggle can be done", false);
-        CALENDAR_BUTTON_ACTIVE = false;
+        if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
+            Debug.e("toggle can be done but event id not present : ", false);
+            //fetch it now
+            try {
+                Cursor cursor = getActivity().getContentResolver().query(
+                        CalendarContract.Events.CONTENT_URI,
+                        null,
+                        CalendarContract.Events.TITLE + " = ?",
+                        new String[]{contest.getEvent()},
+                        null
+                );
+                processCalendarQuery(cursor);
+            } catch (SecurityException ex) {
+                Debug.c();
+                onError(getString(R.string.calendar_permission_denied));
+                CALENDAR_BUTTON_ACTIVE = false;
+                return;
+            }
+        }
+        Debug.e("toggle can be done : " + calendarId, false);
+        if (calendarEventId > 0) {
+            //added, need to delete it
+            Debug.e("added, need to delete it : id: " + calendarEventId, false);
+            if (calendarId >= 0) {
+                mDBQueryHandler.startDelete(
+                        EVENT_DELETE_FROM_CALENDAR,
+                        null,
+                        CalendarContract.Events.CONTENT_URI,
+                        CalendarContract.Events._ID + " =? ",
+                        new String[]{Long.toString(calendarEventId)}
+                );
+            } else {
+                onError(getString(R.string.no_calendar_account_found));
+                CALENDAR_BUTTON_ACTIVE = false;
+            }
+        } else if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_PRESENT) {
+            //not present, need to add it
+            Debug.e("not present, need to add it", false);
+            if (calendarId >= 0) {
+                ContentValues cv = contest.toCalendarEventContentValues(calendarId);
+                mDBQueryHandler.startInsert(
+                        EVENT_INSERT_TO_CALENDAR,
+                        null,
+                        CalendarContract.Events.CONTENT_URI,
+                        cv
+
+                );
+            } else {
+                onError(getString(R.string.no_calendar_account_found));
+                CALENDAR_BUTTON_ACTIVE = false;
+            }
+        } else if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
+            //should not happen
+            Debug.c();
+            CALENDAR_BUTTON_ACTIVE = false;
+        }
+
     }
 
     @Override
@@ -379,8 +449,8 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
         if (cursor != null) {
             try {
                 if (cursor.moveToFirst()) {
-                    calendarEventId = cursor.getInt(cursor.getColumnIndex(DBContract.CalendarEntry
-                            .CALENDAR_EVENT_ID_COL));
+                    calendarEventId = cursor.getInt(cursor.getColumnIndex(CalendarContract.Events
+                            ._ID));
                     calendarImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
                             .drawable.calendar_on));
                 } else {
@@ -397,23 +467,61 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
 
     @Override
     public void onQueryComplete(int token, Cursor cursor) {
-        Debug.e("token : " + token, false);
+        Debug.e("onQueryComplete token : " + token, false);
         switch (token) {
-            case EVENT_ADDED_TO_CALENDAR_QUERY:
+            case VERIFY_EVENT_ADDED_TO_CALENDAR_QUERY: {
                 processCalendarQuery(cursor);
                 CALENDAR_BUTTON_ACTIVE = false;
-                break;
+            }
+            break;
         }
     }
 
     @Override
     public void onInsertComplete(int token, Uri uri) {
-
+        Debug.e("onInsertComplete token : " + token + " uri : " + uri, false);
+        switch (token) {
+            case EVENT_INSERT_TO_CALENDAR: {
+                String msg;
+                if (uri != null) {
+                    msg = String.format(getString(R.string.event_added_calendar), contest
+                            .getEvent());
+                    calendarImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
+                            .drawable.calendar_on));
+                    calendarEventId = Long.valueOf(uri.getLastPathSegment());
+                    Debug.e("inserted : " + calendarEventId, false);
+                } else {
+                    msg = String.format(getString(R.string.insert_event_error), contest
+                            .getEvent());
+                }
+                onError(msg);
+                CALENDAR_BUTTON_ACTIVE = false;
+            }
+            break;
+        }
     }
 
     @Override
     public void onDeleteComplete(int token, int result) {
-
+        Debug.e("onDeleteComplete token : " + token + " result : " + result, false);
+        switch (token) {
+            case EVENT_DELETE_FROM_CALENDAR: {
+                String msg;
+                if (result == 1) {
+                    msg = String.format(getString(R.string.delete_event), contest
+                            .getEvent());
+                    calendarImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
+                            .drawable.calendar_default));
+                    calendarEventId = CALENDAR_EVENT_VALUE_NOT_PRESENT;
+                } else {
+                    msg = String.format(getString(R.string.delete_event_error), contest
+                            .getEvent());
+                }
+                onError(msg);
+                CALENDAR_BUTTON_ACTIVE = false;
+            }
+            break;
+        }
     }
 
     @Override
@@ -423,6 +531,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
 
     @Subscribe
     public void onCalendarPermissionGrant(CalendarPermissionGrantedEvent event) {
+        calendarId = CalendarUtils.getCalendarId(getActivity());
         toggleEventStatusInCalendar();
     }
 

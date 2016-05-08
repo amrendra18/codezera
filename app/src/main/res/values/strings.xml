@@ -63,4 +63,13 @@
     </string>
     <string name="calendar_permission_denied">Calendar Read/Write permission denied.
     </string>
+    <string name="no_calendar_account_found">No calendar accounts found!! Please login to
+        google calendar and try again</string>
+
+    <string name="insert_event_error">&lt;b&gt;Error&lt;/&gt; occured in adding &lt;b&gt;%1$s&lt;/&gt; to your
+        calendar.</string>
+    <string name="delete_event">Event &lt;b&gt;%1$s&lt;/&gt; removed from your calendar.</string>
+    <string name="delete_event_error">&lt;b&gt;Error&lt;/&gt; occured in removing event
+        &lt;b&gt;%1$s&lt;/&gt; from your
+        calendar.</string>
 </resources>

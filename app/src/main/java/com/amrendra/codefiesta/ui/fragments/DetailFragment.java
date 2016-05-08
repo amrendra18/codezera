@@ -640,6 +640,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     notificationImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
                             .drawable.notification_default));
                     notificationId = NOTIFICATION_EVENT_VALUE_NOT_PRESENT;
+                    deleteNotification();
                 } else {
                     msg = String.format(getString(R.string.delete_notification_error), contest
                             .getEvent());
@@ -676,11 +677,24 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             alarmIntent.putExtra(AppUtils.CONTEST_KEY, contest);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), contest.getId(),
                     alarmIntent, PendingIntent
-                    .FLAG_UPDATE_CURRENT);
+                            .FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService
                     (Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime * 1000, pendingIntent);
             notificationTime = -1;
         }
+    }
+
+    private void deleteNotification() {
+        Debug.c();
+        Intent alarmIntent = new Intent(getActivity(), NotificationAlarm.class);
+        alarmIntent.putExtra(AppUtils.CONTEST_KEY, contest);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), contest.getId(),
+                alarmIntent, PendingIntent
+                        .FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService
+                (Context.ALARM_SERVICE);
+        pendingIntent.cancel();
+        alarmManager.cancel(pendingIntent);
     }
 }

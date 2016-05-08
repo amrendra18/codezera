@@ -128,38 +128,4 @@ public class DBContract {
                 NOTIFICATION_CONTEST_START_TIME_COL
         };
     }
-
-    public static final class CalendarEntry implements BaseColumns {
-        public static final String TABLE_NAME = "calendar_table";
-
-        public static final Uri CONTENT_URI_ALL_CALENDAR_EVENTS =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_CALENDAR).build();
-
-        public static Uri buildCalendarEventUriWithContestId(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI_ALL_CALENDAR_EVENTS, id);
-        }
-
-        public static long getContestIdFromCalendarEventUri(Uri uri) {
-            return ContentUris.parseId(uri);
-        }
-
-        public static final String CONTENT_DIR_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CALENDAR;
-
-        public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CALENDAR;
-
-        public static final String CALENDAR_CONTEST_ID_COL = "contest_id";
-        public static final String CALENDAR_EVENT_ID_COL = "event_id";
-        public static final String CALENDAR_EVENT_TIME_COL = "reminder_time";
-        public static final String CALENDAR_CONTEST_START_TIME_COL = "start_time";
-
-        public static final String[] CALENDAR_PROJECTION = new String[]{
-                _ID,
-                CALENDAR_CONTEST_ID_COL,
-                CALENDAR_EVENT_ID_COL,
-                CALENDAR_EVENT_TIME_COL,
-                CALENDAR_CONTEST_START_TIME_COL
-        };
-    }
 }

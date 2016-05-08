@@ -9,7 +9,6 @@ import android.provider.CalendarContract;
  */
 public class CalendarUtils {
     public static long getCalendarId(Context mContext) {
-        Debug.c();
         String[] projection = new String[]{CalendarContract.Calendars._ID, CalendarContract
                 .Calendars.NAME, CalendarContract.Calendars.ACCOUNT_NAME, CalendarContract
                 .Calendars.CALENDAR_TIME_ZONE};
@@ -23,7 +22,6 @@ public class CalendarUtils {
                     null);
             if (cursor != null) {
                 try {
-                    Debug.c();
                     if (cursor.moveToFirst()) {
                         int id = cursor.getInt(cursor.getColumnIndex(CalendarContract.Calendars
                                 ._ID));
@@ -49,7 +47,6 @@ public class CalendarUtils {
         } catch (SecurityException ex) {
             ex.printStackTrace();
         }
-        Debug.c();
         return AppUtils.STATUS_CALENDAR_PERMISSION_ERROR;
     }
 }

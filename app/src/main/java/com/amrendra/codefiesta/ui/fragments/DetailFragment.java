@@ -278,7 +278,10 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             secProgressBar.setVisibility(View.VISIBLE);
 
             if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
-                getCalendarEventStatus();
+                int contestStatus = DateUtils.getContestStatus(starTime, endTime);
+                if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
+                    getCalendarEventStatus();
+                }
             }
         }
     }

@@ -46,16 +46,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     + " UNIQUE (" + DBContract.NotificationEntry._ID + ") ON CONFLICT REPLACE"
                     + " );";
 
-    public static final String SQL_CREATE_TABLE_CALENDARS =
-            "CREATE TABLE " + DBContract.CalendarEntry.TABLE_NAME + " ("
-                    + DBContract.CalendarEntry._ID + " INTEGER PRIMARY KEY,"
-                    + DBContract.CalendarEntry.CALENDAR_CONTEST_ID_COL + " INTEGER NOT NULL,"
-                    + DBContract.CalendarEntry.CALENDAR_EVENT_ID_COL + " INTEGER NOT NULL,"
-                    + DBContract.CalendarEntry.CALENDAR_EVENT_TIME_COL + " INTEGER NOT NULL,"
-                    + DBContract.CalendarEntry.CALENDAR_CONTEST_START_TIME_COL + " INTEGER NOT NULL,"
-                    + " UNIQUE (" + DBContract.CalendarEntry.CALENDAR_CONTEST_ID_COL + ") ON CONFLICT REPLACE"
-                    + " );";
-
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -76,7 +66,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLE_RESOURCE);
         db.execSQL(SQL_CREATE_TABLE_CONTESTS);
         db.execSQL(SQL_CREATE_TABLE_NOTIFICATIONS);
-        db.execSQL(SQL_CREATE_TABLE_CALENDARS);
 
     }
 
@@ -86,7 +75,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DBContract.ResourceEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DBContract.ContestEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DBContract.NotificationEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + DBContract.CalendarEntry.TABLE_NAME);
         onCreate(db);
     }
 }

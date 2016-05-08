@@ -40,9 +40,6 @@ public class Provider extends ContentProvider {
     private static final int NOTIFICATION = 300;
     private static final int NOTIFICATION_WITH_ID = 301;
 
-    private static final int CALENDAR = 400;
-    private static final int CALENDAR_WITH_ID = 401;
-
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -99,13 +96,6 @@ public class Provider extends ContentProvider {
         // notification/34
         matcher.addURI(authority,
                 DBContract.PATH_NOTIFICATION + "/#", NOTIFICATION_WITH_ID);
-
-        // Calendar Table
-        //  calendar/
-        matcher.addURI(authority, DBContract.PATH_CALENDAR, CALENDAR);
-        // calendar/34
-        matcher.addURI(authority,
-                DBContract.PATH_CALENDAR + "/#", CALENDAR_WITH_ID);
 
         return matcher;
     }
@@ -209,33 +199,6 @@ public class Provider extends ContentProvider {
                 );
             }
             break;
-
-            case CALENDAR: {
-                retCursor = db.query(
-                        DBContract.CalendarEntry.TABLE_NAME, //table name
-                        projection, //projection
-                        null, //selection
-                        null, //selectionArgs
-                        null,
-                        null,
-                        sortOrder
-                );
-            }
-            break;
-
-            case CALENDAR_WITH_ID: {
-                long id = DBContract.CalendarEntry.getContestIdFromCalendarEventUri(uri);
-                retCursor = db.query(
-                        DBContract.CalendarEntry.TABLE_NAME, //table name
-                        projection, //projection
-                        DBContract.CalendarEntry.CALENDAR_CONTEST_ID_COL + " = ?", //selection
-                        new String[]{Long.toString(id)}, //selectionArgs
-                        null,
-                        null,
-                        sortOrder
-                );
-            }
-            break;
             /*case CONTEST_WITH_ID:
                 return DBContract.ContestEntry.CONTENT_ITEM_TYPE;
             case CONTEST_WITH_RESOURCE_ID:
@@ -285,10 +248,6 @@ public class Provider extends ContentProvider {
                 return DBContract.NotificationEntry.CONTENT_DIR_TYPE;
             case NOTIFICATION_WITH_ID:
                 return DBContract.NotificationEntry.CONTENT_ITEM_TYPE;
-            case CALENDAR:
-                return DBContract.CalendarEntry.CONTENT_DIR_TYPE;
-            case CALENDAR_WITH_ID:
-                return DBContract.CalendarEntry.CONTENT_ITEM_TYPE;
             default:
                 Debug.e("ERROR : " + uri, false);
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -313,14 +272,6 @@ public class Provider extends ContentProvider {
             break;
             case NOTIFICATION: {
 
-            }
-            break;
-            case CALENDAR: {
-                long _id = db.insert(DBContract.CalendarEntry.TABLE_NAME, null, values);
-                if (_id > 0)
-                    returnUri = DBContract.CalendarEntry.buildCalendarEventUriWithContestId(_id);
-                else
-                    throw new android.database.SQLException("Failed to insert row into " + uri);
             }
             break;
             default:
@@ -349,9 +300,6 @@ public class Provider extends ContentProvider {
                 break;
             case NOTIFICATION:
                 deleted = db.delete(DBContract.NotificationEntry.TABLE_NAME, selection, selectionArgs);
-                break;
-            case CALENDAR:
-                deleted = db.delete(DBContract.CalendarEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Delete : Unknown uri: " + uri);
@@ -385,11 +333,6 @@ public class Provider extends ContentProvider {
                         selectionArgs);
             }
             break;
-            case CALENDAR: {
-                rowsUpdated = db.update(DBContract.CalendarEntry.TABLE_NAME, values, selection,
-                        selectionArgs);
-            }
-            break;
             default:
                 Debug.e("ERROR : " + uri, false);
                 throw new UnsupportedOperationException("Update : Unknown uri: " + uri);
@@ -414,9 +357,6 @@ public class Provider extends ContentProvider {
                 break;
             case NOTIFICATION:
                 tableName = DBContract.NotificationEntry.TABLE_NAME;
-                break;
-            case CALENDAR:
-                tableName = DBContract.CalendarEntry.TABLE_NAME;
                 break;
             default:
                 break;

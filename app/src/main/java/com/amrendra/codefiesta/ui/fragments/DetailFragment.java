@@ -75,7 +75,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     long notificationTime = -1;
 
     Contest contest;
-    long starTime = -1;
+    long startTime = -1;
     long endTime = -1;
     boolean isTimerPaused = false;
     private DBQueryHandler mDBQueryHandler;
@@ -164,9 +164,9 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             timeZoneTv.setText(tz.getID() + " " + tz.getDisplayName(false, TimeZone.SHORT));
 
 
-            starTime = DateUtils.getEpochTime(contest.getStart());
+            startTime = DateUtils.getEpochTime(contest.getStart());
             endTime = DateUtils.getEpochTime(contest.getEnd());
-            final CustomDate startDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(starTime));
+            final CustomDate startDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(startTime));
             final CustomDate endDate = new CustomDate(DateUtils.epochToDateTimeLocalShow(endTime));
 
             final String starts = "Starts : " + startDate.getTime() + " " + startDate.getAmPm() + " " +
@@ -182,7 +182,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             contestEndAmPm.setText(endDate.getAmPm());
             contestEndDate.setText(endDate.getDateMonthYear());
 
-            statusTv.setText(DateUtils.getContestStatusString(starTime, endTime));
+            statusTv.setText(DateUtils.getContestStatusString(startTime, endTime));
 
             final int resourceId = contest.getWebsite().getId();
             String resourceName = AppUtils.getResourceName(getActivity(), resourceId);
@@ -199,7 +199,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             calendarImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int contestStatus = DateUtils.getContestStatus(starTime, endTime);
+                    int contestStatus = DateUtils.getContestStatus(startTime, endTime);
                     String text;
                     if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
                         if (CALENDAR_BUTTON_ACTIVE) {
@@ -239,7 +239,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             notificationImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int contestStatus = DateUtils.getContestStatus(starTime, endTime);
+                    int contestStatus = DateUtils.getContestStatus(startTime, endTime);
                     String text = "";
                     if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
                         if (NOTIFICATION_BUTTON_ACTIVE) {
@@ -296,7 +296,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             secProgressBar.setVisibility(View.VISIBLE);
 
 
-            int contestStatus = DateUtils.getContestStatus(starTime, endTime);
+            int contestStatus = DateUtils.getContestStatus(startTime, endTime);
             if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
                 if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
                     getEventCalendarStatus();
@@ -357,8 +357,9 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             );
         } else {
             //insert
-            notificationTime = System.currentTimeMillis() / 1000 + DateUtils.SEC_IN_ONE_MINUTE;
-            // starTime - DateUtils.SEC_IN_ONE_HOUR;
+            /*notificationTime = System.currentTimeMillis() / 1000 + 10 * DateUtils
+                    .SEC_IN_ONE_MINUTE;*/
+            notificationTime = startTime - DateUtils.SEC_IN_ONE_HOUR;
             ContentValues cv = contest.toNotificationEventContentValues(notificationTime);
             mDBQueryHandler.startInsert(
                     INSERT_NOTIFICATION_FOR_EVENT,
@@ -463,12 +464,12 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     }
 
     private void configureTimer() {
-        if (starTime != -1 && endTime != -1) {
-            int contestStatus = DateUtils.getContestStatus(starTime, endTime);
+        if (startTime != -1 && endTime != -1) {
+            int contestStatus = DateUtils.getContestStatus(startTime, endTime);
             final long timeNow = System.currentTimeMillis() / 1000;
             long diff = 0;
             if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
-                diff = starTime - timeNow;
+                diff = startTime - timeNow;
             } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
                 diff = endTime - timeNow;
             }
@@ -673,7 +674,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
         Debug.c();
         if (notificationTime != -1) {
             Debug.e("" + notificationTime, false);
-            Intent alarmIntent = new Intent(getActivity(), NotificationAlarm.class);
+            Intent alarmIntent = new Intent(getActivity().getApplicationContext(), NotificationAlarm.class);
             alarmIntent.putExtra(AppUtils.CONTEST_KEY, contest);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), contest.getId(),
                     alarmIntent, PendingIntent
@@ -687,7 +688,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
 
     private void deleteNotification() {
         Debug.c();
-        Intent alarmIntent = new Intent(getActivity(), NotificationAlarm.class);
+        Intent alarmIntent = new Intent(getActivity().getApplicationContext(), NotificationAlarm.class);
         alarmIntent.putExtra(AppUtils.CONTEST_KEY, contest);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), contest.getId(),
                 alarmIntent, PendingIntent

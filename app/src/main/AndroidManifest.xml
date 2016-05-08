@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <!-- required for sync adapter -->
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
@@ -73,7 +74,19 @@
                 android:resource="@xml/syncadapter"/>
         </service>
 
-        <receiver android:name="com.amrendra.codefiesta.alarms.NotificationAlarm"/>
+        <receiver
+            android:name="com.amrendra.codefiesta.alarms.NotificationAlarm"/>
+
+        <receiver
+            android:name="com.amrendra.codefiesta.alarms.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
@@ -87,7 +100,6 @@
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
             android:exported="false"/>
-
         <!--
              Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
              installation campaign reporting

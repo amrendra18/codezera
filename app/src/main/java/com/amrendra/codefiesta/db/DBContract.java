@@ -52,6 +52,14 @@ public class DBContract {
         public static final Uri CONTENT_URI_ALL =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_CONTEST).build();
 
+        public static Uri buildContestUriWithId(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI_ALL, id);
+        }
+
+        public static long getIdFromContestUri(Uri uri) {
+            return ContentUris.parseId(uri);
+        }
+
         public static final Uri CONTENT_URI_LIVE =
                 CONTENT_URI_ALL.buildUpon().appendPath(PATH_LIVE).build();
 

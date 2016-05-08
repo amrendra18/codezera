@@ -132,6 +132,22 @@ public class Provider extends ContentProvider {
                 );
             }
             break;
+            case CONTEST_WITH_ID: {
+                long id = DBContract.ContestEntry.getIdFromContestUri(uri);
+                retCursor = mContestByShowSettingsQueryBuilder.query(
+                        db,
+                        projection, //projection
+                        DBContract.ResourceEntry.TABLE_NAME +
+                                "." + DBContract.ResourceEntry.RESOURCE_SHOW_COL +
+                                " = 1 and " +
+                                DBContract.ContestEntry.CONTEST_ID_COL + " = ?",
+                        new String[]{Long.toString(id)},
+                        null,
+                        null,
+                        sortOrder
+                );
+            }
+            break;
             case CONTEST_LIVE: {
                 long currentTime = DBContract.ContestEntry.getTimeFromContestUri(uri);
                 retCursor = mContestByShowSettingsQueryBuilder.query(

@@ -16,13 +16,13 @@ public class DBQueryHandler extends AsyncQueryHandler {
 
     public DBQueryHandler(ContentResolver cr, OnQueryCompleteListener listener) {
         super(cr);
-        this.mListener = new WeakReference<OnQueryCompleteListener>(listener);
+        this.mListener = new WeakReference<>(listener);
     }
 
     @Override
     protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
         if (mListener != null && mListener.get() != null) {
-            mListener.get().onQueryComplete(cursor);
+            mListener.get().onQueryComplete(token, cursor);
         } else {
             if (cursor != null) {
                 cursor.close();
@@ -33,32 +33,32 @@ public class DBQueryHandler extends AsyncQueryHandler {
     @Override
     protected void onInsertComplete(int token, Object cookie, Uri uri) {
         if (mListener != null && mListener.get() != null) {
-            mListener.get().onInsertComplete(uri);
+            mListener.get().onInsertComplete(token, uri);
         }
     }
 
     @Override
     protected void onUpdateComplete(int token, Object cookie, int result) {
         if (mListener != null && mListener.get() != null) {
-            mListener.get().onUpdateComplete(result);
+            mListener.get().onUpdateComplete(token, result);
         }
     }
 
     @Override
     protected void onDeleteComplete(int token, Object cookie, int result) {
         if (mListener != null && mListener.get() != null) {
-            mListener.get().onDeleteComplete(result);
+            mListener.get().onDeleteComplete(token, result);
         }
     }
 
     public interface OnQueryCompleteListener {
-        void onQueryComplete(Cursor cursor);
+        void onQueryComplete(int token, Cursor cursor);
 
-        void onInsertComplete(Uri uri);
+        void onInsertComplete(int token, Uri uri);
 
-        void onDeleteComplete(int result);
+        void onDeleteComplete(int token, int result);
 
-        void onUpdateComplete(int result);
+        void onUpdateComplete(int token, int result);
     }
 }
 

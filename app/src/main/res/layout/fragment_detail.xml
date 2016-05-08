@@ -327,7 +327,7 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:elevation="@dimen/fav_elevation"
         android:scaleType="centerCrop"
-        android:src="@drawable/calendar_selector"
+        android:src="@drawable/calendar_default"
         app:backgroundTint="@color/colorPrimaryLight"
         app:borderWidth="@dimen/fav_border_width"
         app:fabSize="normal"

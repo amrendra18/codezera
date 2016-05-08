@@ -1,6 +1,10 @@
 package com.amrendra.codefiesta.ui.fragments;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
@@ -19,9 +24,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
+import com.amrendra.codefiesta.db.DBContract;
+import com.amrendra.codefiesta.handler.DBQueryHandler;
 import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.progressbar.CustomProgressBar;
 import com.amrendra.codefiesta.utils.AppUtils;
+import com.amrendra.codefiesta.utils.CalendarUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
@@ -35,12 +43,17 @@ import butterknife.Bind;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailFragment extends BaseFragment {
+public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQueryCompleteListener {
 
+    private static final int EVENT_ADDED_TO_CALENDAR_QUERY = 3000;
+    private static final int CALENDAR_EVENT_VALUE_NOT_RETRIEVED = -100;
+    private static final int CALENDAR_EVENT_VALUE_NOT_PRESENT = -1;
     Contest contest;
     long starTime = -1;
     long endTime = -1;
     boolean isTimerPaused = false;
+    private DBQueryHandler mDBQueryHandler;
+    long calendarEventId = CALENDAR_EVENT_VALUE_NOT_RETRIEVED;
 
     @Bind(R.id.detail_fragment_coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
@@ -162,19 +175,43 @@ public class DetailFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     int contestStatus = DateUtils.getContestStatus(starTime, endTime);
+                    String text = "";
                     if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
-
+                        if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
+                            text = String.format(getString(R.string.fetch_contest_calendar_status),
+                                    contest.getEvent());
+                            onError(text);
+                            return;
+                        }
+                        int ret = CalendarUtils.getInstance(getActivity()).addEvent(contest);
+                        if (ret == AppUtils.STATUS_CALENDAR_EVENT_ALREADY_ADDED) {
+                            //delete it.
+                            /*text = String.format(getString(R.string.event_started_calendar),
+                                    contest.getEvent());*/
+                        } else if (ret == AppUtils.STATUS_CALENDAR_PERMISSION_ERROR) {
+                            text = getString(R.string.calendar_permission_denied);
+                            if (ContextCompat.checkSelfPermission(getActivity(),
+                                    Manifest.permission.READ_CONTACTS)
+                                    != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        new String[]{Manifest.permission.READ_CALENDAR,
+                                                Manifest.permission.WRITE_CALENDAR},
+                                        0);
+                            }
+                        } else if (ret == AppUtils.STATUS_CALENDAR_EVENT_SUCCESS) {
+                            text = String.format(getString(R.string.event_added_calendar),
+                                    contest.getEvent());
+                        }
                     } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
-                        String text = String.format(getString(R.string.contest_started),
-                                contest,
+                        text = String.format(getString(R.string.contest_started),
+                                contest.getEvent(),
                                 shortResourceName);
-                        onError(text);
                     } else {
-                        String text = String.format(getString(R.string.contest_ended),
-                                contest,
+                        text = String.format(getActivity().getString(R.string.contest_ended),
+                                contest.getEvent(),
                                 shortResourceName);
-                        onError(text);
                     }
+                    onError(text);
                 }
             });
 
@@ -229,6 +266,18 @@ public class DetailFragment extends BaseFragment {
             secProgressBar.setProgressRingForegroundColor("#e300fc");
             secProgressBar.setCenterBackgroundColor("#213051");
             secProgressBar.setVisibility(View.VISIBLE);
+
+
+            Uri uri = DBContract.CalendarEntry.buildCalendarEventUriWithContestId(contest.getId());
+            mDBQueryHandler.startQuery(
+                    EVENT_ADDED_TO_CALENDAR_QUERY,
+                    null,
+                    uri,
+                    DBContract.CalendarEntry.CALENDAR_PROJECTION,
+                    null,
+                    null,
+                    null
+            );
         }
 
     }
@@ -308,4 +357,55 @@ public class DetailFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onAttach(Context context) {
+        mDBQueryHandler = new DBQueryHandler(context.getContentResolver(), this);
+        super.onAttach(context);
+    }
+
+    void processCalendarQuery(Cursor cursor) {
+        Debug.c();
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    calendarEventId = cursor.getInt(cursor.getColumnIndex(DBContract.CalendarEntry
+                            .CALENDAR_EVENT_ID_COL));
+                    calendarImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
+                            .drawable.calendar_on));
+                } else {
+                    calendarImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
+                            .drawable.calendar_default));
+                    calendarEventId = CALENDAR_EVENT_VALUE_NOT_PRESENT;
+                }
+                Debug.e("calendarEventId : " + calendarEventId, false);
+            } finally {
+                cursor.close();
+            }
+        }
+    }
+
+    @Override
+    public void onQueryComplete(int token, Cursor cursor) {
+        Debug.e("token : " + token, false);
+        switch (token) {
+            case EVENT_ADDED_TO_CALENDAR_QUERY:
+                processCalendarQuery(cursor);
+                break;
+        }
+    }
+
+    @Override
+    public void onInsertComplete(int token, Uri uri) {
+
+    }
+
+    @Override
+    public void onDeleteComplete(int token, int result) {
+
+    }
+
+    @Override
+    public void onUpdateComplete(int token, int result) {
+
+    }
 }

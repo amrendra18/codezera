@@ -55,4 +55,12 @@
     <string name="contest_ended">Contest &lt;b&gt;%1$s&lt;/&gt; @ &lt;b&gt;%2$s&lt;/&gt; already
         ended.
     </string>
+
+    <string name="fetch_contest_calendar_status">Please wait while we
+        fetch calendar event status for &lt;b&gt;%1$s&lt;/&gt;.
+    </string>
+    <string name="event_added_calendar">Event &lt;b&gt;%1$s&lt;/&gt; added to your calendar.
+    </string>
+    <string name="calendar_permission_denied">Calendar Read/Write permission denied.
+    </string>
 </resources>

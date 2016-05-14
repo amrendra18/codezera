@@ -72,8 +72,6 @@ public class MainActivity extends BaseActivity implements
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setLogo(R.mipmap.ic_launcher);
-            actionBar.setDisplayUseLogoEnabled(true);
             actionBar.setTitle(mTitle);
         }
 
@@ -121,19 +119,19 @@ public class MainActivity extends BaseActivity implements
         switch (itemId) {
             case R.id.nav_current_menu:
                 fragmentClass = CurrentFragment.class;
-                mTitle = "Current Comp";
+                mTitle = getString(R.string.live_contests);
                 break;
             case R.id.nav_upcoming_menu:
                 fragmentClass = UpcomingFragment.class;
-                mTitle = "Future Comp";
+                mTitle = getString(R.string.upcoming_contests);
                 break;
             case R.id.nav_past_menu:
                 fragmentClass = PastFragment.class;
-                mTitle = "Past Comp";
+                mTitle = getString(R.string.past_contest);
                 break;
             case R.id.nav_settings_menu:
                 fragmentClass = SelectionFragment.class;
-                mTitle = "Selection";
+                mTitle = getString(R.string.nav_settings);
                 break;
             case R.id.nav_rate_menu:
                 //CodeFiestaSyncAdapter.syncImmediately(this);
@@ -141,22 +139,22 @@ public class MainActivity extends BaseActivity implements
             case R.id.nav_feedback_menu:
                 break;
             case R.id.nav_open_source_menu:
-                CodeFiestaSyncAdapter.syncImmediately(this);
-                fragmentClass = CurrentFragment.class;
-                mTitle = "Current Comp";
+                AppUtils.openWebsite(this, AppUtils.GIT_URL);
                 break;
             default:
                 fragmentClass = CurrentFragment.class;
-                Debug.showToastShort("default", this);
+                mTitle = getString(R.string.live_contests);
         }
 
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        if (fragmentClass != null) {
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        changeFragment(fragment, mTitle);
+            changeFragment(fragment, mTitle);
+        }
     }
 
     private void changeFragment(Fragment fragment, String title) {

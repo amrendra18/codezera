@@ -1,7 +1,9 @@
 package com.amrendra.codefiesta.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.db.DBContract;
@@ -37,9 +39,8 @@ public class AppUtils {
     public static final int STATUS_CALENDAR_EVENT_PRESENT_SO_REMOVED = 102;
 
     public static final String CONTEST_KEY = "CONTEST_KEY";
-
-
     public static final String UNKNOWN_RESOURCE = "Unknown Website";
+    public static final String GIT_URL = "https://github.com/amrendra18/code-fiesta/";
 
     static HashMap<Integer, String> resourceHashMap;
 
@@ -113,5 +114,11 @@ public class AppUtils {
             }
         }
         return R.mipmap.ic_launcher;
+    }
+
+    public static void openWebsite(Context context, String url) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        context.startActivity(i);
     }
 }

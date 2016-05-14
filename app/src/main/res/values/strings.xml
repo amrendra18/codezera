@@ -10,13 +10,18 @@
     <string name="drawer_open">open drawer</string>
     <string name="drawer_close">close drawer</string>
 
-    <string name="nav_current">Current</string>
+    <string name="nav_current">Live</string>
     <string name="nav_upcoming">Upcoming</string>
     <string name="nav_past">Past</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_rate">Rate app</string>
     <string name="nav_feedback">Feedback</string>
     <string name="nav_open_source">Open Source</string>
+
+    <string name="live_contests">Live Events</string>
+    <string name="upcoming_contests">Upcoming Events</string>
+    <string name="past_contest">Past Events</string>
+    <string name="detail_contest">Event Details</string>
 
     <string name="add_to_calendar">Add to calendar</string>
     <string name="remove_calendar">Remove from calendar</string>

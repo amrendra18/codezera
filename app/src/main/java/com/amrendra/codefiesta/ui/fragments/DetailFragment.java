@@ -271,7 +271,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             websiteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openWebsite(contest.getUrl());
+                    AppUtils.openWebsite(getActivity(), contest.getUrl());
                 }
             });
 
@@ -432,12 +432,6 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     public void onPause() {
         super.onPause();
         isTimerPaused = true;
-    }
-
-    public void openWebsite(String url) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
     }
 
     public void onShareClick(String msg) {

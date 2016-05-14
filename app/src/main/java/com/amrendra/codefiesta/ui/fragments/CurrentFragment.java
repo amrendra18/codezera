@@ -3,6 +3,8 @@ package com.amrendra.codefiesta.ui.fragments;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -17,7 +19,11 @@ import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.adapter.ContestAdapter;
+import com.amrendra.codefiesta.bus.BusProvider;
+import com.amrendra.codefiesta.bus.events.ContestClickEvent;
 import com.amrendra.codefiesta.db.DBContract;
+import com.amrendra.codefiesta.model.Contest;
+import com.amrendra.codefiesta.ui.activities.MainActivity;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
 import com.amrendra.codefiesta.utils.TrackingConstants;
@@ -123,6 +129,7 @@ public class CurrentFragment extends BaseFragment {
             if (cursor != null && cursor.getCount() > 0) {
                 errorTv.setVisibility(View.INVISIBLE);
                 errorLayout.setVisibility(View.INVISIBLE);
+                checkForNewLoad(cursor);
             } else {
                 /*if (!AppUtils.isNetworkConnected(getActivity())) {
                     Debug.showToastShort(getActivity().getString(R.string
@@ -142,4 +149,6 @@ public class CurrentFragment extends BaseFragment {
             mAdapter.swapCursor(null);
         }
     };
+
+
 }

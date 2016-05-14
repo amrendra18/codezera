@@ -120,6 +120,7 @@ public class UpcomingFragment extends BaseFragment {
             if (cursor != null && cursor.getCount() > 0) {
                 errorTv.setVisibility(View.INVISIBLE);
                 errorLayout.setVisibility(View.INVISIBLE);
+                checkForNewLoad(cursor);
             } else {
                 /*if (!AppUtils.isNetworkConnected(getActivity())) {
                     Debug.showToastShort(getActivity().getString(R.string

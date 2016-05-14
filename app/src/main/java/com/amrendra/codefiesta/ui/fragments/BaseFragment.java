@@ -1,6 +1,9 @@
 package com.amrendra.codefiesta.ui.fragments;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -8,6 +11,10 @@ import android.widget.Toast;
 
 import com.amrendra.codefiesta.CodeFiestaApplication;
 import com.amrendra.codefiesta.bus.BusProvider;
+import com.amrendra.codefiesta.bus.events.ContestClickEvent;
+import com.amrendra.codefiesta.model.Contest;
+import com.amrendra.codefiesta.ui.activities.MainActivity;
+import com.amrendra.codefiesta.utils.Debug;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -62,5 +69,22 @@ public abstract class BaseFragment extends Fragment {
         }
         mToast = Toast.makeText(getActivity(), resId, Toast.LENGTH_SHORT);
         mToast.show();
+    }
+
+    protected void checkForNewLoad(Cursor cursor) {
+        boolean twoPane = ((MainActivity) getActivity()).isTwoPane();
+        Debug.e(" twoPane: " + twoPane, false);
+        if (twoPane && cursor != null && cursor.moveToFirst()) {
+            final Contest contest = Contest.cursorToContest(getActivity(), cursor);
+            if (contest != null) {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        BusProvider.getInstance().post(new ContestClickEvent(contest));
+                    }
+                });
+            }
+        }
     }
 }

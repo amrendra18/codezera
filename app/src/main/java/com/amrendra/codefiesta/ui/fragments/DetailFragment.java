@@ -51,6 +51,8 @@ import butterknife.Bind;
  */
 public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQueryCompleteListener {
 
+    public static final String TAG = DetailFragment.class.getSimpleName();
+
     private static final int VERIFY_EVENT_ADDED_TO_CALENDAR_QUERY = 3000;
     private static final int EVENT_DELETE_FROM_CALENDAR = 3001;
     private static final int EVENT_INSERT_TO_CALENDAR = 3002;
@@ -464,8 +466,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (isTimerPaused) {
-                            Debug.e("timer cancelled", false);
-                            cancel();
+                            this.cancel();
                             return;
                         }
                         long secUntilFinished = millisUntilFinished / 1000;
@@ -565,7 +566,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     msg = String.format(getString(R.string.event_added_calendar), contest
                             .getEvent());
                     calendarButton.setCompoundDrawablesWithIntrinsicBounds(R
-                            .drawable.calendar_on,0,0,0);
+                            .drawable.calendar_on, 0, 0, 0);
                     calendarEventId = Long.valueOf(uri.getLastPathSegment());
                     Debug.e("inserted : " + calendarEventId, false);
                 } else {
@@ -582,7 +583,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     msg = String.format(getString(R.string.insert_notification), contest
                             .getEvent());
                     notificationButton.setCompoundDrawablesWithIntrinsicBounds(R
-                            .drawable.notification_on,0,0,0);
+                            .drawable.notification_on, 0, 0, 0);
                     notificationId = Long.valueOf(uri.getLastPathSegment());
                     Debug.e("inserted : " + notificationId, false);
                     addNotification();
@@ -607,7 +608,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     msg = String.format(getString(R.string.delete_event), contest
                             .getEvent());
                     calendarButton.setCompoundDrawablesWithIntrinsicBounds(R
-                            .drawable.calendar_add,0,0,0);
+                            .drawable.calendar_add, 0, 0, 0);
                     calendarEventId = CALENDAR_EVENT_VALUE_NOT_PRESENT;
                 } else {
                     msg = String.format(getString(R.string.delete_event_error), contest

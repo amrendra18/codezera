@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.util.DebugUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -40,7 +41,7 @@ public class MainActivity extends BaseActivity implements
     private static final String NAV_ITEM_ID = "navItemId";
     private static final String TITLE = "title";
 
-    private static boolean IS_TABLET = false;
+    boolean mTwoPane = false;
 
     private final Handler mDrawerActionHandler = new Handler();
 
@@ -60,19 +61,24 @@ public class MainActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Debug.c();
+        setContentView(R.layout.activity_main);
 
-        IS_TABLET = DeviceUtils.isTablet(this);
-        if (IS_TABLET) {
-            Debug.c();
-            setContentView(R.layout.activity_main_tablet);
+        if (findViewById(R.id.right_content_frame) != null) {
+            mTwoPane = true;
+//            if (savedInstanceState == null) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.right_content_frame, new DetailFragment(), DetailFragment.TAG)
+//                        .commit();
+//            }
         } else {
-            setContentView(R.layout.activity_main);
+            mTwoPane = false;
         }
+        Debug.e("TABLET : " + mTwoPane + " isTablet: " + DeviceUtils.isTablet(this), false);
 
         // load saved navigation state if present
         if (null == savedInstanceState) {
             mNavItemId = R.id.nav_current_menu;
-            mTitle = "Current Competition";//getString(R.string.app_name);
+            mTitle = getString(R.string.live_contests);
         } else {
             mNavItemId = savedInstanceState.getInt(NAV_ITEM_ID);
             mTitle = savedInstanceState.getString(TITLE);
@@ -167,14 +173,21 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void changeFragment(Fragment fragment, String title) {
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .addToBackStack(title)
-                .commit();
+        if (mTwoPane && fragment instanceof DetailFragment) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.right_content_frame, fragment)
+                    .commit();
+        } else {
+            // Insert the fragment by replacing any existing fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.left_content_frame, fragment)
+                    .addToBackStack(title)
+                    .commit();
 
-        setUpTitle(title);
+            setUpTitle(title);
+        }
     }
 
     public void setUpTitle(String title) {
@@ -254,6 +267,7 @@ public class MainActivity extends BaseActivity implements
         outState.putString(TITLE, mTitle);
     }
 
+
     @Subscribe
     public void onContestListItemClick(ContestClickEvent event) {
         Contest contest = event.getContest();
@@ -280,6 +294,10 @@ public class MainActivity extends BaseActivity implements
                 break;
             }
         }
+    }
+
+    public boolean isTwoPane() {
+        return mTwoPane;
     }
 }
 

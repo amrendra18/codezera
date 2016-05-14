@@ -15,7 +15,6 @@ import android.os.CountDownTimer;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ShareCompat;
@@ -24,7 +23,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
@@ -41,7 +40,6 @@ import com.amrendra.codefiesta.utils.CustomDate;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
 import com.amrendra.codefiesta.utils.TimerUtil;
-import com.bumptech.glide.Glide;
 import com.squareup.otto.Subscribe;
 
 import java.util.TimeZone;
@@ -88,8 +86,6 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     TextView contestTitleTv;
     @Bind(R.id.contest_website_tv)
     TextView contestWebsiteTv;
-    @Bind(R.id.resource_logo)
-    ImageView resourceImageView;
     @Bind(R.id.status_tv)
     TextView statusTv;
 
@@ -111,13 +107,13 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     TextView timeZoneTv;
 
     @Bind(R.id.calendar_image)
-    FloatingActionButton calendarImageView;
+    Button calendarButton;
     @Bind(R.id.notification_image)
-    FloatingActionButton notificationImageView;
+    Button notificationButton;
     @Bind(R.id.share_image)
-    FloatingActionButton shareImageView;
-    @Bind(R.id.link_website)
-    FloatingActionButton websiteLink;
+    Button shareButton;
+    @Bind(R.id.web_image)
+    Button websiteButton;
 
     @Bind(R.id.progress_bar_days)
     CustomProgressBar daysProgressBar;
@@ -188,15 +184,9 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             String resourceName = AppUtils.getResourceName(getActivity(), resourceId);
             final String shortResourceName = AppUtils.getGoodResourceName(resourceName);
             contestWebsiteTv.setText(shortResourceName);
-            Glide.with(getActivity())
-                    .load(AppUtils.getImageForResource(resourceName))
-                    .error(R.mipmap.ic_launcher)
-                    .placeholder(R.mipmap.ic_launcher)
-                    .crossFade()
-                    .into(resourceImageView);
 
 
-            calendarImageView.setOnClickListener(new View.OnClickListener() {
+            calendarButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int contestStatus = DateUtils.getContestStatus(startTime, endTime);
@@ -236,7 +226,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 }
             });
 
-            notificationImageView.setOnClickListener(new View.OnClickListener() {
+            notificationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int contestStatus = DateUtils.getContestStatus(startTime, endTime);
@@ -263,7 +253,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 }
             });
 
-            shareImageView.setOnClickListener(new View.OnClickListener() {
+            shareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     StringBuilder sb = new StringBuilder();
@@ -278,7 +268,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             });
 
 
-            websiteLink.setOnClickListener(new View.OnClickListener() {
+            websiteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openWebsite(contest.getUrl());
@@ -519,11 +509,11 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 if (cursor.moveToFirst()) {
                     calendarEventId = cursor.getInt(cursor.getColumnIndex(CalendarContract.Events
                             ._ID));
-                    calendarImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
-                            .drawable.calendar_on));
+                    calendarButton.setCompoundDrawablesWithIntrinsicBounds(R
+                            .drawable.calendar_on, 0, 0, 0);
                 } else {
-                    calendarImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
-                            .drawable.calendar_default));
+                    calendarButton.setCompoundDrawablesWithIntrinsicBounds(R
+                            .drawable.calendar_add, 0, 0, 0);
                     calendarEventId = CALENDAR_EVENT_VALUE_NOT_PRESENT;
                 }
                 Debug.e("calendarEventId : " + calendarEventId, false);
@@ -540,11 +530,11 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 if (cursor.moveToFirst()) {
                     notificationId = cursor.getInt(cursor.getColumnIndex(DBContract
                             .NotificationEntry._ID));
-                    notificationImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
-                            .drawable.notification_on));
+                    notificationButton.setCompoundDrawablesWithIntrinsicBounds(R
+                            .drawable.notification_on, 0, 0, 0);
                 } else {
-                    notificationImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
-                            .drawable.notification_default));
+                    notificationButton.setCompoundDrawablesWithIntrinsicBounds(R
+                            .drawable.notification_off, 0, 0, 0);
                     notificationId = NOTIFICATION_EVENT_VALUE_NOT_PRESENT;
                 }
                 Debug.e("notificationId : " + notificationId, false);
@@ -580,8 +570,8 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 if (uri != null) {
                     msg = String.format(getString(R.string.event_added_calendar), contest
                             .getEvent());
-                    calendarImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
-                            .drawable.calendar_on));
+                    calendarButton.setCompoundDrawablesWithIntrinsicBounds(R
+                            .drawable.calendar_on,0,0,0);
                     calendarEventId = Long.valueOf(uri.getLastPathSegment());
                     Debug.e("inserted : " + calendarEventId, false);
                 } else {
@@ -597,8 +587,8 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 if (uri != null) {
                     msg = String.format(getString(R.string.insert_notification), contest
                             .getEvent());
-                    notificationImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
-                            .drawable.notification_on));
+                    notificationButton.setCompoundDrawablesWithIntrinsicBounds(R
+                            .drawable.notification_on,0,0,0);
                     notificationId = Long.valueOf(uri.getLastPathSegment());
                     Debug.e("inserted : " + notificationId, false);
                     addNotification();
@@ -622,8 +612,8 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 if (result == 1) {
                     msg = String.format(getString(R.string.delete_event), contest
                             .getEvent());
-                    calendarImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
-                            .drawable.calendar_default));
+                    calendarButton.setCompoundDrawablesWithIntrinsicBounds(R
+                            .drawable.calendar_add,0,0,0);
                     calendarEventId = CALENDAR_EVENT_VALUE_NOT_PRESENT;
                 } else {
                     msg = String.format(getString(R.string.delete_event_error), contest
@@ -638,8 +628,8 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 if (result == 1) {
                     msg = String.format(getString(R.string.delete_notification), contest
                             .getEvent());
-                    notificationImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R
-                            .drawable.notification_default));
+                    notificationButton.setCompoundDrawablesWithIntrinsicBounds(R
+                            .drawable.notification_off, 0, 0, 0);
                     notificationId = NOTIFICATION_EVENT_VALUE_NOT_PRESENT;
                     deleteNotification();
                 } else {

@@ -254,7 +254,7 @@ public class MainActivity extends BaseActivity implements
         Bundle bundle = new Bundle();
         bundle.putParcelable(AppUtils.CONTEST_KEY, contest);
         detailFragment.setArguments(bundle);
-        changeFragment(detailFragment, contest.getEvent());
+        changeFragment(detailFragment, "Contest Details");
     }
 
     @Override

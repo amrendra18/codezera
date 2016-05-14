@@ -54,8 +54,8 @@ public class MainActivity extends BaseActivity implements
 
     ActionBarDrawerToggle mDrawerToggle;
 
-    private String mTitle;
-    private int mNavItemId;
+    String mTitle;
+    int mNavItemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +65,6 @@ public class MainActivity extends BaseActivity implements
 
         if (findViewById(R.id.right_content_frame) != null) {
             mTwoPane = true;
-//            if (savedInstanceState == null) {
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.right_content_frame, new DetailFragment(), DetailFragment.TAG)
-//                        .commit();
-//            }
         } else {
             mTwoPane = false;
         }
@@ -80,6 +75,7 @@ public class MainActivity extends BaseActivity implements
             mNavItemId = R.id.nav_current_menu;
             mTitle = getString(R.string.live_contests);
         } else {
+            Debug.e("SavedInstance not null", false);
             mNavItemId = savedInstanceState.getInt(NAV_ITEM_ID);
             mTitle = savedInstanceState.getString(TITLE);
         }
@@ -118,10 +114,7 @@ public class MainActivity extends BaseActivity implements
         mDrawerToggle.syncState();
 
         mNavigationView.setNavigationItemSelectedListener(this);
-
-        if (null == savedInstanceState) {
-            // select the correct nav menu item
-            mNavigationView.getMenu().findItem(mNavItemId).setChecked(true);
+        if(savedInstanceState == null) {
             navigate(mNavigationView.getMenu().findItem(mNavItemId));
         }
     }
@@ -173,14 +166,13 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void changeFragment(Fragment fragment, String title) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
         if (mTwoPane && fragment instanceof DetailFragment) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.right_content_frame, fragment)
+                    .addToBackStack(mTitle)
                     .commit();
         } else {
-            // Insert the fragment by replacing any existing fragment
-            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.left_content_frame, fragment)
                     .addToBackStack(title)
@@ -198,18 +190,10 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Debug.c();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         trackActivity(TrackingConstants.LIST_ACTIVITY_SCREEN_NAME);
-        Debug.c();
     }
-
 
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
@@ -228,12 +212,6 @@ public class MainActivity extends BaseActivity implements
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void onConfigurationChanged(final Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override

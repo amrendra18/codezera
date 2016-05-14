@@ -32,10 +32,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#bebc2c"
+        android:background="@color/colorPrimaryLight"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_row"
-        app:itemIconTint="@color/colorAccent"
+        app:itemIconTint="@color/colorPrimaryDark"
         app:itemTextColor="@color/colorPrimaryDark"
         app:menu="@menu/menu_nav">
     </android.support.design.widget.NavigationView>

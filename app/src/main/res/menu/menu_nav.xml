@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
 
     <group
         android:id="@+id/contests_group"
@@ -9,15 +9,15 @@
         <item
             android:id="@+id/nav_current_menu"
             android:icon="@mipmap/ic_launcher"
-            android:title="@string/nav_current"/>
+            android:title="@string/nav_current" />
         <item
             android:id="@+id/nav_upcoming_menu"
             android:icon="@mipmap/ic_launcher"
-            android:title="@string/nav_upcoming"/>
+            android:title="@string/nav_upcoming" />
         <item
             android:id="@+id/nav_past_menu"
             android:icon="@mipmap/ic_launcher"
-            android:title="@string/nav_past"/>
+            android:title="@string/nav_past" />
     </group>
 
     <group
@@ -27,22 +27,38 @@
         <item
             android:id="@+id/nav_settings_menu"
             android:icon="@mipmap/ic_launcher"
-            android:title="@string/nav_settings"/>
+            android:title="@string/nav_settings" />
 
         <item
             android:id="@+id/nav_rate_menu"
             android:icon="@mipmap/ic_launcher"
-            android:title="@string/nav_rate"/>
+            android:title="@string/nav_rate" />
 
         <item
             android:id="@+id/nav_feedback_menu"
             android:icon="@mipmap/ic_launcher"
-            android:title="@string/nav_feedback"/>
+            android:title="@string/nav_feedback" />
+
+    </group>
+
+    <group
+        android:id="@+id/about_group"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_share_menu"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/nav_share" />
 
         <item
             android:id="@+id/nav_open_source_menu"
             android:icon="@mipmap/ic_launcher"
-            android:title="@string/nav_open_source"/>
+            android:title="@string/nav_open_source" />
+
+        <item
+            android:id="@+id/nav_credits_menu"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/nav_credits" />
 
     </group>
 

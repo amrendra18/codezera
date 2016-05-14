@@ -8,15 +8,15 @@
 
         <item
             android:id="@+id/nav_current_menu"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/live"
             android:title="@string/nav_current" />
         <item
             android:id="@+id/nav_upcoming_menu"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/future"
             android:title="@string/nav_upcoming" />
         <item
             android:id="@+id/nav_past_menu"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/past"
             android:title="@string/nav_past" />
     </group>
 
@@ -26,17 +26,17 @@
 
         <item
             android:id="@+id/nav_settings_menu"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/settings"
             android:title="@string/nav_settings" />
 
         <item
             android:id="@+id/nav_rate_menu"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/rate"
             android:title="@string/nav_rate" />
 
         <item
             android:id="@+id/nav_feedback_menu"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/feedback"
             android:title="@string/nav_feedback" />
 
     </group>
@@ -47,17 +47,17 @@
 
         <item
             android:id="@+id/nav_share_menu"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/share_app"
             android:title="@string/nav_share" />
 
         <item
             android:id="@+id/nav_open_source_menu"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/open_source"
             android:title="@string/nav_open_source" />
 
         <item
             android:id="@+id/nav_credits_menu"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/credits"
             android:title="@string/nav_credits" />
 
     </group>

@@ -56,7 +56,7 @@ public class SelectionAdapter extends RecyclerView.Adapter<SelectionAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Website website = mWebsitesList.get(position);
         final int show = website.getShow();
         holder.checkBox.setChecked(show != 0);
@@ -74,18 +74,28 @@ public class SelectionAdapter extends RecyclerView.Adapter<SelectionAdapter.View
         if (position % 2 == 0) {
             holder.layout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryLight));
         } else {
-            holder.layout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_green_500));
+            holder.layout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.green_50));
         }
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+        holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Debug.showToastShort("" + resourceId + " " + isChecked, context);
-                int toShow = (((CheckBox) v).isChecked() ? 1 : 0);
-                Debug.i("resource : " + resourceId + " change : " + toShow, false);
-                settingsChangedListener.settingsChanged(resourceId, toShow);
-                website.setShow(toShow);
+                updateCheckBox(holder.checkBox, resourceId, website);
             }
         });
+    }
+
+    public void updateCheckBox(CheckBox cb, final int resourceId, final Website website) {
+        int toShow;
+        if (cb.isChecked()) {
+            cb.setChecked(false);
+            toShow = 0;
+        } else {
+            cb.setChecked(true);
+            toShow = 1;
+        }
+        Debug.i("resource : " + resourceId + " change : " + toShow, false);
+        settingsChangedListener.settingsChanged(resourceId, toShow);
+        website.setShow(toShow);
     }
 
     @Override

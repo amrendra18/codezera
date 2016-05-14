@@ -111,6 +111,10 @@ public class AppUtils {
                 return R.drawable.codeforces;
             } else if (res.contains("topcoder")) {
                 return R.drawable.topcoder;
+            } else if (res.contains("spoj")) {
+                return R.drawable.spoj;
+            } else if (res.contains("kaggle")) {
+                return R.drawable.kaggle;
             }
         }
         return R.mipmap.ic_launcher;

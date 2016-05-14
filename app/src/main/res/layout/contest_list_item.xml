@@ -63,6 +63,7 @@
                 android:id="@+id/resource_logo"
                 android:layout_width="@dimen/resource_logo_size"
                 android:layout_height="@dimen/resource_logo_size"
+                android:scaleType="fitXY"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/list_item_padding"
                 android:layout_marginLeft="@dimen/contest_title_padding"

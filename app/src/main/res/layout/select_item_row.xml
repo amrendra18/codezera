@@ -19,6 +19,7 @@
         android:layout_marginLeft="@dimen/contest_title_padding"
         android:layout_marginRight="@dimen/check_box_left"
         android:layout_marginStart="@dimen/check_box_left"
+        android:clickable="false"
         tools:text="New CheckBox"/>
 
 
@@ -41,6 +42,7 @@
         android:id="@+id/website_logo"
         android:layout_width="@dimen/resource_logo_size"
         android:layout_height="@dimen/resource_logo_size"
+        android:scaleType="fitXY"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/settings_resource_left_padding"
         android:layout_marginLeft="@dimen/contest_title_padding"

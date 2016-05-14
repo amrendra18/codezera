@@ -5,7 +5,7 @@
 
     <!-- nav drawer -->
     <dimen name="nav_heading_height">150dp</dimen>
-    <dimen name="nav_heading_text_margin_bottom">16dp</dimen>
+    <dimen name="nav_heading_text_margin_bottom">8dp</dimen>
     <dimen name="nav_heading_text_size">36sp</dimen>
 
     <dimen name="activity_list_view_margin_side">2dp</dimen>

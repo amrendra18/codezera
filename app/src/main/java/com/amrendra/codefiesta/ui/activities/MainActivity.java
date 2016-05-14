@@ -21,7 +21,6 @@ import com.amrendra.codefiesta.bus.events.CalendarPermissionGrantedEvent;
 import com.amrendra.codefiesta.bus.events.ContestClickEvent;
 import com.amrendra.codefiesta.bus.events.SnackBarMessageDetailFragmentEvent;
 import com.amrendra.codefiesta.model.Contest;
-import com.amrendra.codefiesta.sync.CodeFiestaSyncAdapter;
 import com.amrendra.codefiesta.ui.fragments.CurrentFragment;
 import com.amrendra.codefiesta.ui.fragments.DetailFragment;
 import com.amrendra.codefiesta.ui.fragments.PastFragment;
@@ -29,6 +28,7 @@ import com.amrendra.codefiesta.ui.fragments.SelectionFragment;
 import com.amrendra.codefiesta.ui.fragments.UpcomingFragment;
 import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.Debug;
+import com.amrendra.codefiesta.utils.DeviceUtils;
 import com.amrendra.codefiesta.utils.TrackingConstants;
 import com.squareup.otto.Subscribe;
 
@@ -39,6 +39,8 @@ public class MainActivity extends BaseActivity implements
     private static final long DRAWER_CLOSE_DELAY_MS = 150;
     private static final String NAV_ITEM_ID = "navItemId";
     private static final String TITLE = "title";
+
+    private static boolean IS_TABLET = false;
 
     private final Handler mDrawerActionHandler = new Handler();
 
@@ -58,7 +60,14 @@ public class MainActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Debug.c();
-        setContentView(R.layout.activity_list);
+
+        IS_TABLET = DeviceUtils.isTablet(this);
+        if (IS_TABLET) {
+            Debug.c();
+            setContentView(R.layout.activity_main_tablet);
+        } else {
+            setContentView(R.layout.activity_main);
+        }
 
         // load saved navigation state if present
         if (null == savedInstanceState) {

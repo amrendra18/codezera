@@ -1,13 +1,11 @@
 package com.amrendra.codefiesta.ui.activities;
 
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.util.DebugUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -114,7 +112,7 @@ public class MainActivity extends BaseActivity implements
         mDrawerToggle.syncState();
 
         mNavigationView.setNavigationItemSelectedListener(this);
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             navigate(mNavigationView.getMenu().findItem(mNavItemId));
         }
     }
@@ -142,7 +140,8 @@ public class MainActivity extends BaseActivity implements
                 mTitle = getString(R.string.nav_settings);
                 break;
             case R.id.nav_rate_menu:
-                //CodeFiestaSyncAdapter.syncImmediately(this);
+                // CodeFiestaSyncAdapter.syncImmediately(this);
+                // Debug.forceCrash();
                 break;
             case R.id.nav_feedback_menu:
                 break;

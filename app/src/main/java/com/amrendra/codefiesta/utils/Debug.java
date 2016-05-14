@@ -22,6 +22,12 @@ public class Debug {
     private static final String packageName = "com.amrendra.codefiesta.";
     private static final String TAG = "bdebug";
 
+    public static void forceCrash() {
+        if (DEBUG) {
+            throw new RuntimeException("Cheeky!! This is a simulated debug crash");
+        }
+    }
+
     private static String getMsg(String msg) {
         if (DEBUG) {
             StackTraceElement strace = Thread.currentThread().getStackTrace()[4];

@@ -228,26 +228,24 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 @Override
                 public void onClick(View v) {
                     int contestStatus = DateUtils.getContestStatus(startTime, endTime);
-                    String text = "";
                     if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
                         if (NOTIFICATION_BUTTON_ACTIVE) {
-                            text = String.format(getString(R.string.fetch_contest_notification_status),
-                                    contest.getEvent());
-                            showSnackBarMessage(text);
+                            showSnackBarMessage(String.format(getString(R.string.fetch_contest_notification_status),
+                                    contest.getEvent()));
                             return;
                         }
                         toggleNotificationForEvent();
                     } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
-                        text = String.format(getString(R.string.contest_started),
+                        showSnackBarMessage(String.format(getString(R.string.contest_started),
                                 contest.getEvent(),
-                                shortResourceName);
+                                shortResourceName));
 
                     } else {
-                        text = String.format(getString(R.string.contest_ended),
+                        showSnackBarMessage(String.format(getString(R.string.contest_ended),
                                 contest.getEvent(),
-                                shortResourceName);
+                                shortResourceName));
                     }
-                    showSnackBarMessage(text);
+
                 }
             });
 
@@ -524,10 +522,12 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     notificationId = cursor.getInt(cursor.getColumnIndex(DBContract
                             .NotificationEntry._ID));
                     notificationButton.setCompoundDrawablesWithIntrinsicBounds(R
-                            .drawable.notification_on, 0, 0, 0);
+                            .drawable.notification_off, 0, 0, 0);
+                    notificationButton.setText(getString(R.string.remove_notification));
                 } else {
                     notificationButton.setCompoundDrawablesWithIntrinsicBounds(R
-                            .drawable.notification_off, 0, 0, 0);
+                            .drawable.notification_on, 0, 0, 0);
+                    notificationButton.setText(getString(R.string.add_notification));
                     notificationId = NOTIFICATION_EVENT_VALUE_NOT_PRESENT;
                 }
                 Debug.e("notificationId : " + notificationId, false);
@@ -582,7 +582,8 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     msg = String.format(getString(R.string.insert_notification), contest
                             .getEvent());
                     notificationButton.setCompoundDrawablesWithIntrinsicBounds(R
-                            .drawable.notification_on, 0, 0, 0);
+                            .drawable.notification_off, 0, 0, 0);
+                    notificationButton.setText(getString(R.string.remove_notification));
                     notificationId = Long.valueOf(uri.getLastPathSegment());
                     Debug.e("inserted : " + notificationId, false);
                     addNotification();
@@ -619,18 +620,13 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             }
             break;
             case DELETE_NOTIFICATION_FOR_EVENT: {
-                String msg;
-                if (result == 1) {
-                    msg = String.format(getString(R.string.delete_notification), contest
-                            .getEvent());
-                    notificationButton.setCompoundDrawablesWithIntrinsicBounds(R
-                            .drawable.notification_off, 0, 0, 0);
-                    notificationId = NOTIFICATION_EVENT_VALUE_NOT_PRESENT;
-                    deleteNotification();
-                } else {
-                    msg = String.format(getString(R.string.delete_notification_error), contest
-                            .getEvent());
-                }
+                String msg = String.format(getString(R.string.delete_notification), contest
+                        .getEvent());
+                notificationButton.setCompoundDrawablesWithIntrinsicBounds(R
+                        .drawable.notification_on, 0, 0, 0);
+                notificationButton.setText(getString(R.string.add_notification));
+                notificationId = NOTIFICATION_EVENT_VALUE_NOT_PRESENT;
+                deleteNotification();
                 showSnackBarMessage(msg);
                 NOTIFICATION_BUTTON_ACTIVE = false;
             }

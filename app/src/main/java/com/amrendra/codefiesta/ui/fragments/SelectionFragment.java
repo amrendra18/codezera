@@ -177,7 +177,7 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
             try {
                 ContentProviderResult[] cpr = getActivity().getContentResolver()
                         .applyBatch(getString(R.string.contentauthority), cpo);
-                Debug.showToastShort("Updated settings for " + cpr.length + " websites", getActivity());
+                Debug.showToastShort("Updated settings for " + cpr.length + " websites", getActivity(), true);
             } catch (RemoteException | OperationApplicationException e) {
                 e.printStackTrace();
                 Debug.e(" error : " + e.getLocalizedMessage(), false);

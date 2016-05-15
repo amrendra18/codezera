@@ -323,7 +323,7 @@ public class MainActivity extends BaseActivity implements
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
             } catch (ActivityNotFoundException e2) {
-                Debug.showToastShort(getString(R.string.no_playstore), this);
+                Debug.showToastShort(getString(R.string.no_playstore), this, true);
             }
 
         }

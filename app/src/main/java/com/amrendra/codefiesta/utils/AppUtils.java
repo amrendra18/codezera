@@ -40,7 +40,7 @@ public class AppUtils {
 
     public static final String CONTEST_KEY = "CONTEST_KEY";
     public static final String UNKNOWN_RESOURCE = "Unknown Website";
-    public static final String GIT_URL = "https://github.com/amrendra18/code-fiesta/";
+    public static final String GIT_URL = "https://github.com/amrendra18/codezera";
     public static final String EMAIL_ID = "amrendra.nitb+appfeedback@gmail.com";
 
     static HashMap<Integer, String> resourceHashMap;

@@ -1,7 +1,9 @@
 package com.amrendra.codefiesta.ui.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -151,8 +153,10 @@ public class MainActivity extends BaseActivity implements
                 mTitle = getString(R.string.nav_settings);
                 break;
             case R.id.nav_share_menu:
+                shareApp();
                 break;
             case R.id.nav_rate_menu:
+                rateApp();
                 break;
             case R.id.nav_feedback_menu:
                 sendEmail();
@@ -308,6 +312,32 @@ public class MainActivity extends BaseActivity implements
         email.putExtra(Intent.EXTRA_TEXT, "");
         email.setType("message/rfc822");
         startActivity(Intent.createChooser(email, getString(R.string.send_email)));
+    }
+
+    private void rateApp() {
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+            } catch (ActivityNotFoundException e2) {
+                Debug.showToastShort(getString(R.string.no_playstore), this);
+            }
+
+        }
+    }
+
+    private void shareApp() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Checkout this app.\n#").append(getString(R.string.app_name)).append("\n");
+        sb.append("https://play.google.com/store/apps/details?id=").append(getPackageName());
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.putExtra(Intent.EXTRA_SUBJECT, R.string.app_name);
+        share.putExtra(Intent.EXTRA_TEXT, sb.toString());
+        startActivity(Intent.createChooser(share, getString(R.string.nav_share)));
     }
 }
 

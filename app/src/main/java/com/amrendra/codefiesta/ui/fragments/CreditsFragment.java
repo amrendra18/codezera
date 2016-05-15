@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
+import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.HtmlUtils;
 
 import butterknife.Bind;
@@ -29,7 +30,7 @@ public class CreditsFragment extends BaseFragment {
         sb.append("<p style=\"text-align: justify;\">This app uses ").append(HtmlUtils.getLink("Contest List", "http://clist.by/"));
         sb.append(" API to serve data. A big thanks to ").append(HtmlUtils.getBold("Contest List")).append(". ");
         sb.append("App is freely available and project is open sourced. Please feel free to contribute to it. ");
-        sb.append("Check git project ").append(HtmlUtils.getLink("here", "https://github.com/amrendra18/code-fiesta/")).append(".</p>");
+        sb.append("Check git project ").append(HtmlUtils.getLink("here", AppUtils.GIT_URL)).append(".</p>");
 
         // platforms
         sb.append("<p style=\"text-align: justify;\">A note of thanks to all online coding platforms for doing a wonderful job in promoting programming culture worldwide. ");

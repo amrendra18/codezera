@@ -1,5 +1,6 @@
 package com.amrendra.codefiesta.ui.activities;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.amrendra.codefiesta.BuildConfig;
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.bus.BusProvider;
 import com.amrendra.codefiesta.bus.events.CalendarPermissionGrantedEvent;
@@ -21,6 +23,7 @@ import com.amrendra.codefiesta.bus.events.ContestClickEvent;
 import com.amrendra.codefiesta.bus.events.SettingsSaveEvent;
 import com.amrendra.codefiesta.bus.events.SnackBarMessageDetailFragmentEvent;
 import com.amrendra.codefiesta.model.Contest;
+import com.amrendra.codefiesta.ui.fragments.CreditsFragment;
 import com.amrendra.codefiesta.ui.fragments.CurrentFragment;
 import com.amrendra.codefiesta.ui.fragments.DetailFragment;
 import com.amrendra.codefiesta.ui.fragments.PastFragment;
@@ -115,6 +118,8 @@ public class MainActivity extends BaseActivity implements
         mNavigationView.setNavigationItemSelectedListener(this);
         if (savedInstanceState == null) {
             navigate(mNavigationView.getMenu().findItem(mNavItemId));
+        } else {
+            mNavigationView.getMenu().findItem(mNavItemId).setChecked(true);
         }
     }
 
@@ -126,9 +131,8 @@ public class MainActivity extends BaseActivity implements
 
     private void navigate(final MenuItem menuItem) {
         // perform the actual navigation logic, updating the main content fragment etc
-        menuItem.setChecked(true);
+
         int itemId = menuItem.getItemId();
-        mNavItemId = itemId;
         Class fragmentClass = null;
         Fragment fragment = null;
         switch (itemId) {
@@ -148,14 +152,19 @@ public class MainActivity extends BaseActivity implements
                 fragmentClass = SelectionFragment.class;
                 mTitle = getString(R.string.nav_settings);
                 break;
+            case R.id.nav_share_menu:
+                break;
             case R.id.nav_rate_menu:
-                // CodeFiestaSyncAdapter.syncImmediately(this);
-                // Debug.forceCrash();
                 break;
             case R.id.nav_feedback_menu:
+                sendEmail();
                 break;
             case R.id.nav_open_source_menu:
                 AppUtils.openWebsite(this, AppUtils.GIT_URL);
+                break;
+            case R.id.nav_credits_menu:
+                fragmentClass = CreditsFragment.class;
+                mTitle = getString(R.string.nav_credits);
                 break;
             default:
                 fragmentClass = CurrentFragment.class;
@@ -170,7 +179,12 @@ public class MainActivity extends BaseActivity implements
             }
 
             changeFragment(fragment, mTitle, itemId);
+            menuItem.setChecked(true);
+            mNavItemId = itemId;
+        } else {
+            mNavigationView.getMenu().findItem(mNavItemId).setChecked(true);
         }
+
     }
 
     private void changeFragment(Fragment fragment, String title, int id) {
@@ -207,19 +221,15 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
-        if (menuItem.getItemId() != mNavItemId) {
-            // update highlighted item in the navigation menu
-            menuItem.setChecked(true);
-            // allow some time after closing the drawer before performing real navigation
-            // so the user can see what is happening
-            mNavItemId = menuItem.getItemId();
-            mDrawerActionHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    navigate(menuItem);
-                }
-            }, DRAWER_CLOSE_DELAY_MS);
-        }
+
+        // allow some time after closing the drawer before performing real navigation
+        // so the user can see what is happening
+        mDrawerActionHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                navigate(menuItem);
+            }
+        }, DRAWER_CLOSE_DELAY_MS);
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -289,6 +299,16 @@ public class MainActivity extends BaseActivity implements
 
     public boolean isTwoPane() {
         return mTwoPane;
+    }
+
+    private void sendEmail() {
+        String subject = String.format(getString(R.string.email_subject), getString(R.string.app_name), BuildConfig.VERSION_NAME);
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"amrendra.nitb+appfeedback@gmail.com"});
+        email.putExtra(Intent.EXTRA_SUBJECT, subject);
+        email.putExtra(Intent.EXTRA_TEXT, "");
+        email.setType("message/rfc822");
+        startActivity(Intent.createChooser(email, getString(R.string.send_email)));
     }
 }
 

@@ -14,17 +14,26 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-apply plugin: 'com.google.gms.google-services'
-
 def isCiServer = (System.getenv().containsKey("TRAVIS"))
 def API_KEY;
 def API_USERNAME;
+def RELEASE_STORE_PASSWORD
+def RELEASE_KEY_ALIAS
+def RELEASE_KEY_PASSWORD
+
+
 if (isCiServer) {
-    API_KEY = System.getenv("API_KEY") as String;
-    API_USERNAME = System.getenv("API_USERNAME") as String;
+    API_KEY = System.getenv("CLIST_API_KEY") as String;
+    API_USERNAME = System.getenv("CLIST_API_USERNAME") as String;
+    RELEASE_STORE_PASSWORD = System.getenv("RELEASE_STORE_PASSWORD") as String;
+    RELEASE_KEY_ALIAS = System.getenv("RELEASE_KEY_ALIAS") as String;
+    RELEASE_KEY_PASSWORD = System.getenv("RELEASE_KEY_PASSWORD") as String;
 } else {
-    API_KEY = '"' + codefiesta_api_key + '"';//"COPY_YOUR_API_KEY_HERE"
-    API_USERNAME = '"' + codefiesta_api_username + '"';//"COPY_YOUR_API_USERNAME_HERE"
+    API_KEY = '"' + codefiesta_api_key + '"';
+    API_USERNAME = '"' + codefiesta_api_username + '"';
+    RELEASE_STORE_PASSWORD = codefiesta_store_password;
+    RELEASE_KEY_ALIAS = codefiesta_key_alias;
+    RELEASE_KEY_PASSWORD = codefiesta_key_password;
 }
 
 android {
@@ -38,8 +47,19 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        release {
+            storeFile file("config/codezera.jks")
+            storePassword "$RELEASE_STORE_PASSWORD"
+            keyAlias "$RELEASE_KEY_ALIAS"
+            keyPassword "$RELEASE_KEY_PASSWORD"
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -79,3 +99,5 @@ dependencies {
         transitive = true;
     }
 }
+
+apply plugin: 'com.google.gms.google-services'

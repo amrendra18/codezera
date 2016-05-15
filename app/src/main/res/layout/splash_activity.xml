@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,36 +13,34 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingTop="144dp">
+        android:paddingTop="@dimen/splash_padding_top">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:alpha="0"
+            android:layout_marginTop="@dimen/splash_title_margin_top"
             android:text="@string/splash_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="@android:color/white"
-            android:textSize="45sp"
+            android:textSize="@dimen/splash_title_text_size"
             android:textStyle="bold"
             tools:alpha="1"
-            tools:text="@string/splash_name"/>
+            tools:text="@string/splash_name" />
 
         <TextView
             android:id="@+id/hello_world_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:alpha="0"
+            android:layout_marginTop="@dimen/splash_subtitle_margin_top"
             android:gravity="center"
             android:text="@string/hello_world"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse"
-            android:textSize="20sp"
+            android:textSize="@dimen/splash_subtitle_text_size"
             android:textStyle="bold"
             tools:alpha="1"
-            tools:text="@string/hello_world"/>
+            tools:text="@string/hello_world" />
     </LinearLayout>
 
     <ImageView
@@ -51,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:contentDescription="@string/app_name"
         android:src="@drawable/logo128"
-        tools:visibility="gone"/>
+        tools:visibility="gone" />
 </FrameLayout>

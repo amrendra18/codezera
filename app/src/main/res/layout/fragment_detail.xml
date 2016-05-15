@@ -6,8 +6,7 @@
     android:background="@color/white"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -18,11 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/footer"
+            android:orientation="vertical"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingStart="@dimen/activity_horizontal_margin"
-            android:orientation="vertical">
+            android:paddingStart="@dimen/activity_horizontal_margin">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -321,23 +320,23 @@
 
                 <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_days"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"/>
+                    android:layout_width="@dimen/progressbar_size"
+                    android:layout_height="@dimen/progressbar_size" />
 
                 <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_hours"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"/>
+                    android:layout_width="@dimen/progressbar_size"
+                    android:layout_height="@dimen/progressbar_size" />
 
                 <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_mins"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"/>
+                    android:layout_width="@dimen/progressbar_size"
+                    android:layout_height="@dimen/progressbar_size" />
 
                 <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_sec"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"/>
+                    android:layout_width="@dimen/progressbar_size"
+                    android:layout_height="@dimen/progressbar_size" />
 
             </LinearLayout>
         </LinearLayout>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    android:id="@+id/card_view"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -45,7 +44,7 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/contest_title_text_size"
                     android:textStyle="bold"
-                    tools:text="April Long Challenge"/>
+                    tools:text="April Long Challenge" />
 
                 <TextView
                     android:id="@+id/contest_website_tv"
@@ -56,20 +55,21 @@
                     android:padding="@dimen/contest_title_padding"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/contest_resource_text_size"
-                    tools:text="Codechef"/>
+                    tools:text="Codechef" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/resource_logo"
                 android:layout_width="@dimen/resource_logo_size"
                 android:layout_height="@dimen/resource_logo_size"
-                android:scaleType="fitXY"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/list_item_padding"
                 android:layout_marginLeft="@dimen/contest_title_padding"
                 android:layout_marginRight="@dimen/list_item_padding"
                 android:layout_marginStart="@dimen/contest_title_padding"
-                android:src="@mipmap/ic_launcher"/>
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_launcher" />
 
         </LinearLayout>
 
@@ -80,6 +80,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/contest_ampm_left_margin"
             android:layout_marginTop="@dimen/contest_ampm_left_margin"
+            android:baselineAligned="false"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="@dimen/contest_date_time_block_padding">
@@ -101,7 +102,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/contest_start_end_text"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -116,7 +117,7 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/contest_time_text_size"
                         android:textStyle="bold"
-                        tools:text="03:00"/>
+                        tools:text="03:00" />
 
 
                     <TextView
@@ -129,7 +130,7 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/contest_ampm_text_size"
                         android:textStyle="bold"
-                        tools:text="PM"/>
+                        tools:text="PM" />
 
                 </LinearLayout>
 
@@ -142,7 +143,7 @@
                     android:layout_marginStart="@dimen/contest_ampm_left_margin"
                     android:textColor="@color/black"
                     android:textSize="@dimen/contest_date_text_size"
-                    tools:text="SUN, 08 Apr '14"/>
+                    tools:text="SUN, 08 Apr '14" />
             </LinearLayout>
 
             <LinearLayout
@@ -162,7 +163,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/contest_start_end_text"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -178,7 +179,7 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/contest_time_text_size"
                         android:textStyle="bold"
-                        tools:text="03:00"/>
+                        tools:text="03:00" />
 
                     <TextView
                         android:id="@+id/contest_end_time_ampm"
@@ -190,7 +191,7 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/contest_ampm_text_size"
                         android:textStyle="bold"
-                        tools:text="PM"/>
+                        tools:text="PM" />
 
                 </LinearLayout>
 
@@ -202,15 +203,11 @@
                     android:layout_marginStart="@dimen/contest_ampm_left_margin"
                     android:textColor="@color/black"
                     android:textSize="@dimen/contest_date_text_size"
-                    tools:text="SAT, 08 Apr '14"/>
+                    tools:text="SAT, 08 Apr '14" />
             </LinearLayout>
-
-
         </LinearLayout>
 
-
-        <include layout="@layout/divider"/>
-
+        <include layout="@layout/divider" />
 
         <TextView
             android:id="@+id/status_tv"
@@ -223,7 +220,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/contest_status_size"
             android:textStyle="bold"
-            tools:text="Contests ends in 15d 12h 45m"/>
+            tools:text="Contests ends in 15d 12h 45m" />
     </LinearLayout>
 
 

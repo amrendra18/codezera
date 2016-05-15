@@ -50,10 +50,12 @@
         android:layout_gravity="start"
         android:background="@color/colorPrimaryLight"
         android:fitsSystemWindows="true"
+        android:maxLines="1"
         app:headerLayout="@layout/nav_header_row"
         app:itemIconTint="@color/colorPrimaryDark"
-        app:itemTextColor="@color/colorPrimaryDark"
-        app:menu="@menu/menu_nav" />
+        app:itemTextColor="@drawable/nav_item_selector"
+        app:menu="@menu/menu_nav"
+        app:theme="@style/NavigationStyle" />
 
 </android.support.v4.widget.DrawerLayout>
 

@@ -18,6 +18,7 @@ import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.bus.BusProvider;
 import com.amrendra.codefiesta.bus.events.CalendarPermissionGrantedEvent;
 import com.amrendra.codefiesta.bus.events.ContestClickEvent;
+import com.amrendra.codefiesta.bus.events.SettingsSaveEvent;
 import com.amrendra.codefiesta.bus.events.SnackBarMessageDetailFragmentEvent;
 import com.amrendra.codefiesta.model.Contest;
 import com.amrendra.codefiesta.ui.fragments.CurrentFragment;
@@ -117,8 +118,16 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
+    @Subscribe
+    public void settingsSaveEventTriggered(SettingsSaveEvent event) {
+        Debug.c();
+        mNavItemId = R.id.nav_current_menu;
+        navigate(mNavigationView.getMenu().findItem(R.id.nav_current_menu));
+    }
+
     private void navigate(final MenuItem menuItem) {
         // perform the actual navigation logic, updating the main content fragment etc
+        menuItem.setChecked(true);
         int itemId = menuItem.getItemId();
         Class fragmentClass = null;
         Fragment fragment = null;

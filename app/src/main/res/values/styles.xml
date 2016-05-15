@@ -41,4 +41,9 @@
         </item>
     </style>
 
+    <style name="NavigationStyle">
+        <item name="android:textSize">@dimen/nav_menu_text_size</item>
+        <item name="android:listPreferredItemHeightSmall">@dimen/nav_menu_height</item>
+    </style>
+
 </resources>

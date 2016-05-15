@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawer_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,14 +14,14 @@
         <include
             layout="@layout/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
 
         <!-- The main content view -->
         <FrameLayout
             android:id="@+id/left_content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
@@ -34,10 +34,12 @@
         android:layout_gravity="start"
         android:background="@color/colorPrimaryLight"
         android:fitsSystemWindows="true"
+        android:maxLines="1"
         app:headerLayout="@layout/nav_header_row"
         app:itemIconTint="@color/colorPrimaryDark"
-        app:itemTextColor="@color/colorPrimaryDark"
-        app:menu="@menu/menu_nav" />
+        app:itemTextColor="@drawable/nav_item_selector"
+        app:menu="@menu/menu_nav"
+        app:theme="@style/NavigationStyle" />
 
 </android.support.v4.widget.DrawerLayout>
 

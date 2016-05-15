@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.adapter.SelectionAdapter;
+import com.amrendra.codefiesta.bus.BusProvider;
+import com.amrendra.codefiesta.bus.events.SettingsSaveEvent;
 import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.loaders.ResourceSettingLoader;
 import com.amrendra.codefiesta.model.Website;
@@ -42,6 +44,7 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
     @OnClick(R.id.save_button)
     void onSaveButtonClick() {
         saveSettingsList();
+        BusProvider.getInstance().post(new SettingsSaveEvent());
     }
 
     SelectionAdapter mAdapter;

@@ -4,9 +4,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +20,14 @@ import android.widget.TextView;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.adapter.ContestAdapter;
-import com.amrendra.codefiesta.bus.BusProvider;
-import com.amrendra.codefiesta.bus.events.ContestClickEvent;
 import com.amrendra.codefiesta.db.DBContract;
-import com.amrendra.codefiesta.model.Contest;
-import com.amrendra.codefiesta.ui.activities.MainActivity;
+import com.amrendra.codefiesta.sync.CodeFiestaSyncAdapter;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
 import com.amrendra.codefiesta.utils.TrackingConstants;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 
 public class CurrentFragment extends BaseFragment {
@@ -45,6 +46,13 @@ public class CurrentFragment extends BaseFragment {
     ProgressBar progressBar;
     @Bind(R.id.error_message)
     TextView errorTv;
+
+    @OnClick(R.id.refresh)
+    void onRefreshClick() {
+        showSnackBarMessage(getString(R.string.sync_data));
+        CodeFiestaSyncAdapter.syncImmediately(getActivity());
+    }
+
     ContestAdapter mAdapter;
 
     public CurrentFragment() {
@@ -148,5 +156,10 @@ public class CurrentFragment extends BaseFragment {
         }
     };
 
+    public void showSnackBarMessage(String msg) {
+        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, Html.fromHtml(msg), Snackbar.LENGTH_SHORT);
+        snackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+        snackbar.show();
+    }
 
 }

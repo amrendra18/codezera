@@ -4,9 +4,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +21,13 @@ import android.widget.TextView;
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.adapter.ContestAdapter;
 import com.amrendra.codefiesta.db.DBContract;
+import com.amrendra.codefiesta.sync.CodeFiestaSyncAdapter;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
 import com.amrendra.codefiesta.utils.TrackingConstants;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 public class UpcomingFragment extends BaseFragment {
 
@@ -39,6 +44,13 @@ public class UpcomingFragment extends BaseFragment {
     ProgressBar progressBar;
     @Bind(R.id.error_message)
     TextView errorTv;
+
+    @OnClick(R.id.refresh)
+    void onRefreshClick() {
+        showSnackBarMessage(getString(R.string.sync_data));
+        CodeFiestaSyncAdapter.syncImmediately(getActivity());
+    }
+
     ContestAdapter mAdapter;
 
     public UpcomingFragment() {
@@ -140,4 +152,10 @@ public class UpcomingFragment extends BaseFragment {
             mAdapter.swapCursor(null);
         }
     };
+
+    public void showSnackBarMessage(String msg) {
+        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, Html.fromHtml(msg), Snackbar.LENGTH_SHORT);
+        snackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+        snackbar.show();
+    }
 }

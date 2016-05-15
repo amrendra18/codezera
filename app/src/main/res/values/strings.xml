@@ -34,6 +34,7 @@
     <string name="remove_notification">Remove notification</string>
     <string name="visit_website">Visit website</string>
     <string name="share_friends">Sharing is fun</string>
+    <string name="sync_data">Refreshing contests data from web</string>
 
     <string name="action_share">Share</string>
 

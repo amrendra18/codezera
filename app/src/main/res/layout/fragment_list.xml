@@ -1,12 +1,12 @@
-<android.support.design.widget.CoordinatorLayout
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_fragment_coordinator_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grey_400">
@@ -23,19 +23,37 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="@dimen/card_content_margin_between"
             android:paddingBottom="@dimen/card_content_padding_vertical"
-            android:paddingTop="@dimen/card_content_padding_vertical"/>
+            android:paddingTop="@dimen/card_content_padding_vertical" />
 
         <include
             layout="@layout/loading_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
 
         <include
             layout="@layout/error_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
     </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:elevation="@dimen/fav_elevation"
+        android:scaleType="centerCrop"
+        android:src="@drawable/refresh"
+        app:backgroundTint="@color/colorPrimaryLight"
+        app:borderWidth="@dimen/fav_border_width"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/layout"
+        app:layout_anchorGravity="bottom|end"
+        app:rippleColor="@color/colorAccent" />
 
 </android.support.design.widget.CoordinatorLayout>

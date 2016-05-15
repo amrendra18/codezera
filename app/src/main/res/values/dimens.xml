@@ -55,4 +55,6 @@
     <dimen name="splash_title_text_size">40sp</dimen>
     <dimen name="splash_subtitle_margin_top">8dp</dimen>
     <dimen name="splash_subtitle_text_size">20sp</dimen>
+
+    <dimen name="credit_text_size">16sp</dimen>
 </resources>

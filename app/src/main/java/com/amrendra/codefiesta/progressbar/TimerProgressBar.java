@@ -4,9 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +26,6 @@ public class TimerProgressBar extends View {
     private Paint progressRingBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint progressRingForegroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint erasePaint = new Paint();
 
     // Colors
     private int centerBackgroundColor = Color.parseColor("#213051");
@@ -62,14 +60,19 @@ public class TimerProgressBar extends View {
 
     public TimerProgressBar(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+
+/*        centerBackgroundColor = ContextCompat.getColor(context, R.color.black);
+        progressRingBackgroundColor = ContextCompat.getColor(context, R.color.yellow_100);
+        progressRingForegroundColor = ContextCompat.getColor(context, R.color.colorAccent);*/
+
         // Debug.check();
         density = context.getResources().getDisplayMetrics().density;
         actualPadding = density * padding;
         centerBackgroundPaint.setColor(centerBackgroundColor);
         progressRingBackgroundPaint.setColor(progressRingBackgroundColor);
         progressRingForegroundPaint.setColor(progressRingForegroundColor);
-        erasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         textPaint.setColor(textColor);
+        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setTextSize(textSize);
         // Debug.i("density : " + density + " padding :  " + actualPadding);
     }
@@ -97,7 +100,6 @@ public class TimerProgressBar extends View {
         } else if (style == Style.HOLLOW) {
             canvas.drawArc(outerRing, -90, 360, true, progressRingBackgroundPaint);
             canvas.drawArc(outerRing, -90 + startAngle, angle, true, progressRingForegroundPaint);
-            canvas.drawArc(innerRing, -90, 360, true, erasePaint);
         } else {
             canvas.drawArc(outerRing, -90, 360, true, progressRingBackgroundPaint);
             canvas.drawArc(outerRing, -90 + startAngle, angle, true, progressRingForegroundPaint);
@@ -125,6 +127,7 @@ public class TimerProgressBar extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         int wh = Math.min(w, h);
+        wh = Math.min(wh, 250);
         outerRing.set(actualPadding, actualPadding, wh - actualPadding, wh - actualPadding);
         innerRing.set(actualPadding + outerRing.width() / 2 * (1.0f - ringRadiusRatio),
                 actualPadding + outerRing.height() / 2 * (1.0f - ringRadiusRatio), wh

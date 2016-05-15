@@ -11,11 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
         <android.support.v4.widget.NestedScrollView
@@ -23,6 +18,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/footer"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
             android:orientation="vertical">
 
             <LinearLayout
@@ -68,10 +67,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:baselineAligned="false"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="@dimen/contest_date_time_block_padding"
-                    android:baselineAligned="false">
+                    android:padding="@dimen/contest_date_time_block_padding">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -296,7 +295,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="vertical">
+            android:background="@color/green_50"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_vertical_margin">
 
             <TextView
                 android:id="@+id/status_tv"
@@ -320,74 +321,23 @@
 
                 <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_days"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"/>
 
                 <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_hours"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"/>
 
                 <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_mins"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"/>
 
                 <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_sec"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/progress_bar_label_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@color/white"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/progress_bar_label_days"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/days"
-                    android:textColor="@color/colorPrimaryDark" />
-
-                <TextView
-                    android:id="@+id/progress_bar_label_hours"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/hours"
-                    android:textColor="@color/colorPrimaryDark" />
-
-                <TextView
-                    android:id="@+id/progress_bar_label_mins"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/min"
-                    android:textColor="@color/colorPrimaryDark" />
-
-                <TextView
-                    android:id="@+id/progress_bar_label_sec"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/sec"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"/>
 
             </LinearLayout>
         </LinearLayout>

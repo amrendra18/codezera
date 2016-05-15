@@ -34,7 +34,7 @@ import rx.schedulers.Schedulers;
  */
 public class CodeFiestaSyncAdapter extends AbstractThreadedSyncAdapter {
 
-    public static final int SYNC_INTERVAL = 3 * (int) DateUtils.SEC_IN_ONE_HOUR;
+    public static final int SYNC_INTERVAL = 6 * (int) DateUtils.SEC_IN_ONE_HOUR;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 

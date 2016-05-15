@@ -7,7 +7,6 @@ import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.Debug;
 import com.amrendra.codefiesta.utils.UserPreferences;
 import com.crashlytics.android.Crashlytics;
-import com.facebook.stetho.Stetho;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import io.fabric.sdk.android.Fabric;
@@ -23,7 +22,6 @@ public class CodeFiestaApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
-        Stetho.initializeWithDefaults(this);
         AppUtils.cacheResources(this);
         getDefaultTracker();
         checkAndSync();
@@ -39,7 +37,6 @@ public class CodeFiestaApplication extends Application {
             CodeFiestaSyncAdapter.syncImmediately(this);
         }
     }
-
 
     public static void shouldNotHappen(String msg) {
         Debug.e(msg, false);

@@ -254,7 +254,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 public void onClick(View v) {
                     StringBuilder sb = new StringBuilder();
                     sb.append("Checkout this contest!!\n");
-                    sb.append(contest).append("\n");
+                    sb.append(contest.getEvent()).append("\n");
                     sb.append("@ ").append(shortResourceName).append("\n");
                     sb.append(starts).append("\n");
                     sb.append(ends).append("\n");
@@ -271,15 +271,9 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 }
             });
 
-
-            secProgressBar.setStartAngle(180);
             secProgressBar.setRingRadiusRatio(0.75f);
-            secProgressBar.setTextColor(Color.WHITE);
-            secProgressBar.setStyle(TimerProgressBar.Style.REGULAR);// Default style
             secProgressBar.setProgressRingBackgroundColor(Color.TRANSPARENT);
             secProgressBar.setProgressRingForegroundColor("#e300fc");
-            secProgressBar.setCenterBackgroundColor("#213051");
-            secProgressBar.setVisibility(View.VISIBLE);
 
 
             int contestStatus = DateUtils.getContestStatus(startTime, endTime);
@@ -474,13 +468,13 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                         long secUntilFinished = millisUntilFinished / 1000;
                         TimerUtil timerUtil = new TimerUtil(secUntilFinished);
                         long daysLeft = timerUtil.getDays();
-                        daysProgressBar.setMiddleText("" + daysLeft, 100.0f * daysLeft / 365);
+                        daysProgressBar.setMiddleText("" + daysLeft + "d", 100.0f * daysLeft / 365);
                         long hoursLeft = timerUtil.getHours();
-                        hoursProgressBar.setMiddleText("" + hoursLeft, 100.0f * hoursLeft / 24);
+                        hoursProgressBar.setMiddleText("" + hoursLeft + "h", 100.0f * hoursLeft / 24);
                         long minLeft = timerUtil.getMin();
-                        minsProgressBar.setMiddleText("" + minLeft, 100.0f * minLeft / 60);
+                        minsProgressBar.setMiddleText("" + minLeft + "m", 100.0f * minLeft / 60);
                         long secLeft = timerUtil.getSec();
-                        secProgressBar.setMiddleText("" + secLeft, 100.0f * secLeft / 60);
+                        secProgressBar.setMiddleText("" + secLeft + "s", 100.0f * secLeft / 60);
                     }
 
                     @Override

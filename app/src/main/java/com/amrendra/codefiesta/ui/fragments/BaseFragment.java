@@ -45,9 +45,9 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        ButterKnife.unbind(this);
         super.onDestroyView();
         BusProvider.getInstance().unregister(this);
+        ButterKnife.unbind(this);
     }
 
     protected void showToast(String message) {

@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by Amrendra Kumar on 05/04/16.
  */
 public class Debug {
-    private static final Boolean DEBUG = true;
+    private static final Boolean DEBUG = false;
     private static final String packageName = "com.amrendra.codefiesta.";
     private static final String TAG = "bdebug";
 

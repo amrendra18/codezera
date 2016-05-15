@@ -51,8 +51,6 @@ import butterknife.Bind;
  */
 public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQueryCompleteListener {
 
-    public static final String TAG = DetailFragment.class.getSimpleName();
-
     private static final int VERIFY_EVENT_ADDED_TO_CALENDAR_QUERY = 3000;
     private static final int EVENT_DELETE_FROM_CALENDAR = 3001;
     private static final int EVENT_INSERT_TO_CALENDAR = 3002;
@@ -191,40 +189,38 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             calendarButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.WRITE_CALENDAR);
+                    if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                        Debug.e("dont have permission", false);
+                        ActivityCompat.requestPermissions(getActivity(),
+                                new String[]{Manifest.permission.WRITE_CALENDAR},
+                                MY_PERMISSIONS_REQUEST_WRITE_CALENDAR);
+                        CALENDAR_BUTTON_ACTIVE = false;
+
+                        calendarButton.setCompoundDrawablesWithIntrinsicBounds(R
+                                .drawable.calendar_permission, 0, 0, 0);
+                        calendarButton.setText(getString(R.string.permission_calendar));
+                        calendarId = CALENDAR_EVENT_VALUE_NOT_RETRIEVED;
+                        return;
+                    }
                     int contestStatus = DateUtils.getContestStatus(startTime, endTime);
-                    String text;
                     if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
                         if (CALENDAR_BUTTON_ACTIVE) {
-                            text = String.format(getString(R.string.fetch_contest_calendar_status),
-                                    contest.getEvent());
-                            onError(text);
+                            showSnackBarMessage(String.format(getString(R.string.fetch_contest_calendar_status),
+                                    contest.getEvent()));
                             return;
                         }
-                        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
-                                Manifest.permission.WRITE_CALENDAR);
-                        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-                            Debug.e("already have calendar permission", false);
-                            calendarId = CalendarUtils.getCalendarId(getActivity());
-                            toggleEventStatusInCalendar();
-                        } else {
-                            // dont have permission, should request it
-                            Debug.e("dont have calendar permission, should request it", false);
-                            ActivityCompat.requestPermissions(getActivity(),
-                                    new String[]{Manifest.permission.WRITE_CALENDAR},
-                                    MY_PERMISSIONS_REQUEST_WRITE_CALENDAR);
-                            CALENDAR_BUTTON_ACTIVE = false;
-                        }
-                        return;
+                        toggleEventStatusInCalendar();
                     } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
-                        text = String.format(getString(R.string.contest_started),
+                        showSnackBarMessage(String.format(getString(R.string.contest_started),
                                 contest.getEvent(),
-                                shortResourceName);
+                                shortResourceName));
                     } else {
-                        text = String.format(getActivity().getString(R.string.contest_ended),
+                        showSnackBarMessage(String.format(getActivity().getString(R.string.contest_ended),
                                 contest.getEvent(),
-                                shortResourceName);
+                                shortResourceName));
                     }
-                    onError(text);
                 }
             });
 
@@ -237,7 +233,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                         if (NOTIFICATION_BUTTON_ACTIVE) {
                             text = String.format(getString(R.string.fetch_contest_notification_status),
                                     contest.getEvent());
-                            onError(text);
+                            showSnackBarMessage(text);
                             return;
                         }
                         toggleNotificationForEvent();
@@ -251,7 +247,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                                 contest.getEvent(),
                                 shortResourceName);
                     }
-                    onError(text);
+                    showSnackBarMessage(text);
                 }
             });
 
@@ -378,7 +374,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 processCalendarQuery(cursor);
             } catch (SecurityException ex) {
                 Debug.c();
-                onError(getString(R.string.calendar_permission_denied));
+                showSnackBarMessage(getString(R.string.calendar_permission_denied));
                 CALENDAR_BUTTON_ACTIVE = false;
                 return;
             }
@@ -396,7 +392,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                         new String[]{Long.toString(calendarEventId)}
                 );
             } else {
-                onError(getString(R.string.no_calendar_account_found));
+                showSnackBarMessage(getString(R.string.no_calendar_account_found));
                 CALENDAR_BUTTON_ACTIVE = false;
             }
         } else if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_PRESENT) {
@@ -412,7 +408,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
 
                 );
             } else {
-                onError(getString(R.string.no_calendar_account_found));
+                showSnackBarMessage(getString(R.string.no_calendar_account_found));
                 CALENDAR_BUTTON_ACTIVE = false;
             }
         } else if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
@@ -443,7 +439,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 .getIntent(), getString(R.string.action_share)));
     }
 
-    public void onError(String msg) {
+    public void showSnackBarMessage(String msg) {
         Snackbar snackbar = Snackbar.make(mCoordinatorLayout, Html.fromHtml(msg), Snackbar.LENGTH_SHORT);
         snackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
         snackbar.show();
@@ -505,10 +501,12 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     calendarEventId = cursor.getInt(cursor.getColumnIndex(CalendarContract.Events
                             ._ID));
                     calendarButton.setCompoundDrawablesWithIntrinsicBounds(R
-                            .drawable.calendar_on, 0, 0, 0);
+                            .drawable.calendar_added, 0, 0, 0);
+                    calendarButton.setText(getString(R.string.remove_calendar));
                 } else {
                     calendarButton.setCompoundDrawablesWithIntrinsicBounds(R
                             .drawable.calendar_add, 0, 0, 0);
+                    calendarButton.setText(getString(R.string.add_to_calendar));
                     calendarEventId = CALENDAR_EVENT_VALUE_NOT_PRESENT;
                 }
                 Debug.e("calendarEventId : " + calendarEventId, false);
@@ -566,14 +564,15 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     msg = String.format(getString(R.string.event_added_calendar), contest
                             .getEvent());
                     calendarButton.setCompoundDrawablesWithIntrinsicBounds(R
-                            .drawable.calendar_on, 0, 0, 0);
+                            .drawable.calendar_added, 0, 0, 0);
+                    calendarButton.setText(getString(R.string.remove_calendar));
                     calendarEventId = Long.valueOf(uri.getLastPathSegment());
                     Debug.e("inserted : " + calendarEventId, false);
                 } else {
                     msg = String.format(getString(R.string.insert_event_error), contest
                             .getEvent());
                 }
-                onError(msg);
+                showSnackBarMessage(msg);
                 CALENDAR_BUTTON_ACTIVE = false;
             }
             break;
@@ -591,7 +590,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     msg = String.format(getString(R.string.insert_notification_error), contest
                             .getEvent());
                 }
-                onError(msg);
+                showSnackBarMessage(msg);
                 NOTIFICATION_BUTTON_ACTIVE = false;
             }
             break;
@@ -609,12 +608,13 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                             .getEvent());
                     calendarButton.setCompoundDrawablesWithIntrinsicBounds(R
                             .drawable.calendar_add, 0, 0, 0);
+                    calendarButton.setText(getString(R.string.add_to_calendar));
                     calendarEventId = CALENDAR_EVENT_VALUE_NOT_PRESENT;
                 } else {
                     msg = String.format(getString(R.string.delete_event_error), contest
                             .getEvent());
                 }
-                onError(msg);
+                showSnackBarMessage(msg);
                 CALENDAR_BUTTON_ACTIVE = false;
             }
             break;
@@ -631,7 +631,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     msg = String.format(getString(R.string.delete_notification_error), contest
                             .getEvent());
                 }
-                onError(msg);
+                showSnackBarMessage(msg);
                 NOTIFICATION_BUTTON_ACTIVE = false;
             }
             break;
@@ -645,14 +645,15 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
 
     @Subscribe
     public void onCalendarPermissionGrant(CalendarPermissionGrantedEvent event) {
+        showSnackBarMessage(getString(R.string.calendar_permission_granted));
         calendarId = CalendarUtils.getCalendarId(getActivity());
-        toggleEventStatusInCalendar();
+        getEventCalendarStatus();
     }
 
     @Subscribe
     public void onShowErrorMsg(SnackBarMessageDetailFragmentEvent event) {
         Debug.c();
-        onError(event.getMsg());
+        showSnackBarMessage(event.getMsg());
     }
 
     private void addNotification() {

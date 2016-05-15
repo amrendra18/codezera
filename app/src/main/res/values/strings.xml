@@ -27,6 +27,7 @@
 
     <string name="nav_menu">Navigation Menu</string>
 
+    <string name="permission_calendar">Grant calendar permission</string>
     <string name="add_to_calendar">Add to calendar</string>
     <string name="remove_calendar">Remove from calendar</string>
     <string name="add_notification">Add notification</string>
@@ -81,6 +82,8 @@
     <string name="event_added_calendar">Event &lt;b&gt;%1$s&lt;/b&gt; added to your calendar.
     </string>
     <string name="calendar_permission_denied">Calendar Read/Write permission denied.
+    </string>
+    <string name="calendar_permission_granted">Calendar Read/Write permission granted.
     </string>
     <string name="no_calendar_account_found">No calendar accounts found!! Please login to
         google calendar and try again

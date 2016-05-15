@@ -24,6 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CodeFiestaApplication application = (CodeFiestaApplication) getApplication();
         mTracker = application.getDefaultTracker();
+        application.checkAndSync();
         BusProvider.getInstance().register(this);
     }
 

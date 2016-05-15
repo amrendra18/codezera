@@ -29,7 +29,7 @@ public class CodeFiestaApplication extends Application {
         checkAndSync();
     }
 
-    private void checkAndSync() {
+    public void checkAndSync() {
         long lastSyncTime = UserPreferences.getInstance(this)
                 .readValue(AppUtils.LAST_SYNC_PERFORMED, AppUtils
                         .LAST_SYNC_PERFORMED_DEFAULT_VALUE);

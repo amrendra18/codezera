@@ -121,7 +121,6 @@ public class MainActivity extends BaseActivity implements
     @Subscribe
     public void settingsSaveEventTriggered(SettingsSaveEvent event) {
         Debug.c();
-        mNavItemId = R.id.nav_current_menu;
         navigate(mNavigationView.getMenu().findItem(R.id.nav_current_menu));
     }
 
@@ -129,6 +128,7 @@ public class MainActivity extends BaseActivity implements
         // perform the actual navigation logic, updating the main content fragment etc
         menuItem.setChecked(true);
         int itemId = menuItem.getItemId();
+        mNavItemId = itemId;
         Class fragmentClass = null;
         Fragment fragment = null;
         switch (itemId) {
@@ -169,20 +169,22 @@ public class MainActivity extends BaseActivity implements
                 e.printStackTrace();
             }
 
-            changeFragment(fragment, mTitle);
+            changeFragment(fragment, mTitle, itemId);
         }
     }
 
-    private void changeFragment(Fragment fragment, String title) {
+    private void changeFragment(Fragment fragment, String title, int id) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (mTwoPane && fragment instanceof DetailFragment) {
             fragmentManager.beginTransaction()
                     .replace(R.id.right_content_frame, fragment)
+                    .setBreadCrumbShortTitle(id)
                     .addToBackStack(mTitle)
                     .commit();
         } else {
             fragmentManager.beginTransaction()
                     .replace(R.id.left_content_frame, fragment)
+                    .setBreadCrumbShortTitle(id)
                     .addToBackStack(title)
                     .commit();
 
@@ -240,6 +242,9 @@ public class MainActivity extends BaseActivity implements
                 finish();
             } else {
                 String tr = getSupportFragmentManager().getBackStackEntryAt(pos - 2).getName();
+                int id = getSupportFragmentManager().getBackStackEntryAt(pos - 2).getBreadCrumbShortTitleRes();
+                mNavItemId = id;
+                mNavigationView.getMenu().findItem(id).setChecked(true);
                 setUpTitle(tr);
             }
             super.onBackPressed();
@@ -261,7 +266,7 @@ public class MainActivity extends BaseActivity implements
         Bundle bundle = new Bundle();
         bundle.putParcelable(AppUtils.CONTEST_KEY, contest);
         detailFragment.setArguments(bundle);
-        changeFragment(detailFragment, "Contest Details");
+        changeFragment(detailFragment, mTitle, mNavItemId);
     }
 
     @Override

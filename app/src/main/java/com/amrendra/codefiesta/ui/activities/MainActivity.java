@@ -31,7 +31,6 @@ import com.amrendra.codefiesta.ui.fragments.SelectionFragment;
 import com.amrendra.codefiesta.ui.fragments.UpcomingFragment;
 import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.Debug;
-import com.amrendra.codefiesta.utils.DeviceUtils;
 import com.amrendra.codefiesta.utils.TrackingConstants;
 import com.squareup.otto.Subscribe;
 
@@ -70,7 +69,6 @@ public class MainActivity extends BaseActivity implements
         } else {
             mTwoPane = false;
         }
-        Debug.e("TABLET : " + mTwoPane + " isTablet: " + DeviceUtils.isTablet(this), false);
 
         // load saved navigation state if present
         if (null == savedInstanceState) {
@@ -221,15 +219,16 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
-
-        // allow some time after closing the drawer before performing real navigation
-        // so the user can see what is happening
-        mDrawerActionHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                navigate(menuItem);
-            }
-        }, DRAWER_CLOSE_DELAY_MS);
+        if (menuItem.getItemId() != mNavItemId) {
+            // allow some time after closing the drawer before performing real navigation
+            // so the user can see what is happening
+            mDrawerActionHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    navigate(menuItem);
+                }
+            }, DRAWER_CLOSE_DELAY_MS);
+        }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -304,7 +303,7 @@ public class MainActivity extends BaseActivity implements
     private void sendEmail() {
         String subject = String.format(getString(R.string.email_subject), getString(R.string.app_name), BuildConfig.VERSION_NAME);
         Intent email = new Intent(Intent.ACTION_SEND);
-        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"amrendra.nitb+appfeedback@gmail.com"});
+        email.putExtra(Intent.EXTRA_EMAIL, new String[]{AppUtils.EMAIL_ID});
         email.putExtra(Intent.EXTRA_SUBJECT, subject);
         email.putExtra(Intent.EXTRA_TEXT, "");
         email.setType("message/rfc822");

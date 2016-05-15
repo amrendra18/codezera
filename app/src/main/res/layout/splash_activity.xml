@@ -51,6 +51,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/logo256"
+        android:src="@drawable/logo128"
         tools:visibility="gone"/>
 </FrameLayout>

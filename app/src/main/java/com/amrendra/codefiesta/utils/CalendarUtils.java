@@ -9,6 +9,7 @@ import android.provider.CalendarContract;
  */
 public class CalendarUtils {
     public static long getCalendarId(Context mContext) {
+        Debug.c();
         String[] projection = new String[]{CalendarContract.Calendars._ID, CalendarContract
                 .Calendars.NAME, CalendarContract.Calendars.ACCOUNT_NAME, CalendarContract
                 .Calendars.CALENDAR_TIME_ZONE};

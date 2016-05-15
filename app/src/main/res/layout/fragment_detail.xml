@@ -318,25 +318,25 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.amrendra.codefiesta.progressbar.CustomProgressBar
+                <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_days"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <com.amrendra.codefiesta.progressbar.CustomProgressBar
+                <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_hours"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <com.amrendra.codefiesta.progressbar.CustomProgressBar
+                <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_mins"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <com.amrendra.codefiesta.progressbar.CustomProgressBar
+                <com.amrendra.codefiesta.progressbar.TimerProgressBar
                     android:id="@+id/progress_bar_sec"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

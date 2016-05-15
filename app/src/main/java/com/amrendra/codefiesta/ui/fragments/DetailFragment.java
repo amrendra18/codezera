@@ -33,7 +33,7 @@ import com.amrendra.codefiesta.bus.events.SnackBarMessageDetailFragmentEvent;
 import com.amrendra.codefiesta.db.DBContract;
 import com.amrendra.codefiesta.handler.DBQueryHandler;
 import com.amrendra.codefiesta.model.Contest;
-import com.amrendra.codefiesta.progressbar.CustomProgressBar;
+import com.amrendra.codefiesta.progressbar.TimerProgressBar;
 import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.CalendarUtils;
 import com.amrendra.codefiesta.utils.CustomDate;
@@ -116,13 +116,13 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     Button websiteButton;
 
     @Bind(R.id.progress_bar_days)
-    CustomProgressBar daysProgressBar;
+    TimerProgressBar daysProgressBar;
     @Bind(R.id.progress_bar_hours)
-    CustomProgressBar hoursProgressBar;
+    TimerProgressBar hoursProgressBar;
     @Bind(R.id.progress_bar_mins)
-    CustomProgressBar minsProgressBar;
+    TimerProgressBar minsProgressBar;
     @Bind(R.id.progress_bar_sec)
-    CustomProgressBar secProgressBar;
+    TimerProgressBar secProgressBar;
 
     public DetailFragment() {
     }
@@ -275,7 +275,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             secProgressBar.setStartAngle(180);
             secProgressBar.setRingRadiusRatio(0.75f);
             secProgressBar.setTextColor(Color.WHITE);
-            secProgressBar.setStyle(CustomProgressBar.Style.REGULAR);// Default style
+            secProgressBar.setStyle(TimerProgressBar.Style.REGULAR);// Default style
             secProgressBar.setProgressRingBackgroundColor(Color.TRANSPARENT);
             secProgressBar.setProgressRingForegroundColor("#e300fc");
             secProgressBar.setCenterBackgroundColor("#213051");
@@ -358,6 +358,14 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
 
     private void toggleEventStatusInCalendar() {
         CALENDAR_BUTTON_ACTIVE = true;
+        if (calendarId < 0) {
+            calendarId = CalendarUtils.getCalendarId(getActivity());
+        }
+        if (calendarId < 0) {
+            showSnackBarMessage(getString(R.string.no_calendar_account_found));
+            CALENDAR_BUTTON_ACTIVE = false;
+            return;
+        }
         if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
             Debug.e("toggle can be done but event id not present : ", false);
             //fetch it now

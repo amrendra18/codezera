@@ -1,7 +1,6 @@
 package com.amrendra.codefiesta.progressbar;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,9 +14,9 @@ import android.view.View;
 /**
  * Created by Amrendra Kumar on 08/05/16.
  */
-public class CustomProgressBar extends View {
+public class TimerProgressBar extends View {
 
-    private static final String TAG = CustomProgressBar.class.getSimpleName();
+    private static final String TAG = TimerProgressBar.class.getSimpleName();
 
     public enum Style {
         REGULAR, PIE, PIE_OUTER, PIE_INNER, HOLLOW
@@ -54,17 +53,14 @@ public class CustomProgressBar extends View {
     private float progress = 0.0f;
     private float startAngle = 0;
 
-    private Bitmap bitmap = null;
-    private Canvas canvas = null;
-
     private String textMiddle = "0";
 
-    public CustomProgressBar(Context context) {
+    public TimerProgressBar(Context context) {
         this(context, null);
 
     }
 
-    public CustomProgressBar(Context context, AttributeSet attributeSet) {
+    public TimerProgressBar(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         // Debug.check();
         density = context.getResources().getDisplayMetrics().density;
@@ -79,12 +75,11 @@ public class CustomProgressBar extends View {
     }
 
     @Override
-    protected void onDraw(Canvas viewCanvas) {
-        super.onDraw(viewCanvas);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         // debugCanvas(canvas,Color.RED,new RectF(canvas.getClipBounds()));
         // debugCanvas(canvas,Color.BLACK,outerRing);
         // debugCanvas(canvas,Color.BLUE,innerRing);
-        bitmap.eraseColor(Color.TRANSPARENT);
         float angle = 3.60f * progress;
         if (style == Style.REGULAR) {
             canvas.drawArc(outerRing, -90, 360, true, progressRingBackgroundPaint);
@@ -117,7 +112,6 @@ public class CustomProgressBar extends View {
             canvas.drawText(s, this.getWidth() / 2 - horizontalTextOffset, this.getHeight() / 2
                     + verticalTextOffset, textPaint);
         }
-        viewCanvas.drawBitmap(bitmap, 0, 0, null);
     }
 
     @Override
@@ -136,8 +130,6 @@ public class CustomProgressBar extends View {
                 actualPadding + outerRing.height() / 2 * (1.0f - ringRadiusRatio), wh
                         - actualPadding - outerRing.width() / 2 * (1.0f - ringRadiusRatio), wh
                         - actualPadding - outerRing.height() / 2 * (1.0f - ringRadiusRatio));
-        bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        canvas = new Canvas(bitmap);
         updateView();
     }
 

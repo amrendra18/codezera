@@ -15,6 +15,9 @@ Users can choose to set up reminder for upcoming contests, and get notified befo
 
 ● Contests can be added directly to the calendar
 
+● Home Screen widget to track live contests
 
 ## Google PlayStore
 Download app [here](https://play.google.com/store/apps/details?id=com.amrendra.codefiesta&hl=en)
+
+App demo [here](https://www.youtube.com/watch?v=f0j-of73IHo)

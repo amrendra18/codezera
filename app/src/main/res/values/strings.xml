@@ -102,8 +102,7 @@
     </string>
 
 
-    <string name="insert_notification">Reminder notification added for
-        &lt;b&gt;%1$s&lt;/b&gt;</string>
+    <string name="insert_notification">Reminder notification added 1 hour before start of &lt;b&gt;%1$s&lt;/b&gt;</string>
     <string name="insert_notification_error">&lt;b&gt;Error&lt;/b&gt; occurred in setting
         reminder notification for &lt;b&gt;%1$s&lt;/b&gt;.
     </string>

@@ -18,8 +18,6 @@ import com.amrendra.codefiesta.utils.Debug;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by Amrendra Kumar on 05/04/16.
  */
@@ -38,7 +36,6 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
         BusProvider.getInstance().register(this);
     }
 
@@ -47,7 +44,6 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         BusProvider.getInstance().unregister(this);
-        ButterKnife.unbind(this);
     }
 
     protected void showToast(String message) {

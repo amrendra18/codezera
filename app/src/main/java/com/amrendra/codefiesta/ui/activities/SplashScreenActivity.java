@@ -15,6 +15,7 @@ import com.amrendra.codefiesta.utils.Debug;
 import com.amrendra.codefiesta.utils.TrackingConstants;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by Amrendra Kumar on 05/04/16.
@@ -45,7 +46,7 @@ public class SplashScreenActivity extends BaseActivity {
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         setContentView(R.layout.splash_activity);
-
+        ButterKnife.bind(this);
     }
 
     private void startMainListActivity() {
@@ -98,5 +99,11 @@ public class SplashScreenActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         trackActivity(TrackingConstants.SPLASH_ACTIVITY_SCREEN_NAME);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 }

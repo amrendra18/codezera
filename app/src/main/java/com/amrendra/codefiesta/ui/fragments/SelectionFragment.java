@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -70,7 +71,15 @@ public class SelectionFragment extends BaseFragment implements SelectionAdapter.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.selection_fragment, container, false);
+        View view = inflater.inflate(R.layout.selection_fragment, container, false);
+        ButterKnife.bind(this,view);
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     /*

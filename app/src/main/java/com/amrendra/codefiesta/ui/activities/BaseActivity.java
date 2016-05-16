@@ -10,8 +10,6 @@ import com.amrendra.codefiesta.bus.BusProvider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by Amrendra Kumar on 05/04/16.
  */
@@ -31,13 +29,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        ButterKnife.bind(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
         BusProvider.getInstance().unregister(this);
     }
 

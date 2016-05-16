@@ -14,6 +14,7 @@ import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.HtmlUtils;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by amrendrk on 5/15/16.
@@ -82,7 +83,9 @@ public class CreditsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_credits, container, false);
+        View view = inflater.inflate(R.layout.fragment_credits, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -90,5 +93,11 @@ public class CreditsFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         creditTv.setText(credits);
         creditTv.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

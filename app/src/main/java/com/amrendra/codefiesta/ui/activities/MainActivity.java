@@ -37,6 +37,7 @@ import com.amrendra.codefiesta.utils.TrackingConstants;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements
         NavigationView.OnNavigationItemSelectedListener {
@@ -65,7 +66,7 @@ public class MainActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         Debug.c();
         setContentView(R.layout.activity_main);
-
+        ButterKnife.bind(this);
         if (findViewById(R.id.right_content_frame) != null) {
             mTwoPane = true;
         } else {
@@ -338,6 +339,12 @@ public class MainActivity extends BaseActivity implements
         share.putExtra(Intent.EXTRA_SUBJECT, R.string.app_name);
         share.putExtra(Intent.EXTRA_TEXT, sb.toString());
         startActivity(Intent.createChooser(share, getString(R.string.nav_share)));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 }
 

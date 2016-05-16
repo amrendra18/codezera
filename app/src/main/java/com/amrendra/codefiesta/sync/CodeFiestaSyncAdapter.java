@@ -7,6 +7,7 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
@@ -22,6 +23,7 @@ import com.amrendra.codefiesta.utils.AppUtils;
 import com.amrendra.codefiesta.utils.DateUtils;
 import com.amrendra.codefiesta.utils.Debug;
 import com.amrendra.codefiesta.utils.UserPreferences;
+import com.amrendra.codefiesta.widget.CodeFiestaWidget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,6 +153,9 @@ public class CodeFiestaSyncAdapter extends AbstractThreadedSyncAdapter {
                     @Override
                     public void onCompleted() {
                         Debug.c();
+                        Intent intent = new Intent(getContext(), CodeFiestaWidget.class);
+                        intent.setAction(AppUtils.BROADCAST_DATA_UPDATED);
+                        getContext().sendBroadcast(intent);
                     }
 
                     @Override

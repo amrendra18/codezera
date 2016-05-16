@@ -38,6 +38,7 @@ public class AppUtils {
     public static final int STATUS_CALENDAR_EVENT_NOT_PRESENT_SO_ADDED = 101;
     public static final int STATUS_CALENDAR_EVENT_PRESENT_SO_REMOVED = 102;
 
+    public static final String BROADCAST_DATA_UPDATED = "com.amrendra.codefiesta" + ".BROADCAST_SYNC_PERFORMED";
     public static final String CONTEST_KEY = "CONTEST_KEY";
     public static final String UNKNOWN_RESOURCE = "Unknown Website";
     public static final String GIT_URL = "https://github.com/amrendra18/codezera";

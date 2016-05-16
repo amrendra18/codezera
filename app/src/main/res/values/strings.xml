@@ -24,6 +24,7 @@
     <string name="upcoming_contests">Upcoming Events</string>
     <string name="past_contest">Past Events</string>
     <string name="detail_contest">Event Details</string>
+    <string name="todays_event">Today\'s Events</string>
 
     <string name="nav_menu">Navigation Menu</string>
 

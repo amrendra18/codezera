@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
-                android:text="@string/todays_event"
+                android:text="@string/live_contests"
                 android:textAppearance="?android:textAppearanceSmall"
                 android:textColor="@color/white" />
         </LinearLayout>
@@ -53,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:padding="@dimen/widget_margin">
+        android:padding="@dimen/widget_item_margin">
 
         <ListView
             android:id="@+id/contest_list_widget"
@@ -61,7 +61,7 @@
             android:layout_height="match_parent"
             android:divider="@color/colorSecondaryText"
             android:dividerHeight="1dp"
-            tools:listitem="@layout/widget_list_item"></ListView>
+            tools:listitem="@layout/widget_list_item" />
 
         <TextView
             android:id="@+id/contest_list_widget_empty"

@@ -57,4 +57,18 @@
     <dimen name="splash_subtitle_text_size">20sp</dimen>
 
     <dimen name="credit_text_size">16sp</dimen>
+
+
+    <!-- widget -->
+    <dimen name="logo_size">24dp</dimen>
+    <dimen name="widget_title_size">16sp</dimen>
+    <dimen name="widget_subtitle_size">16sp</dimen>
+    <dimen name="start_end_image_size">12dp</dimen>
+    <dimen name="start_end_text_size">14sp</dimen>
+    <dimen name="widget_item_margin">4dp</dimen>
+    <dimen name="widget_padding">2dp</dimen>
+    <dimen name="widget_main_padding">4dp</dimen>
+    <integer name="max_lines_widget">1</integer>
+    <dimen name="widget_min_height">80dp</dimen>
+    <dimen name="widget_min_width">180dp</dimen>
 </resources>

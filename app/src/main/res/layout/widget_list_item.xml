@@ -4,119 +4,113 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:gravity="center_vertical"
-    android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
-    android:padding="@dimen/divider_height">
+    android:padding="@dimen/widget_main_padding">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher" />
-
-
-    <!--    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/home_crest"
-                android:layout_width="@dimen/small_icon"
-                android:layout_height="@dimen/small_icon"
-                android:contentDescription="@string/hometeam_text"
-                android:paddingEnd="@dimen/divider_height"
-                android:paddingLeft="@dimen/divider_height"
-                android:paddingRight="@dimen/divider_height"
-                android:paddingStart="@dimen/divider_height"
-                android:src="@drawable/ic_launcher_grey"/>
-
-            <TextView
-                android:id="@+id/home_name_widget"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="start"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="@dimen/TeamNamesWidget"
-                android:textStyle="bold"
-                tools:text="@string/hometeam"/>
-
-            <TextView
-                android:id="@+id/home_goal_widget"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="@dimen/TeamNamesWidget"
-                android:textStyle="bold"
-                tools:text="@string/score"/>
-
-            <TextView
-                android:id="@+id/status_widget"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="@dimen/TeamNamesWidget"
-                android:textStyle="bold"
-                tools:text="@string/status"/>
-
-
-        </LinearLayout>
+        android:layout_marginBottom="@dimen/widget_item_margin"
+        android:background="@drawable/round_tv_top"
+        android:orientation="horizontal"
+        android:padding="@dimen/widget_padding">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/contest_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="@integer/max_lines_widget"
+                android:padding="@dimen/widget_padding"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/contest_title_text_size"
+                android:textStyle="bold"
+                tools:text="April Long Challenge" />
+
+            <TextView
+                android:id="@+id/contest_website_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryLight"
+                android:maxLines="@integer/max_lines_widget"
+                android:padding="@dimen/widget_padding"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/contest_resource_text_size"
+                tools:text="Codechef" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/resource_logo"
+            android:layout_width="@dimen/logo_size"
+            android:layout_height="@dimen/logo_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/widget_item_margin"
+            android:layout_marginLeft="@dimen/widget_item_margin"
+            android:layout_marginRight="@dimen/widget_item_margin"
+            android:layout_marginStart="@dimen/widget_item_margin"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/widget_padding">
+
+        <ImageView
+            android:id="@+id/start_image"
+            android:layout_width="@dimen/start_end_image_size"
+            android:layout_height="@dimen/start_end_image_size"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/start_present"
+            android:src="@drawable/future" />
+
+        <TextView
+            android:id="@+id/start_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/widget_item_margin"
+            android:layout_marginStart="@dimen/widget_item_margin"
+            android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/start_end_text_size"
+            tools:text="3:00PM FRI, 11 MAY 2016" />
+    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/away_crest"
-                android:layout_width="@dimen/small_icon"
-                android:layout_height="@dimen/small_icon"
-                android:contentDescription="@string/hometeam_text"
-                android:paddingEnd="@dimen/divider_height"
-                android:paddingLeft="@dimen/divider_height"
-                android:paddingRight="@dimen/divider_height"
-                android:paddingStart="@dimen/divider_height"
-                android:src="@drawable/ic_launcher_grey"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/widget_padding">
 
-            <TextView
-                android:id="@+id/away_name_widget"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="start"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="@dimen/TeamNamesWidget"
-                android:textStyle="bold"
-                tools:text="@string/hometeam"/>
+        <ImageView
+            android:id="@+id/end_image"
+            android:layout_width="@dimen/start_end_image_size"
+            android:layout_height="@dimen/start_end_image_size"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/end_present"
+            android:src="@drawable/past" />
 
-            <TextView
-                android:id="@+id/away_goal_widget"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="@dimen/TeamNamesWidget"
-                android:textStyle="bold"
-                tools:text="@string/score"/>
-
-            <TextView
-                android:id="@+id/time_widget"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="@dimen/TeamNamesWidget"
-                android:textStyle="bold"
-                tools:text="@string/status"/>
-
-        </LinearLayout>-->
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/widget_item_margin"
+            android:layout_marginStart="@dimen/widget_item_margin"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/start_end_text_size"
+            tools:text="3:00PM FRI, 11 MAY 2016" />
+    </LinearLayout>
 </LinearLayout>

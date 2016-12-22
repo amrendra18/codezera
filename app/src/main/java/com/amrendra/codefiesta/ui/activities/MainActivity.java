@@ -163,7 +163,7 @@ public class MainActivity extends BaseActivity implements
                 sendEmail();
                 break;
             case R.id.nav_open_source_menu:
-                AppUtils.openWebsite(this, AppUtils.GIT_URL);
+                AppUtils.openWebsite(this, null, AppUtils.GIT_URL);
                 break;
             case R.id.nav_credits_menu:
                 fragmentClass = CreditsFragment.class;

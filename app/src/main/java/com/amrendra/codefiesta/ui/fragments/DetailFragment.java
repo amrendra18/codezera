@@ -15,11 +15,9 @@ import android.os.CountDownTimer;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +44,8 @@ import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.amrendra.codefiesta.utils.AppUtils.showSnackBarMessage;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -144,7 +144,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         return view;
     }
 
@@ -216,17 +216,17 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     int contestStatus = DateUtils.getContestStatus(startTime, endTime);
                     if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
                         if (CALENDAR_BUTTON_ACTIVE) {
-                            showSnackBarMessage(String.format(getString(R.string.fetch_contest_calendar_status),
+                            showSnackBarMessage(getActivity(), mCoordinatorLayout, String.format(getString(R.string.fetch_contest_calendar_status),
                                     contest.getEvent()));
                             return;
                         }
                         toggleEventStatusInCalendar();
                     } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
-                        showSnackBarMessage(String.format(getString(R.string.contest_started),
+                        showSnackBarMessage(getActivity(), mCoordinatorLayout, String.format(getString(R.string.contest_started),
                                 contest.getEvent(),
                                 shortResourceName));
                     } else {
-                        showSnackBarMessage(String.format(getActivity().getString(R.string.contest_ended),
+                        showSnackBarMessage(getActivity(), mCoordinatorLayout, String.format(getActivity().getString(R.string.contest_ended),
                                 contest.getEvent(),
                                 shortResourceName));
                     }
@@ -239,18 +239,18 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     int contestStatus = DateUtils.getContestStatus(startTime, endTime);
                     if (contestStatus == AppUtils.STATUS_CONTEST_FUTURE) {
                         if (NOTIFICATION_BUTTON_ACTIVE) {
-                            showSnackBarMessage(String.format(getString(R.string.fetch_contest_notification_status),
+                            showSnackBarMessage(getActivity(), mCoordinatorLayout, String.format(getString(R.string.fetch_contest_notification_status),
                                     contest.getEvent()));
                             return;
                         }
                         toggleNotificationForEvent();
                     } else if (contestStatus == AppUtils.STATUS_CONTEST_LIVE) {
-                        showSnackBarMessage(String.format(getString(R.string.contest_started),
+                        showSnackBarMessage(getActivity(), mCoordinatorLayout, String.format(getString(R.string.contest_started),
                                 contest.getEvent(),
                                 shortResourceName));
 
                     } else {
-                        showSnackBarMessage(String.format(getString(R.string.contest_ended),
+                        showSnackBarMessage(getActivity(), mCoordinatorLayout, String.format(getString(R.string.contest_ended),
                                 contest.getEvent(),
                                 shortResourceName));
                     }
@@ -276,7 +276,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             websiteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppUtils.openWebsite(getActivity(), contest.getUrl());
+                    AppUtils.openWebsite(getActivity(), mCoordinatorLayout, contest.getUrl());
                 }
             });
 
@@ -365,7 +365,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
             calendarId = CalendarUtils.getCalendarId(getActivity());
         }
         if (calendarId < 0) {
-            showSnackBarMessage(getString(R.string.no_calendar_account_found));
+            showSnackBarMessage(getActivity(), mCoordinatorLayout, getString(R.string.no_calendar_account_found));
             CALENDAR_BUTTON_ACTIVE = false;
             return;
         }
@@ -383,7 +383,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 processCalendarQuery(cursor);
             } catch (SecurityException ex) {
                 Debug.c();
-                showSnackBarMessage(getString(R.string.calendar_permission_denied));
+                showSnackBarMessage(getActivity(), mCoordinatorLayout, getString(R.string.calendar_permission_denied));
                 CALENDAR_BUTTON_ACTIVE = false;
                 return;
             }
@@ -401,7 +401,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                         new String[]{Long.toString(calendarEventId)}
                 );
             } else {
-                showSnackBarMessage(getString(R.string.no_calendar_account_found));
+                showSnackBarMessage(getActivity(), mCoordinatorLayout, getString(R.string.no_calendar_account_found));
                 CALENDAR_BUTTON_ACTIVE = false;
             }
         } else if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_PRESENT) {
@@ -417,7 +417,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
 
                 );
             } else {
-                showSnackBarMessage(getString(R.string.no_calendar_account_found));
+                showSnackBarMessage(getActivity(), mCoordinatorLayout, getString(R.string.no_calendar_account_found));
                 CALENDAR_BUTTON_ACTIVE = false;
             }
         } else if (calendarEventId == CALENDAR_EVENT_VALUE_NOT_RETRIEVED) {
@@ -446,12 +446,6 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 .setType("text/plain")
                 .setText(msg)
                 .getIntent(), getString(R.string.action_share)));
-    }
-
-    public void showSnackBarMessage(String msg) {
-        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, Html.fromHtml(msg), Snackbar.LENGTH_SHORT);
-        snackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-        snackbar.show();
     }
 
     private void configureTimer() {
@@ -583,7 +577,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     msg = String.format(getString(R.string.insert_event_error), contest
                             .getEvent());
                 }
-                showSnackBarMessage(msg);
+                showSnackBarMessage(getActivity(), mCoordinatorLayout, msg);
                 CALENDAR_BUTTON_ACTIVE = false;
             }
             break;
@@ -602,7 +596,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     msg = String.format(getString(R.string.insert_notification_error), contest
                             .getEvent());
                 }
-                showSnackBarMessage(msg);
+                showSnackBarMessage(getActivity(), mCoordinatorLayout, msg);
                 NOTIFICATION_BUTTON_ACTIVE = false;
             }
             break;
@@ -626,7 +620,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                     msg = String.format(getString(R.string.delete_event_error), contest
                             .getEvent());
                 }
-                showSnackBarMessage(msg);
+                showSnackBarMessage(getActivity(), mCoordinatorLayout, msg);
                 CALENDAR_BUTTON_ACTIVE = false;
             }
             break;
@@ -638,7 +632,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
                 notificationButton.setText(getString(R.string.add_notification));
                 notificationId = NOTIFICATION_EVENT_VALUE_NOT_PRESENT;
                 deleteNotification();
-                showSnackBarMessage(msg);
+                showSnackBarMessage(getActivity(), mCoordinatorLayout, msg);
                 NOTIFICATION_BUTTON_ACTIVE = false;
             }
             break;
@@ -652,7 +646,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
 
     @Subscribe
     public void onCalendarPermissionGrant(CalendarPermissionGrantedEvent event) {
-        showSnackBarMessage(getString(R.string.calendar_permission_granted));
+        showSnackBarMessage(getActivity(), mCoordinatorLayout, getString(R.string.calendar_permission_granted));
         calendarId = CalendarUtils.getCalendarId(getActivity());
         getEventCalendarStatus();
     }
@@ -660,7 +654,7 @@ public class DetailFragment extends BaseFragment implements DBQueryHandler.OnQue
     @Subscribe
     public void onShowErrorMsg(SnackBarMessageDetailFragmentEvent event) {
         Debug.c();
-        showSnackBarMessage(event.getMsg());
+        showSnackBarMessage(getActivity(), mCoordinatorLayout, event.getMsg());
     }
 
     private void addNotification() {

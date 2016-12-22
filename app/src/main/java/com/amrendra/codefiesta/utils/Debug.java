@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.BuildConfig;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,7 +19,7 @@ import java.util.Map;
  * Created by Amrendra Kumar on 05/04/16.
  */
 public class Debug {
-    private static final Boolean DEBUG = true;
+    private static final Boolean DEBUG = BuildConfig.DEBUG;
     private static final String TAG = "bdebug";
 
     public static void forceCrash() {

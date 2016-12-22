@@ -4,12 +4,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +27,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.amrendra.codefiesta.utils.AppUtils.showSnackBarMessage;
+
 public class UpcomingFragment extends BaseFragment {
 
     private static final int CURRENT_CONTESTS_LOADER = 0;
@@ -48,7 +47,7 @@ public class UpcomingFragment extends BaseFragment {
 
     @OnClick(R.id.refresh)
     void onRefreshClick() {
-        showSnackBarMessage(getString(R.string.sync_data));
+        showSnackBarMessage(getActivity(), mCoordinatorLayout, getString(R.string.sync_data));
         CodeFiestaSyncAdapter.syncImmediately(getActivity());
     }
 
@@ -143,10 +142,6 @@ public class UpcomingFragment extends BaseFragment {
                 errorLayout.setVisibility(View.INVISIBLE);
                 checkForNewLoad(cursor);
             } else {
-                /*if (!AppUtils.isNetworkConnected(getActivity())) {
-                    Debug.showToastShort(getActivity().getString(R.string
-                            .internet), getActivity(), true);
-                }*/
                 errorTv.setText(getActivity().getString(R.string.nomatch));
                 errorTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.egg_empty, 0, 0);
                 errorTv.setContentDescription(getActivity().getString(R.string.nomatch));
@@ -161,10 +156,4 @@ public class UpcomingFragment extends BaseFragment {
             mAdapter.swapCursor(null);
         }
     };
-
-    public void showSnackBarMessage(String msg) {
-        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, Html.fromHtml(msg), Snackbar.LENGTH_SHORT);
-        snackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-        snackbar.show();
-    }
 }

@@ -117,5 +117,6 @@
     <string name="email_subject" translatable="false">Feedback on %1$s; version %2$s</string>
     <string name="send_email">Send email using …</string>
     <string name="no_playstore">Playstore app not found!!</string>
+    <string name="website_open_error">Unexpected error occurred in opening the website.</string>
 
 </resources>

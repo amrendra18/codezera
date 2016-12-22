@@ -131,10 +131,6 @@ public class PastFragment extends BaseFragment {
                 errorLayout.setVisibility(View.INVISIBLE);
                 checkForNewLoad(cursor);
             } else {
-                /*if (!AppUtils.isNetworkConnected(getActivity())) {
-                    Debug.showToastShort(getActivity().getString(R.string
-                            .internet), getActivity(), true);
-                }*/
                 errorTv.setText(getActivity().getString(R.string.nomatch));
                 errorTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.egg_empty, 0, 0);
                 errorTv.setContentDescription(getActivity().getString(R.string.nomatch));

@@ -1,12 +1,18 @@
 package com.amrendra.codefiesta.utils;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.text.Html;
 
 import com.amrendra.codefiesta.R;
 import com.amrendra.codefiesta.db.DBContract;
+import com.crashlytics.android.Crashlytics;
 
 import java.util.HashMap;
 
@@ -122,9 +128,26 @@ public class AppUtils {
         return R.mipmap.ic_launcher;
     }
 
-    public static void openWebsite(Context context, String url) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        context.startActivity(i);
+    public static void openWebsite(Context context, CoordinatorLayout mCoordinatorLayout, String url) {
+        if (url != null && url.trim().length() > 0) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            try {
+                context.startActivity(i);
+            } catch (ActivityNotFoundException e) {
+                Crashlytics.log("ANFE;url=" + url);
+                Crashlytics.logException(e);
+                showSnackBarMessage(context, mCoordinatorLayout, context.getString(R.string.website_open_error));
+            }
+        }
+
+    }
+
+    public static void showSnackBarMessage(Context context, CoordinatorLayout mCoordinatorLayout, String msg) {
+        if (context != null && mCoordinatorLayout != null) {
+            Snackbar snackbar = Snackbar.make(mCoordinatorLayout, Html.fromHtml(msg), Snackbar.LENGTH_SHORT);
+            snackbar.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            snackbar.show();
+        }
     }
 }

@@ -95,7 +95,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.0.13'
 
     compile 'com.google.android.gms:play-services-analytics:8.3.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
 }
